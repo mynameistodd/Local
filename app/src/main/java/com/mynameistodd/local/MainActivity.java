@@ -1,17 +1,16 @@
 package com.mynameistodd.local;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
 
@@ -54,7 +53,7 @@ public class MainActivity extends Activity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, SubscriptionFragment.newInstance("foo", "bar"))
                         .commit();
-                mTitle = getString(R.string.subscriptions);
+                mTitle = getString(R.string.subscribed);
                 break;
             case 1:
                 fragmentManager.beginTransaction()
@@ -66,7 +65,7 @@ public class MainActivity extends Activity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                         .commit();
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.about);
                 break;
         }
 

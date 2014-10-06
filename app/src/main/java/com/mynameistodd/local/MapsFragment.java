@@ -1,9 +1,8 @@
 package com.mynameistodd.local;
 
-import android.support.annotation.Nullable;
 import android.app.Fragment;
-//import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+//import android.support.v4.app.FragmentActivity;
 
 public class MapsFragment extends Fragment {
 
@@ -88,16 +89,26 @@ public class MapsFragment extends Fragment {
     private void setUpMap() {
         LatLng argus = new LatLng(42.278953, -83.752118);
         LatLng babo = new LatLng(42.280631, -83.743639);
+        LatLng dhg = new LatLng(42.279923, -83.749996);
 
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(argus, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dhg, 15));
+
         mMap.addMarker(new MarkerOptions()
                 .position(argus)
-                .title("Argus")
+                .title("Argus Farm Stop")
                 .snippet("Good cookies found here."));
+
         mMap.addMarker(new MarkerOptions()
                 .position(babo)
-                .title("Babo")
-                .snippet("Lunch here is great."));
+                .title("Babo Market")
+                .snippet("Lunch here is tasty."));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(dhg)
+                .title("Downtown Home & Garden")
+                .snippet("Cheap Zingerman's cookies!")).showInfoWindow();
+
+
     }
 }
