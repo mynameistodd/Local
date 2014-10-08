@@ -1,7 +1,6 @@
 package com.mynameistodd.local;
 
 import android.app.Fragment;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,11 +12,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.HashMap;
 import java.util.List;
 
 //import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,7 @@ import java.util.List;
 public class MapsFragment extends Fragment {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private HashMap<Marker, String> mMarkers;
 
     public MapsFragment() {
     }
@@ -94,21 +96,43 @@ public class MapsFragment extends Fragment {
      */
     private void setUpMap() {
         LatLng temp = new LatLng(42.279923, -83.749996);
+        mMarkers = new HashMap<Marker, String>();
 
         ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
         query.findInBackground(new FindCallback<Business>() {
             @Override
             public void done(List<Business> businesses, ParseException e) {
                 for (Business business : businesses) {
-                    mMap.addMarker(new MarkerOptions()
+                    Marker marker = mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
                             .title(business.getName())
                             .snippet(business.getSnippet()));
+                    mMarkers.put(marker, business.getObjectId());
                 }
             }
         });
 
         mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(temp, 15));
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                return true;
+            }
+        });
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                String businessId = mMarkers.get(marker);
+
+                Bundle args = new Bundle();
+                args.putString("businessId", businessId);
+
+                SubscribeDialogFragment subscribeDialogFragment = new SubscribeDialogFragment();
+                subscribeDialogFragment.setArguments(args);
+                subscribeDialogFragment.show(getFragmentManager(), "SubscribeDialogFragment");
+            }
+        });
     }
 }

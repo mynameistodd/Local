@@ -166,7 +166,6 @@ public class MainActivity extends Activity
             super.onAttach(activity);
 //            ((MainActivity) activity).onSectionAttached(
 //                    getArguments().getInt(ARG_SECTION_NUMBER));
-            ParsePush.subscribeInBackground("argus");
         }
     }
 
