@@ -13,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
+import com.parse.ParseObject;
+import com.parse.ParsePush;
+
 
 public class MainActivity extends Activity
         implements
@@ -160,6 +166,7 @@ public class MainActivity extends Activity
             super.onAttach(activity);
 //            ((MainActivity) activity).onSectionAttached(
 //                    getArguments().getInt(ARG_SECTION_NUMBER));
+            ParsePush.subscribeInBackground("argus");
         }
     }
 

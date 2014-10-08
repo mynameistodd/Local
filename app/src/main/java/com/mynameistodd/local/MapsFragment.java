@@ -1,6 +1,7 @@
 package com.mynameistodd.local;
 
 import android.app.Fragment;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,6 +14,11 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 //import android.support.v4.app.FragmentActivity;
 
@@ -87,28 +93,22 @@ public class MapsFragment extends Fragment {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        LatLng argus = new LatLng(42.278953, -83.752118);
-        LatLng babo = new LatLng(42.280631, -83.743639);
-        LatLng dhg = new LatLng(42.279923, -83.749996);
+        LatLng temp = new LatLng(42.279923, -83.749996);
+
+        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+        query.findInBackground(new FindCallback<Business>() {
+            @Override
+            public void done(List<Business> businesses, ParseException e) {
+                for (Business business : businesses) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
+                            .title(business.getName())
+                            .snippet(business.getSnippet()));
+                }
+            }
+        });
 
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dhg, 15));
-
-        mMap.addMarker(new MarkerOptions()
-                .position(argus)
-                .title("Argus Farm Stop")
-                .snippet("Good cookies found here."));
-
-        mMap.addMarker(new MarkerOptions()
-                .position(babo)
-                .title("Babo Market")
-                .snippet("Lunch here is tasty."));
-
-        mMap.addMarker(new MarkerOptions()
-                .position(dhg)
-                .title("Downtown Home & Garden")
-                .snippet("Cheap Zingerman's cookies!")).showInfoWindow();
-
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(temp, 15));
     }
 }
