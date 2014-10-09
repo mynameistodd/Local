@@ -95,7 +95,7 @@ public class MapsFragment extends Fragment {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        LatLng temp = new LatLng(42.279923, -83.749996);
+        LatLng temp = new LatLng(42.279923, -83.749996); //need to put real current location here.
         mMarkers = new HashMap<Marker, String>();
 
         ParseQuery<Business> query = ParseQuery.getQuery(Business.class);

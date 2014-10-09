@@ -13,7 +13,12 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 
-import com.mynameistodd.local.dummy.DummyContent;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -21,7 +26,7 @@ import com.mynameistodd.local.dummy.DummyContent;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p />
- * Activities containing this fragment MUST implement the {@link Callbacks}
+ * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
 public class SubscriptionFragment extends Fragment implements AbsListView.OnItemClickListener {
@@ -47,6 +52,8 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
      * Views.
      */
     private ListAdapter mAdapter;
+
+    private List<Business> mBusinesses;
 
     // TODO: Rename and change types of parameters
     public static SubscriptionFragment newInstance(String param1, String param2) {
@@ -74,9 +81,19 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
+        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+        query.whereContainedIn("objectId", subscribedChannels);
+        query.findInBackground(new FindCallback<Business>() {
+            @Override
+            public void done(List<Business> businesses, ParseException e) {
+                mBusinesses = businesses;
+                mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
+
+                // Set the adapter
+                ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+            }
+        });
     }
 
     @Override
@@ -117,7 +134,7 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(mBusinesses.get(position));
         }
     }
 
@@ -146,7 +163,7 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        public void onFragmentInteraction(Business business);
     }
 
 }

@@ -57,7 +57,7 @@ public class MainActivity extends Activity
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SubscriptionFragment.newInstance("foo", "bar"))
+                        .replace(R.id.container, SubscriptionFragment.newInstance("",""))
                         .commit();
                 mTitle = getString(R.string.subscribed);
                 break;
@@ -125,8 +125,8 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onFragmentInteraction(String id) {
-        Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
+    public void onFragmentInteraction(Business business) {
+        Toast.makeText(this, business.getSnippet(), Toast.LENGTH_SHORT).show();
     }
 
     /**
