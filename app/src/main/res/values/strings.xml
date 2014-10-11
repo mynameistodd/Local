@@ -14,5 +14,6 @@
     <string name="map">Find and Follow</string>
     <string name="about">About</string>
     <string name="dialog_subscribe">Subscribe to Business?</string>
+    <string name="dialog_unsubscribe">Unsubscribe from Business?</string>
 
 </resources>

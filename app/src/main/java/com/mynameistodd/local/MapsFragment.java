@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
 
 import java.util.HashMap;
@@ -40,10 +42,14 @@ public class MapsFragment extends Fragment implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
+    private final static int SUBSCRIBE_DIALOG_FRAGMENT_REQUEST = 1000;
+    private final static int UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST = 2000;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private HashMap<Marker, String> mMarkers;
     private LocationClient mLocationClient;
+    private List<String> mSubscribedChannels;
+    private Fragment mThisFragment;
 
     public MapsFragment() {
     }
@@ -53,6 +59,8 @@ public class MapsFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         mMarkers = new HashMap<Marker, String>();
         mLocationClient = new LocationClient(getActivity(), this, this);
+        mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
+        mThisFragment = this;
     }
 
     @Override
@@ -142,12 +150,16 @@ public class MapsFragment extends Fragment implements
             @Override
             public void onInfoWindowClick(Marker marker) {
                 String businessId = mMarkers.get(marker);
+                String markerId = marker.getId();
 
                 Bundle args = new Bundle();
                 args.putString("businessId", businessId);
+                args.putString("markerId", markerId);
+                args.putBoolean("subscribed", mSubscribedChannels.contains(businessId));
 
                 SubscribeDialogFragment subscribeDialogFragment = new SubscribeDialogFragment();
                 subscribeDialogFragment.setArguments(args);
+                subscribeDialogFragment.setTargetFragment(mThisFragment, mSubscribedChannels.contains(businessId) ? UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST : SUBSCRIBE_DIALOG_FRAGMENT_REQUEST);
                 subscribeDialogFragment.show(getFragmentManager(), "SubscribeDialogFragment");
             }
         });
@@ -171,10 +183,16 @@ public class MapsFragment extends Fragment implements
             @Override
             public void done(List<Business> businesses, ParseException e) {
                 for (Business business : businesses) {
-                    Marker marker = mMap.addMarker(new MarkerOptions()
+                    MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
                             .title(business.getName())
-                            .snippet(business.getSnippet()));
+                            .snippet(business.getSnippet());
+
+                    if (mSubscribedChannels.contains(business.getObjectId())) {
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    }
+
+                    Marker marker = mMap.addMarker(markerOptions);
                     mMarkers.put(marker, business.getObjectId());
                 }
             }
@@ -189,6 +207,35 @@ public class MapsFragment extends Fragment implements
                         //try to get location again and update map.
                         break;
                 }
+                break;
+            case SUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
+                if (resultCode == Activity.RESULT_OK) {
+                    String businessId = data.getStringExtra("businessId");
+                    String markerId = data.getStringExtra("markerId");
+
+                    for (Marker marker : mMarkers.keySet()) {
+                        if (marker.getId().equals(markerId)) {
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                            break;
+                        }
+                    }
+                    mSubscribedChannels.add(businessId);
+                }
+                break;
+            case UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
+                if (resultCode == Activity.RESULT_OK) {
+                    String businessId = data.getStringExtra("businessId");
+                    String markerId = data.getStringExtra("markerId");
+
+                    for (Marker marker : mMarkers.keySet()) {
+                        if (marker.getId().equals(markerId)) {
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            break;
+                        }
+                    }
+                    mSubscribedChannels.remove(businessId);
+                }
+                break;
         }
     }
 
