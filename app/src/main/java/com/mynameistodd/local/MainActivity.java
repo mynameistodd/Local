@@ -13,12 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.ParsePush;
-
 
 public class MainActivity extends Activity
         implements
@@ -57,7 +51,7 @@ public class MainActivity extends Activity
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SubscriptionFragment.newInstance("",""))
+                        .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
                         .commit();
                 mTitle = getString(R.string.subscribed);
                 break;
@@ -156,7 +150,7 @@ public class MainActivity extends Activity
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_subscriptions, container, false);
             return rootView;
         }

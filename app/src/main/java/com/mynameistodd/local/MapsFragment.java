@@ -33,6 +33,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,6 +61,9 @@ public class MapsFragment extends Fragment implements
         mMarkers = new HashMap<Marker, String>();
         mLocationClient = new LocationClient(getActivity(), this, this);
         mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
+        if (mSubscribedChannels == null) {
+            mSubscribedChannels = new ArrayList<String>();
+        }
         mThisFragment = this;
     }
 

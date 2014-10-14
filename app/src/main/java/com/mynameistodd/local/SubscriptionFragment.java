@@ -1,17 +1,15 @@
 package com.mynameistodd.local;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -82,18 +80,20 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         }
 
         List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-        query.whereContainedIn("objectId", subscribedChannels);
-        query.findInBackground(new FindCallback<Business>() {
-            @Override
-            public void done(List<Business> businesses, ParseException e) {
-                mBusinesses = businesses;
-                mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
+        if (subscribedChannels != null) {
+            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+            query.whereContainedIn("objectId", subscribedChannels);
+            query.findInBackground(new FindCallback<Business>() {
+                @Override
+                public void done(List<Business> businesses, ParseException e) {
+                    mBusinesses = businesses;
+                    mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
 
-                // Set the adapter
-                ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-            }
-        });
+                    // Set the adapter
+                    ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+                }
+            });
+        }
     }
 
     @Override
