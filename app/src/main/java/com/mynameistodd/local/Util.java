@@ -16,6 +16,7 @@ import com.google.android.gms.location.Geofence;
  */
 public class Util {
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public static final String TAG = "MYNAMEISTODD.LOCAL";
 
     public static boolean servicesConnected(Context context, Fragment fragment) {
         // Check that Google Play services is available

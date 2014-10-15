@@ -30,7 +30,9 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,8 +177,8 @@ public class MapsFragment extends Fragment implements
     }
 
     private void updateMap(LatLng latLng) {
-        mMarkers.clear();
-        mMap.clear();
+//        mMarkers.clear();
+//        mMap.clear();
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(latLng.latitude, latLng.longitude);
 
         ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
@@ -185,19 +187,26 @@ public class MapsFragment extends Fragment implements
         query.findInBackground(new FindCallback<Business>() {
             @Override
             public void done(List<Business> businesses, ParseException e) {
-                for (Business business : businesses) {
-                    MarkerOptions markerOptions = new MarkerOptions()
-                            .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
-                            .title(business.getName())
-                            .snippet(business.getSnippet());
+                if (businesses != null) {
+                    mMarkers.clear();
+                    mMap.clear();
+                    for (Business business : businesses) {
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
+                                .title(business.getName())
+                                .snippet(business.getSnippet());
 
-                    if (mSubscribedChannels.contains(business.getObjectId())) {
-                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        if (mSubscribedChannels.contains(business.getObjectId())) {
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        }
+
+                        Marker marker = mMap.addMarker(markerOptions);
+                        mMarkers.put(marker, business.getObjectId());
                     }
-
-                    Marker marker = mMap.addMarker(markerOptions);
-                    mMarkers.put(marker, business.getObjectId());
+                } else if (e != null) {
+                    e.printStackTrace();
                 }
+
             }
         });
     }
@@ -213,7 +222,7 @@ public class MapsFragment extends Fragment implements
                 break;
             case SUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
                 if (resultCode == Activity.RESULT_OK) {
-                    String businessId = data.getStringExtra("businessId");
+                    final String businessId = data.getStringExtra("businessId");
                     String markerId = data.getStringExtra("markerId");
 
                     for (Marker marker : mMarkers.keySet()) {
@@ -222,12 +231,22 @@ public class MapsFragment extends Fragment implements
                             break;
                         }
                     }
+                    ParsePush.subscribeInBackground(businessId, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d(Util.TAG, "Successfully subscribed to " + businessId);
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                     mSubscribedChannels.add(businessId);
                 }
                 break;
             case UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
                 if (resultCode == Activity.RESULT_OK) {
-                    String businessId = data.getStringExtra("businessId");
+                    final String businessId = data.getStringExtra("businessId");
                     String markerId = data.getStringExtra("markerId");
 
                     for (Marker marker : mMarkers.keySet()) {
@@ -236,6 +255,16 @@ public class MapsFragment extends Fragment implements
                             break;
                         }
                     }
+                    ParsePush.unsubscribeInBackground(businessId, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d(Util.TAG, "Successfully unsubscribed from " + businessId);
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                     mSubscribedChannels.remove(businessId);
                 }
                 break;

@@ -24,6 +24,7 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationStatusCodes;
 import com.parse.FindCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
@@ -81,6 +82,7 @@ public class MainActivity extends Activity
 
         mInProgress = false;
         mGeofenceList = new ArrayList<Geofence>();
+        ParseAnalytics.trackAppOpened(getIntent());
     }
 
     @Override

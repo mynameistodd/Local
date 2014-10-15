@@ -33,9 +33,9 @@ public class SubscribeDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (subscribed) {
-                            ParsePush.unsubscribeInBackground(businessId);
+//                            ParsePush.unsubscribeInBackground(businessId);
                         } else {
-                            ParsePush.subscribeInBackground(businessId);
+//                            ParsePush.subscribeInBackground(businessId);
                         }
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                     }
