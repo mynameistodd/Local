@@ -2,7 +2,6 @@ package com.mynameistodd.local;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -45,7 +44,7 @@ public class MapsFragment extends Fragment implements
 
     private final static int SUBSCRIBE_DIALOG_FRAGMENT_REQUEST = 1000;
     private final static int UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST = 2000;
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private HashMap<Marker, String> mMarkers;
     private LocationClient mLocationClient;
@@ -70,7 +69,7 @@ public class MapsFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        if (servicesConnected()) {
+        if (Util.servicesConnected(getActivity(), mThisFragment)) {
             mLocationClient.connect();
         }
     }
@@ -205,7 +204,7 @@ public class MapsFragment extends Fragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CONNECTION_FAILURE_RESOLUTION_REQUEST:
+            case Util.CONNECTION_FAILURE_RESOLUTION_REQUEST:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                         //try to get location again and update map.
@@ -264,7 +263,7 @@ public class MapsFragment extends Fragment implements
                 // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(
                         getActivity(),
-                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                        Util.CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 /*
                  * Thrown if Google Play services canceled the original
                  * PendingIntent
@@ -280,7 +279,7 @@ public class MapsFragment extends Fragment implements
             Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
                     errorCode,
                     getActivity(),
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                    Util.CONNECTION_FAILURE_RESOLUTION_REQUEST);
             // If Google Play services can provide an error dialog
             if (errorDialog != null) {
                 // Create a new DialogFragment for the error dialog
@@ -293,59 +292,6 @@ public class MapsFragment extends Fragment implements
                         getFragmentManager(),
                         "CurrentLocationFailed");
             }
-        }
-    }
-
-    private boolean servicesConnected() {
-        // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
-        // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            // In debug mode, log the status
-            Log.d("Location Updates", "Google Play services is available.");
-            // Continue
-            return true;
-            // Google Play services was not available for some reason.
-            // resultCode holds the error code.
-        } else {
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
-                    resultCode,
-                    getActivity(),
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                // Create a new DialogFragment for the error dialog
-                ErrorDialogFragment errorFragment = new ErrorDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(errorDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getFragmentManager(), "Location Updates");
-            }
-            return false;
-        }
-    }
-
-    public static class ErrorDialogFragment extends DialogFragment {
-        // Global field to contain the error dialog
-        private Dialog mDialog;
-
-        // Default constructor. Sets the dialog field to null
-        public ErrorDialogFragment() {
-            super();
-            mDialog = null;
-        }
-
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
-        }
-
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return mDialog;
         }
     }
 }
