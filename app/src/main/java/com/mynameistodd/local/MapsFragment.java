@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -196,6 +199,13 @@ public class MapsFragment extends Fragment implements
 
                         if (mSubscribedChannels.contains(business.getChannelId())) {
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                            CircleOptions circleOptions = new CircleOptions()
+                                    .center(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
+                                    .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
+                                    .radius(10) //TODO Should come from Business object.
+                                    .strokeColor(Color.TRANSPARENT);
+                            Circle circle = mMap.addCircle(circleOptions);
                         }
 
                         Marker marker = mMap.addMarker(markerOptions);

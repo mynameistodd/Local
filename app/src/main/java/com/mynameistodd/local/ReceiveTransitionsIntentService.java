@@ -54,7 +54,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
             // Get the type of transition (entry or exit)
             int transitionType = LocationClient.getGeofenceTransition(intent);
             // Test that a valid transition was reported
-            if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER) || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
+            if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER) || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT) || (transitionType == Geofence.GEOFENCE_TRANSITION_DWELL)) {
                 List<Geofence> triggerList = LocationClient.getTriggeringGeofences(intent);
 
                 String[] triggerIds = new String[triggerList.size()];

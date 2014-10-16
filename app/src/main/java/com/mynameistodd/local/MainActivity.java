@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -118,20 +119,6 @@ public class MainActivity extends Activity
 
     }
 
-//    public void onSectionAttached(int number) {
-//        switch (number) {
-//            case 1:
-//                mTitle = getString(R.string.title_section1);
-//                break;
-//            case 2:
-//                mTitle = getString(R.string.title_section2);
-//                break;
-//            case 3:
-//                mTitle = getString(R.string.title_section3);
-//                break;
-//        }
-//    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -207,18 +194,11 @@ public class MainActivity extends Activity
     public void onAddGeofencesResult(int statusCode, String[] strings) {
         // If adding the geofences was successful
         if (LocationStatusCodes.SUCCESS == statusCode) {
-            /*
-             * Handle successful addition of geofences here.
-             * You can send out a broadcast intent or update the UI.
-             * geofences into the Intent's extended data.
-             */
+            for (String fence : strings) {
+                Log.d(Util.TAG, "Successfully added geofence: " + fence);
+            }
         } else {
-            // If adding the geofences failed
-            /*
-             * Report errors here.
-             * You can log the error using Log.e() or update
-             * the UI.
-             */
+            Log.e(Util.TAG, "Error adding geofence: " + statusCode);
         }
         // Turn off the in progress flag and disconnect the client
         mInProgress = false;
@@ -380,6 +360,8 @@ public class MainActivity extends Activity
                 @Override
                 public void done(List<Business> businesses, ParseException e) {
                     if (businesses != null) {
+                        mGeofenceList.clear();
+                        
                         for (Business business : businesses) {
                             mGeofenceList.add(Util.getGeofence(business));
                         }
