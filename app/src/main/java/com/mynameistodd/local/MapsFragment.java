@@ -154,17 +154,17 @@ public class MapsFragment extends Fragment implements
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                String businessId = mMarkers.get(marker);
+                String channelId = mMarkers.get(marker);
                 String markerId = marker.getId();
 
                 Bundle args = new Bundle();
-                args.putString("businessId", businessId);
+                args.putString("channelId", channelId);
                 args.putString("markerId", markerId);
-                args.putBoolean("subscribed", mSubscribedChannels.contains(businessId));
+                args.putBoolean("subscribed", mSubscribedChannels.contains(channelId));
 
                 SubscribeDialogFragment subscribeDialogFragment = new SubscribeDialogFragment();
                 subscribeDialogFragment.setArguments(args);
-                subscribeDialogFragment.setTargetFragment(mThisFragment, mSubscribedChannels.contains(businessId) ? UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST : SUBSCRIBE_DIALOG_FRAGMENT_REQUEST);
+                subscribeDialogFragment.setTargetFragment(mThisFragment, mSubscribedChannels.contains(channelId) ? UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST : SUBSCRIBE_DIALOG_FRAGMENT_REQUEST);
                 subscribeDialogFragment.show(getFragmentManager(), "SubscribeDialogFragment");
             }
         });
@@ -177,8 +177,6 @@ public class MapsFragment extends Fragment implements
     }
 
     private void updateMap(LatLng latLng) {
-//        mMarkers.clear();
-//        mMap.clear();
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(latLng.latitude, latLng.longitude);
 
         ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
@@ -196,12 +194,12 @@ public class MapsFragment extends Fragment implements
                                 .title(business.getName())
                                 .snippet(business.getSnippet());
 
-                        if (mSubscribedChannels.contains(business.getObjectId())) {
+                        if (mSubscribedChannels.contains(business.getChannelId())) {
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                         }
 
                         Marker marker = mMap.addMarker(markerOptions);
-                        mMarkers.put(marker, business.getObjectId());
+                        mMarkers.put(marker, business.getChannelId());
                     }
                 } else if (e != null) {
                     e.printStackTrace();
@@ -222,7 +220,7 @@ public class MapsFragment extends Fragment implements
                 break;
             case SUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
                 if (resultCode == Activity.RESULT_OK) {
-                    final String businessId = data.getStringExtra("businessId");
+                    final String channelId = data.getStringExtra("channelId");
                     String markerId = data.getStringExtra("markerId");
 
                     for (Marker marker : mMarkers.keySet()) {
@@ -231,22 +229,22 @@ public class MapsFragment extends Fragment implements
                             break;
                         }
                     }
-                    ParsePush.subscribeInBackground(businessId, new SaveCallback() {
+                    ParsePush.subscribeInBackground(channelId, new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Log.d(Util.TAG, "Successfully subscribed to " + businessId);
+                                Log.d(Util.TAG, "Successfully subscribed to " + channelId);
                             } else {
                                 e.printStackTrace();
                             }
                         }
                     });
-                    mSubscribedChannels.add(businessId);
+                    mSubscribedChannels.add(channelId);
                 }
                 break;
             case UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
                 if (resultCode == Activity.RESULT_OK) {
-                    final String businessId = data.getStringExtra("businessId");
+                    final String channelId = data.getStringExtra("channelId");
                     String markerId = data.getStringExtra("markerId");
 
                     for (Marker marker : mMarkers.keySet()) {
@@ -255,17 +253,17 @@ public class MapsFragment extends Fragment implements
                             break;
                         }
                     }
-                    ParsePush.unsubscribeInBackground(businessId, new SaveCallback() {
+                    ParsePush.unsubscribeInBackground(channelId, new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Log.d(Util.TAG, "Successfully unsubscribed from " + businessId);
+                                Log.d(Util.TAG, "Successfully unsubscribed from " + channelId);
                             } else {
                                 e.printStackTrace();
                             }
                         }
                     });
-                    mSubscribedChannels.remove(businessId);
+                    mSubscribedChannels.remove(channelId);
                 }
                 break;
         }

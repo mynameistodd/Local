@@ -89,7 +89,7 @@ public class Util {
     public static Geofence getGeofence(Business business) {
         // Build a new Geofence object
         return new Geofence.Builder()
-                .setRequestId(business.getObjectId())
+                .setRequestId(business.getChannelId())
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER) //TODO: Should come from parse entry
                 .setCircularRegion(business.getLocation().getLatitude(), business.getLocation().getLongitude(), 1) //TODO: Should come from parse entry
                 .setExpirationDuration(86400000)

@@ -12,6 +12,7 @@ public class Business extends ParseObject {
     private String name;
     private String snippet;
     private ParseGeoPoint location;
+    private String channelId;
 
     public String getName() {
         return getString("name");
@@ -35,5 +36,13 @@ public class Business extends ParseObject {
 
     public void setLocation(ParseGeoPoint location) {
         put("location", location);
+    }
+
+    public String getChannelId() {
+        return getString("channelId");
+    }
+
+    public void setChannelId(String channelId) {
+        put("channelId", channelId);
     }
 }

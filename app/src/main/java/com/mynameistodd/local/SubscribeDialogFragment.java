@@ -19,12 +19,12 @@ public class SubscribeDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        final String businessId = getArguments().getString("businessId");
+        final String channelId = getArguments().getString("channelId");
         final String markerId = getArguments().getString("markerId");
         final Boolean subscribed = getArguments().getBoolean("subscribed");
 
         final Intent intent = new Intent();
-        intent.putExtra("businessId", businessId);
+        intent.putExtra("channelId", channelId);
         intent.putExtra("markerId", markerId);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -32,11 +32,6 @@ public class SubscribeDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (subscribed) {
-//                            ParsePush.unsubscribeInBackground(businessId);
-                        } else {
-//                            ParsePush.subscribeInBackground(businessId);
-                        }
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                     }
                 })

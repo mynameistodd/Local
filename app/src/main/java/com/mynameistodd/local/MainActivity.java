@@ -182,7 +182,9 @@ public class MainActivity extends Activity
                 // Get the PendingIntent for the request
                 mGeofenceRequestIntent = getTransitionPendingIntent();
                 // Send a request to add the current geofences
-                mLocationClient.addGeofences(mGeofenceList, mGeofenceRequestIntent, this);
+                if (mGeofenceList.size() > 0) {
+                    mLocationClient.addGeofences(mGeofenceList, mGeofenceRequestIntent, this);
+                }
                 break;
             case REMOVE_INTENT :
                 mLocationClient.removeGeofences(mGeofenceRequestIntent, this);
@@ -231,8 +233,7 @@ public class MainActivity extends Activity
      *@param requestIntent The Intent used to request the removal.
      */
     @Override
-    public void onRemoveGeofencesByPendingIntentResult(int statusCode,
-                                                       PendingIntent requestIntent) {
+    public void onRemoveGeofencesByPendingIntentResult(int statusCode, PendingIntent requestIntent) {
         // If removing the geofences was successful
         if (statusCode == LocationStatusCodes.SUCCESS) {
             /*
@@ -265,8 +266,7 @@ public class MainActivity extends Activity
      * @param geofenceRequestIds The IDs removed
      */
     @Override
-    public void onRemoveGeofencesByRequestIdsResult(
-            int statusCode, String[] geofenceRequestIds) {
+    public void onRemoveGeofencesByRequestIdsResult(int statusCode, String[] geofenceRequestIds) {
         // If removing the geocodes was successful
         if (LocationStatusCodes.SUCCESS == statusCode) {
             /*
@@ -375,16 +375,20 @@ public class MainActivity extends Activity
             mInProgress = true;
 
             ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-            query.whereContainedIn("objectId", subscribedChannels);
+            query.whereContainedIn("channelId", subscribedChannels);
             query.findInBackground(new FindCallback<Business>() {
                 @Override
                 public void done(List<Business> businesses, ParseException e) {
-                    for (Business business : businesses) {
-                        mGeofenceList.add(Util.getGeofence(business));
-                    }
+                    if (businesses != null) {
+                        for (Business business : businesses) {
+                            mGeofenceList.add(Util.getGeofence(business));
+                        }
 
-                    // Request a connection from the client to Location Services
-                    mLocationClient.connect();
+                        // Request a connection from the client to Location Services
+                        mLocationClient.connect();
+                    } else if (e != null) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else {

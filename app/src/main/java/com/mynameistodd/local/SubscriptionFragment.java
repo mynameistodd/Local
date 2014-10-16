@@ -82,7 +82,7 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
         if (subscribedChannels != null) {
             ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-            query.whereContainedIn("objectId", subscribedChannels);
+            query.whereContainedIn("channelId", subscribedChannels);
             query.findInBackground(new FindCallback<Business>() {
                 @Override
                 public void done(List<Business> businesses, ParseException e) {
