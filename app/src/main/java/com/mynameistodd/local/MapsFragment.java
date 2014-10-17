@@ -203,7 +203,7 @@ public class MapsFragment extends Fragment implements
                             CircleOptions circleOptions = new CircleOptions()
                                     .center(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
                                     .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
-                                    .radius(10) //TODO Should come from Business object.
+                                    .radius(50) //TODO Should come from Business object.
                                     .strokeColor(Color.TRANSPARENT);
                             Circle circle = mMap.addCircle(circleOptions);
                         }

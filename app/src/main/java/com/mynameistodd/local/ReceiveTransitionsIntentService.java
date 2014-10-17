@@ -2,6 +2,8 @@ package com.mynameistodd.local;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
@@ -10,7 +12,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,26 +63,42 @@ public class ReceiveTransitionsIntentService extends IntentService {
             if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER) || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT) || (transitionType == Geofence.GEOFENCE_TRANSITION_DWELL)) {
                 List<Geofence> triggerList = LocationClient.getTriggeringGeofences(intent);
 
-                String[] triggerIds = new String[triggerList.size()];
+                List<String> triggerIds = new ArrayList<String>();
 
-                for (int i = 0; i < triggerIds.length; i++) {
-                    // Store the Id of each geofence
-                    triggerIds[i] = triggerList.get(i).getRequestId();
-
-                    Toast.makeText(getApplicationContext(), triggerIds[i], Toast.LENGTH_SHORT).show();
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                            .setSmallIcon(R.drawable.ic_launcher)
-                            .setContentTitle("geofence triggered")
-                            .setContentText(triggerIds[i]);
-
-                    NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-                    notificationManager.notify(1, mBuilder.build());
+                for (Geofence geofence : triggerList) {
+                    triggerIds.add(geofence.getRequestId());
                 }
-                /*
-                 * At this point, you can store the IDs for further use
-                 * display them, or display the details associated with
-                 * them.
-                 */
+
+                final NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                final TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(resultIntent);
+
+                ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+                query.whereContainedIn("channelId", triggerIds);
+                query.findInBackground(new FindCallback<Business>() {
+                    @Override
+                    public void done(List<Business> businesses, ParseException e) {
+                        if (businesses != null) {
+                            for (Business business : businesses) {
+                                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                        .setSmallIcon(R.drawable.ic_launcher)
+                                        .setContentTitle(business.getName())
+                                        .setContentText(business.getSnippet())
+                                        .setContentIntent(pendingIntent)
+                                        .setAutoCancel(true);
+
+                                mNotificationManager.notify(1, mBuilder.build());
+                            }
+                        } else if (e != null) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
             // An invalid transition was reported
             else {

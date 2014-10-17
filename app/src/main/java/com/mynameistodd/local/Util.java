@@ -90,7 +90,7 @@ public class Util {
         return new Geofence.Builder()
                 .setRequestId(business.getChannelId())
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL) //TODO: Should come from parse entry
-                .setCircularRegion(business.getLocation().getLatitude(), business.getLocation().getLongitude(), 10) //TODO: Should come from parse entry
+                .setCircularRegion(business.getLocation().getLatitude(), business.getLocation().getLongitude(), 50) //TODO: Should come from parse entry
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setLoiteringDelay(60000)
                 .setNotificationResponsiveness(60000)
