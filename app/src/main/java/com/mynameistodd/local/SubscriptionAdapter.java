@@ -30,10 +30,12 @@ public class SubscriptionAdapter extends ArrayAdapter<Business> {
         View view = inflater.inflate(R.layout.fragment_subscription_list_item, null);
 
         TextView name = (TextView) view.findViewById(R.id.business_name);
+        TextView snippet = (TextView) view.findViewById(R.id.business_snippet);
 
         Business business = businesses.get(position);
 
         name.setText(business.getName());
+        snippet.setText(business.getSnippet());
 
         return view;
     }
