@@ -2,6 +2,7 @@ package com.mynameistodd.local;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,8 +51,9 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
      * Views.
      */
     private ListAdapter mAdapter;
-
+    private List<String> mSubscribedChannels;
     private List<Business> mBusinesses;
+    private Context mContext;
 
     // TODO: Rename and change types of parameters
     public static SubscriptionFragment newInstance(String param1, String param2) {
@@ -79,21 +81,7 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-        if (subscribedChannels != null) {
-            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-            query.whereContainedIn("channelId", subscribedChannels);
-            query.findInBackground(new FindCallback<Business>() {
-                @Override
-                public void done(List<Business> businesses, ParseException e) {
-                    mBusinesses = businesses;
-                    mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
-
-                    // Set the adapter
-                    ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-                }
-            });
-        }
+        mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
     }
 
     @Override
@@ -112,10 +100,30 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mSubscribedChannels != null) {
+            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+            query.whereContainedIn("channelId", mSubscribedChannels);
+            query.findInBackground(new FindCallback<Business>() {
+                @Override
+                public void done(List<Business> businesses, ParseException e) {
+                    mBusinesses = businesses;
+                    mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
+
+                    // Set the adapter
+                    ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+                }
+            });
+        }
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            mContext = getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                 + " must implement OnFragmentInteractionListener");
