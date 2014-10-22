@@ -43,7 +43,7 @@ import java.util.List;
 
 //import android.support.v4.app.FragmentActivity;
 
-public class MapsFragment extends Fragment implements
+public class MapsFragment extends MapFragment implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
@@ -72,18 +72,18 @@ public class MapsFragment extends Fragment implements
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View myLayout = super.onCreateView(inflater, container, savedInstanceState);
+        //View myLayout = inflater.inflate(R.layout.activity_maps, container, false);
+        return myLayout;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         if (Util.servicesConnected(getActivity(), mThisFragment)) {
             mLocationClient.connect();
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View myLayout = inflater.inflate(R.layout.activity_maps, container, false);
-        return myLayout;
     }
 
     @Override
@@ -93,22 +93,27 @@ public class MapsFragment extends Fragment implements
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mMap != null) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .remove(getFragmentManager().findFragmentById(R.id.map))
-                    .commit();
-        }
-    }
-
-    @Override
     public void onStop() {
         if (mLocationClient.isConnected()) {
             mLocationClient.disconnect();
         }
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (mMap != null) {
+//            getFragmentManager()
+//                    .beginTransaction()
+//                    .remove(getFragmentManager().findFragmentById(R.id.map))
+//                    .commit();
+//        }
     }
 
     /**
@@ -130,8 +135,7 @@ public class MapsFragment extends Fragment implements
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
+            mMap = getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
