@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         SubscriptionFragment.OnFragmentInteractionListener,
+        SubscriptionDetailFragment.OnFragmentInteractionListener,
+        AboutFragment.OnFragmentInteractionListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationClient.OnAddGeofencesResultListener,
@@ -100,18 +104,24 @@ public class MainActivity extends Activity
             case 0:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        //.addToBackStack("subscriptionFragment")
                         .commit();
                 mTitle = getString(R.string.subscribed);
                 break;
             case 1:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new MapsFragment())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack("mapsFragment")
                         .commit();
                 mTitle = getString(R.string.map);
                 break;
             case 2:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .replace(R.id.container, AboutFragment.newInstance("", ""))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack("aboutFragment")
                         .commit();
                 mTitle = getString(R.string.about);
                 break;
@@ -153,15 +163,25 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onFragmentInteraction(Business business) {
-        Toast.makeText(this, business.getSnippet(), Toast.LENGTH_SHORT).show();
+    public void onSubscriptionItemClick(Business business) {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance("",""))
+                .addToBackStack("subscriptionDetailFragment")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     /*
-     * Provide the implementation of ConnectionCallbacks.onConnected()
-     * Once the connection is available, send a request to add the
-     * Geofences
-     */
+         * Provide the implementation of ConnectionCallbacks.onConnected()
+         * Once the connection is available, send a request to add the
+         * Geofences
+         */
     @Override
     public void onConnected(Bundle bundle) {
         switch (mRequestType) {
@@ -464,45 +484,4 @@ public class MainActivity extends Activity
              */
         }
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_subscriptions, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-//            ((MainActivity) activity).onSectionAttached(
-//                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }
-
 }

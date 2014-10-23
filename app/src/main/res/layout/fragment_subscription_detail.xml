@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mynameistodd.local.SubscriptionDetailFragment">
+
+    <ImageView
+        android:layout_width="600dp"
+        android:layout_height="200dp"
+        android:id="@+id/detail_map_static"
+        android:layout_gravity="center_horizontal|top"
+        android:src="@drawable/teststaticmap" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Acme Bakery Stand"
+        android:id="@+id/detail_business_name"
+        android:layout_below="@+id/detail_map_static"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Small snippet here."
+        android:id="@+id/detail_business_snippet"
+        android:layout_below="@+id/detail_business_name"
+        android:textSize="15sp"/>
+
+</RelativeLayout>
