@@ -166,7 +166,7 @@ public class MainActivity extends Activity
     public void onSubscriptionItemClick(Business business) {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance("",""))
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();

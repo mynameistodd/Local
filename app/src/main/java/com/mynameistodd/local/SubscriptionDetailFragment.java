@@ -7,7 +7,14 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -20,31 +27,28 @@ import android.view.ViewGroup;
  *
  */
 public class SubscriptionDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_OBJECTID = "";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mObjectId;
 
     private OnFragmentInteractionListener mListener;
+
+    private Business mBusiness;
+    private ImageView mDetailBusinessStaticMap;
+    private TextView mDetailBusinessName;
+    private TextView mDetailBusinessSnippet;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param objectId The Parse Business objectId.
      * @return A new instance of fragment SubscriptionDetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SubscriptionDetailFragment newInstance(String param1, String param2) {
+    public static SubscriptionDetailFragment newInstance(String objectId) {
         SubscriptionDetailFragment fragment = new SubscriptionDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_OBJECTID, objectId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,22 +60,45 @@ public class SubscriptionDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mObjectId = getArguments().getString(ARG_OBJECTID);
         }
+
+        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+        query.getInBackground(mObjectId, new GetCallback<Business>() {
+            @Override
+            public void done(Business business, ParseException e) {
+                if (e == null) {
+                    mBusiness = business;
+                    setData();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subscription_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_subscription_detail, container, false);
+
+        mDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.detail_map_static);
+        mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
+        mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
+
+        if (mBusiness != null) {
+            setData();
+        }
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void setData() {
+        if (mBusiness != null) {
+            Picasso.with(getActivity())
+                    .load("https://maps.googleapis.com/maps/api/staticmap?center="+mBusiness.getLocation().getLatitude()+","+mBusiness.getLocation().getLongitude()+"&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:C%7C"+mBusiness.getLocation().getLatitude()+","+mBusiness.getLocation().getLongitude()+"")
+                    .into(mDetailBusinessStaticMap);
+            mDetailBusinessName.setText(mBusiness.getName());
+            mDetailBusinessSnippet.setText(mBusiness.getSnippet());
         }
     }
 
