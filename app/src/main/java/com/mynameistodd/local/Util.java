@@ -15,8 +15,10 @@ import com.google.android.gms.location.Geofence;
  * Created by todd on 10/14/14.
  */
 public class Util {
-    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public static final String TAG = "MYNAMEISTODD.LOCAL";
+    public static final String MAP_STATIC_API_KEY = "AIzaSyAxuSUZ7-cXhCDi--yo-XLxy3WtpBHb4bU"; //TODO all this map stuff should be in a static method to use the resource value.
+    public static final String MAP_BASE_URI = "https://maps.googleapis.com/maps/api/staticmap?key=" + MAP_STATIC_API_KEY + "&maptype=roadmap&zoom=15&scale=2";
 
     public static boolean servicesConnected(Context context, Fragment fragment) {
         // Check that Google Play services is available

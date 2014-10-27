@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,8 +95,16 @@ public class SubscriptionDetailFragment extends Fragment {
 
     private void setData() {
         if (mBusiness != null) {
+            int w = mDetailBusinessStaticMap.getWidth() / 2;
+            int h = mDetailBusinessStaticMap.getHeight() / 2;
+            String uri = Util.MAP_BASE_URI;
+            uri = uri.concat("&center=" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude() + "");
+            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:blue%7Clabel:P%7C" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude()+"");
+
+            Log.d(Util.TAG, "Static Map: " + uri);
+
             Picasso.with(getActivity())
-                    .load("https://maps.googleapis.com/maps/api/staticmap?center="+mBusiness.getLocation().getLatitude()+","+mBusiness.getLocation().getLongitude()+"&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:C%7C"+mBusiness.getLocation().getLatitude()+","+mBusiness.getLocation().getLongitude()+"")
+                    .load(uri)
                     .into(mDetailBusinessStaticMap);
             mDetailBusinessName.setText(mBusiness.getName());
             mDetailBusinessSnippet.setText(mBusiness.getSnippet());
