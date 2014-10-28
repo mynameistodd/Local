@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/picasso-2.3.4-bbabd323000311434e411174e8b554f4288d9c28.jar"
+        jar="/Users/todd/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.3.4/3b646ddbdac8a33fc45b64564011da81d23e4635/picasso-2.3.4.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="3b646ddbdac8a33fc45b64564011da81d23e4635"/>
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/classes-710617a5c422390521e939ac88ca4d3fa772a99b.jar"
+        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-dda83a26c5d4af6f2d0ae5e97e0aad1a8ecc45be.jar"
+        jar="/Users/todd/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-33f0d812de6ade43e0a0900a7b2cc08df3a91fb5.jar"
+        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/classes-d2352786fa1ec638b66d17b4dd3323725bfc2aba.jar"
+        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/5.2.08/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1ed7a7a05185651f9af41ad93711cb96b66f331c"/>
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/classes-a5c27358438d9bf39b91de55e838c7b8461b745a.jar"
+        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef"/>
+    <item
+        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/Parse-1.7.0-792ef665ed19aa4353190826051e717fc90f558e.jar"
+        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/libs/Parse-1.7.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="403b8fa0a90f1ff714ad1f40382e7a448ed4f25b"/>
+
+</pre-dex-items>

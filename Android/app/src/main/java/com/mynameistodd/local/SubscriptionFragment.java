@@ -53,7 +53,6 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     private ListAdapter mAdapter;
     private List<String> mSubscribedChannels;
     private List<Business> mBusinesses;
-    private Context mContext;
 
     // TODO: Rename and change types of parameters
     public static SubscriptionFragment newInstance(String param1, String param2) {
@@ -123,7 +122,6 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            mContext = getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                 + " must implement OnFragmentInteractionListener");

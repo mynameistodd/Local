@@ -47,6 +47,8 @@ public class MapsFragment extends MapFragment implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
+    private OnFragmentInteractionListener mListener;
+
     private final static int SUBSCRIBE_DIALOG_FRAGMENT_REQUEST = 1000;
     private final static int UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST = 2000;
 
@@ -74,7 +76,6 @@ public class MapsFragment extends MapFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myLayout = super.onCreateView(inflater, container, savedInstanceState);
-        //View myLayout = inflater.inflate(R.layout.activity_maps, container, false);
         return myLayout;
     }
 
@@ -108,12 +109,6 @@ public class MapsFragment extends MapFragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (mMap != null) {
-//            getFragmentManager()
-//                    .beginTransaction()
-//                    .remove(getFragmentManager().findFragmentById(R.id.map))
-//                    .commit();
-//        }
     }
 
     /**
@@ -254,6 +249,10 @@ public class MapsFragment extends MapFragment implements
                         }
                     });
                     mSubscribedChannels.add(channelId);
+
+                    if (mListener != null) {
+                        mListener.onSubscribe(true, channelId);
+                    }
                 }
                 break;
             case UNSUBSCRIBE_DIALOG_FRAGMENT_REQUEST:
@@ -278,6 +277,9 @@ public class MapsFragment extends MapFragment implements
                         }
                     });
                     mSubscribedChannels.remove(channelId);
+                    if (mListener != null) {
+                        mListener.onSubscribe(false, channelId);
+                    }
                 }
                 break;
         }
@@ -288,8 +290,6 @@ public class MapsFragment extends MapFragment implements
         Location location = mLocationClient.getLastLocation();
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-
-        //mLocationClient.disconnect();
     }
 
     @Override
@@ -334,5 +334,36 @@ public class MapsFragment extends MapFragment implements
                         "CurrentLocationFailed");
             }
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        public void onSubscribe(Boolean subscribe, String channelId);
     }
 }

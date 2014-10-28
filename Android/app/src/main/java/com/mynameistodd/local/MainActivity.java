@@ -42,6 +42,7 @@ public class MainActivity extends Activity
         SubscriptionFragment.OnFragmentInteractionListener,
         SubscriptionDetailFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
+        MapsFragment.OnFragmentInteractionListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationClient.OnAddGeofencesResultListener,
@@ -87,13 +88,16 @@ public class MainActivity extends Activity
 
         mInProgress = false;
         mGeofenceList = new ArrayList<Geofence>();
+
         ParseAnalytics.trackAppOpened(getIntent());
+
+        List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
+        addGeofence(channelIds);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        addGeofences();
     }
 
     @Override
@@ -177,11 +181,20 @@ public class MainActivity extends Activity
 
     }
 
+    @Override
+    public void onSubscribe(Boolean subscribe, String channelId) {
+        if (subscribe) {
+            addGeofence(channelId);
+        } else {
+            removeGeofence(channelId);
+        }
+    }
+
     /*
-         * Provide the implementation of ConnectionCallbacks.onConnected()
-         * Once the connection is available, send a request to add the
-         * Geofences
-         */
+     * Provide the implementation of ConnectionCallbacks.onConnected()
+     * Once the connection is available, send a request to add the
+     * Geofences
+     */
     @Override
     public void onConnected(Bundle bundle) {
         switch (mRequestType) {
@@ -236,18 +249,9 @@ public class MainActivity extends Activity
     public void onRemoveGeofencesByPendingIntentResult(int statusCode, PendingIntent requestIntent) {
         // If removing the geofences was successful
         if (statusCode == LocationStatusCodes.SUCCESS) {
-            /*
-             * Handle successful removal of geofences here.
-             * You can send out a broadcast intent or update the UI.
-             * geofences into the Intent's extended data.
-             */
+            Log.d(Util.TAG, "Successfully removed geofences with request intent. ");
         } else {
-            // If adding the geocodes failed
-            /*
-             * Report errors here.
-             * You can log the error using Log.e() or update
-             * the UI.
-             */
+            Log.e(Util.TAG, "Error removing geofence: " + statusCode);
         }
         /*
          * Disconnect the location client regardless of the
@@ -269,18 +273,11 @@ public class MainActivity extends Activity
     public void onRemoveGeofencesByRequestIdsResult(int statusCode, String[] geofenceRequestIds) {
         // If removing the geocodes was successful
         if (LocationStatusCodes.SUCCESS == statusCode) {
-            /*
-             * Handle successful removal of geofences here.
-             * You can send out a broadcast intent or update the UI.
-             * geofences into the Intent's extended data.
-             */
+            for (String fence : geofenceRequestIds) {
+                Log.d(Util.TAG, "Successfully removed geofence: " + fence);
+            }
         } else {
-            // If removing the geofences failed
-            /*
-             * Report errors here.
-             * You can log the error using Log.e() or update
-             * the UI.
-             */
+            Log.e(Util.TAG, "Error removing geofence: " + statusCode);
         }
         // Indicate that a request is no longer in progress
         mInProgress = false;
@@ -346,11 +343,12 @@ public class MainActivity extends Activity
         return mGeofenceRequestIntent;
     }
 
-    /**
-     * Start a request for geofence monitoring by calling
-     * LocationClient.connect().
-     */
-    public void addGeofences() {
+    public void addGeofence(String channelId) {
+        List<String> channelIds = new ArrayList<String>();
+        channelIds.add(channelId);
+        addGeofence(channelIds);
+    }
+    public void addGeofence(List<String> channelIds) {
         // Start a request to add geofences
         mRequestType = REQUEST_TYPE.ADD;
         /*
@@ -369,13 +367,12 @@ public class MainActivity extends Activity
          */
         mLocationClient = new LocationClient(this, this, this);
 
-        List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-        if (subscribedChannels != null && !mInProgress) {
+        if (channelIds != null && !mInProgress) {
             // Indicate that a request is underway
             mInProgress = true;
 
             ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-            query.whereContainedIn("channelId", subscribedChannels);
+            query.whereContainedIn("channelId", channelIds);
             query.findInBackground(new FindCallback<Business>() {
                 @Override
                 public void done(List<Business> businesses, ParseException e) {
@@ -403,11 +400,7 @@ public class MainActivity extends Activity
         }
     }
 
-    /**
-     * Start a request to remove geofences by calling
-     * LocationClient.connect()
-     */
-    public void removeGeofences(PendingIntent requestIntent) {
+    public void removeGeofence(PendingIntent requestIntent) {
         // Record the type of removal request
         mRequestType = REQUEST_TYPE.REMOVE_INTENT;
         /*
@@ -443,12 +436,13 @@ public class MainActivity extends Activity
         }
     }
 
-    /**
-     * Start a request to remove monitoring by
-     * calling LocationClient.connect()
-     *
-     */
-    public void removeGeofences(List<String> geofenceIds) {
+    public void removeGeofence(String channelId) {
+        List<String> channelIds = new ArrayList<String>();
+        channelIds.add(channelId);
+        removeGeofence(channelIds);
+    }
+
+    public void removeGeofence(List<String> channelIds) {
         // If Google Play services is unavailable, exit
         // Record the type of removal request
         mRequestType = REQUEST_TYPE.REMOVE_LIST;
@@ -461,7 +455,7 @@ public class MainActivity extends Activity
             return;
         }
         // Store the list of geofences to remove
-        mGeofencesToRemove = geofenceIds;
+        mGeofencesToRemove = channelIds;
         /*
          * Create a new location client object. Since the current
          * activity class implements ConnectionCallbacks and
