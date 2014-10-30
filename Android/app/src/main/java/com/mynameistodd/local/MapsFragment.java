@@ -183,7 +183,7 @@ public class MapsFragment extends MapFragment implements
 
         ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
         //query.whereNear("location", parseGeoPoint);
-        query.whereWithinMiles("location", parseGeoPoint, 1.0); //TODO Distance needs to be a preference
+        query.whereWithinMiles("location", parseGeoPoint, 3.0); //TODO Distance needs to be a preference
         query.findInBackground(new FindCallback<Business>() {
             @Override
             public void done(List<Business> businesses, ParseException e) {

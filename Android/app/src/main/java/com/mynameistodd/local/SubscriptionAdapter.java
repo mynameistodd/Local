@@ -5,7 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.parse.ParseFile;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -29,11 +33,16 @@ public class SubscriptionAdapter extends ArrayAdapter<Business> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fragment_subscription_list_item, null);
 
+        ImageView logo = (ImageView) view.findViewById(R.id.business_logo);
         TextView name = (TextView) view.findViewById(R.id.business_name);
         TextView snippet = (TextView) view.findViewById(R.id.business_snippet);
 
         Business business = businesses.get(position);
 
+        ParseFile file = business.getLogo();
+        String logoUrl = file.getUrl();
+
+        Picasso.with(context).load(logoUrl).into(logo);
         name.setText(business.getName());
         snippet.setText(business.getSnippet());
 

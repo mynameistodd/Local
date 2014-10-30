@@ -1,6 +1,7 @@
 package com.mynameistodd.local;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
@@ -13,6 +14,7 @@ public class Business extends ParseObject {
     private String snippet;
     private ParseGeoPoint location;
     private String channelId;
+    private ParseFile logo;
 
     public String getName() {
         return getString("name");
@@ -44,5 +46,13 @@ public class Business extends ParseObject {
 
     public void setChannelId(String channelId) {
         put("channelId", channelId);
+    }
+
+    public ParseFile getLogo() {
+        return getParseFile("logo");
+    }
+
+    public void setLogo(ParseFile logo) {
+        put("logo", logo);
     }
 }

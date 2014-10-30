@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e89aee28-855c-4784-915d-3450356e94a4" name="Default" comment="Make push notifications work when tapping notification. Fix some null ref errors.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalApplication.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Business.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Business.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Util.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Util.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_list_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_list_item.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -46,82 +50,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SubscriptionFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionFragment.java">
+      <file leaf-file-name="SubscriptionDetailFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2415">
-              <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1360" max-vertical-offset="5655">
-              <caret line="213" column="18" selection-start-line="213" selection-start-column="18" selection-end-line="213" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.35650888" vertical-offset="1079" max-vertical-offset="2115">
+              <caret line="103" column="75" selection-start-line="103" selection-start-column="75" selection-end-line="103" selection-end-column="75" />
               <folding>
-                <element signature="e#3456#3457#0" expanded="true" />
-                <element signature="e#3488#3489#0" expanded="true" />
-                <element signature="method#onNavigationDrawerItemSelected#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#4088#4118#0" expanded="true" />
-                <element signature="e#4481#4504#0" expanded="true" />
-                <element signature="e#4883#4908#0" expanded="true" />
-                <element signature="method#restoreActionBar#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onSubscriptionItemClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#getTransitionPendingIntent#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#12663#12671#0" expanded="true" />
-                <element signature="e#16263#16271#0" expanded="true" />
+                <element signature="e#2226#2559#0" expanded="true" />
+                <element signature="e#2548#2549#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapsFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java">
+      <file leaf-file-name="fragment_subscription_detail.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2744" max-vertical-offset="4740">
-              <caret line="256" column="22" selection-start-line="256" selection-start-column="22" selection-end-line="256" selection-end-column="22" />
+            <state vertical-scroll-proportion="-11.185185" vertical-offset="283" max-vertical-offset="960">
+              <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
               <folding>
-                <element signature="e#3608#3609#0" expanded="true" />
-                <element signature="e#3641#3642#0" expanded="true" />
+                <element signature="e#572#597#0" expanded="true" />
+                <element signature="e#633#658#0" expanded="true" />
+                <element signature="e#692#717#0" expanded="true" />
+                <element signature="e#1183#1220#0" expanded="true" />
+                <element signature="e#1254#1291#0" expanded="true" />
+                <element signature="e#1353#1383#0" expanded="true" />
+                <element signature="e#1422#1452#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LocalApplication.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalApplication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-              <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fragment_subscription_list_item.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="fragment_subscription_list_item.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_list_item.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2265861" vertical-offset="330" max-vertical-offset="1080">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.740741" vertical-offset="133" max-vertical-offset="1095">
+              <caret line="21" column="70" selection-start-line="20" selection-start-column="12" selection-end-line="21" selection-end-column="70" />
               <folding>
-                <element signature="e#409#434#0" expanded="true" />
-                <element signature="e#470#495#0" expanded="true" />
-                <element signature="e#529#554#0" expanded="true" />
-                <element signature="e#690#727#0" expanded="true" />
-                <element signature="e#755#792#0" expanded="true" />
                 <element signature="e#945#982#0" expanded="true" />
                 <element signature="e#1016#1053#0" expanded="true" />
                 <element signature="e#1115#1145#0" expanded="true" />
                 <element signature="e#1184#1214#0" expanded="true" />
-                <element signature="e#1534#1571#0" expanded="true" />
+                <element signature="e#1582#1619#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -844,12 +820,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/ErrorDialogFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalParseInstallation.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Business.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscribeDialogFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/ReceiveTransitionsIntentService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/bg_parent_rounded_corner.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_list.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/BusinessDetailFragment.java" />
@@ -857,14 +831,16 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_about.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Util.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalApplication.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Business.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_list_item.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Util.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java" />
       </list>
     </option>
   </component>
@@ -1108,6 +1084,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Local" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="AndroidView" />
@@ -1346,10 +1340,10 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24686192" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29685265" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29685265" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35564855" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40725243" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37130803" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1363,7 +1357,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14663805" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21030043" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="899" y="142" width="527" height="250" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1417,7 +1411,7 @@
           <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="86" />
+      <option name="time" value="87" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1426,8 +1420,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2055">
           <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
           <folding>
-            <element signature="e#2186#2519#0" expanded="false" />
-            <element signature="e#2508#2509#0" expanded="false" />
+            <element signature="e#2226#2559#0" expanded="true" />
+            <element signature="e#2548#2549#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1437,8 +1431,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2055">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2186#2519#0" expanded="false" />
-            <element signature="e#2508#2509#0" expanded="false" />
+            <element signature="e#2226#2559#0" expanded="true" />
+            <element signature="e#2548#2549#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1508,17 +1502,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33284023" vertical-offset="60" max-vertical-offset="2055">
-          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
-          <folding>
-            <element signature="e#2186#2519#0" expanded="false" />
-            <element signature="e#2508#2509#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2415">
@@ -1557,36 +1540,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2744" max-vertical-offset="4740">
-          <caret line="256" column="22" selection-start-line="256" selection-start-column="22" selection-end-line="256" selection-end-column="22" />
-          <folding>
-            <element signature="e#3608#3609#0" expanded="true" />
-            <element signature="e#3641#3642#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
-          <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8836858" vertical-offset="60" max-vertical-offset="780">
-          <caret line="43" column="23" selection-start-line="43" selection-start-column="23" selection-end-line="43" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="689">
@@ -1595,24 +1548,109 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/LocalApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32656023" vertical-offset="0" max-vertical-offset="689">
+          <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/libs/Parse-1.7.0-javadoc/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1125">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/MapsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1845" max-vertical-offset="4740">
+          <caret line="185" column="59" selection-start-line="185" selection-start-column="59" selection-end-line="185" selection-end-column="59" />
+          <folding>
+            <element signature="e#3608#3609#0" expanded="true" />
+            <element signature="e#3641#3642#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Business.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="46" max-vertical-offset="735">
+          <caret line="55" column="26" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
+          <folding>
+            <element signature="e#944#945#0" expanded="true" />
+            <element signature="e#989#990#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+            <element signature="e#1082#1083#0" expanded="true" />
+            <element signature="e#1116#1117#0" expanded="true" />
+            <element signature="e#1159#1160#0" expanded="true" />
+            <element signature="e#1202#1203#0" expanded="true" />
+            <element signature="e#1235#1236#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_list_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2265861" vertical-offset="330" max-vertical-offset="1080">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state vertical-scroll-proportion="-6.740741" vertical-offset="133" max-vertical-offset="1095">
+          <caret line="21" column="70" selection-start-line="20" selection-start-column="12" selection-end-line="21" selection-end-column="70" />
           <folding>
-            <element signature="e#409#434#0" expanded="true" />
-            <element signature="e#470#495#0" expanded="true" />
-            <element signature="e#529#554#0" expanded="true" />
-            <element signature="e#690#727#0" expanded="true" />
-            <element signature="e#755#792#0" expanded="true" />
             <element signature="e#945#982#0" expanded="true" />
             <element signature="e#1016#1053#0" expanded="true" />
             <element signature="e#1115#1145#0" expanded="true" />
             <element signature="e#1184#1214#0" expanded="true" />
-            <element signature="e#1534#1571#0" expanded="true" />
+            <element signature="e#1582#1619#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_subscription_detail.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.185185" vertical-offset="283" max-vertical-offset="960">
+          <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
+          <folding>
+            <element signature="e#572#597#0" expanded="true" />
+            <element signature="e#633#658#0" expanded="true" />
+            <element signature="e#692#717#0" expanded="true" />
+            <element signature="e#1183#1220#0" expanded="true" />
+            <element signature="e#1254#1291#0" expanded="true" />
+            <element signature="e#1353#1383#0" expanded="true" />
+            <element signature="e#1422#1452#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7169811" vertical-offset="1" max-vertical-offset="690">
+          <caret line="44" column="39" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22189349" vertical-offset="15" max-vertical-offset="1470">
+          <caret line="20" column="148" selection-start-line="20" selection-start-column="148" selection-end-line="20" selection-end-column="148" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mynameistodd/local/SubscriptionDetailFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35650888" vertical-offset="1079" max-vertical-offset="2115">
+          <caret line="103" column="75" selection-start-line="103" selection-start-column="75" selection-end-line="103" selection-end-column="75" />
+          <folding>
+            <element signature="e#2226#2559#0" expanded="true" />
+            <element signature="e#2548#2549#0" expanded="true" />
           </folding>
         </state>
       </provider>

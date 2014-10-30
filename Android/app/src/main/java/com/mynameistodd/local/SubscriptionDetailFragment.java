@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +36,7 @@ public class SubscriptionDetailFragment extends Fragment {
 
     private Business mBusiness;
     private ImageView mDetailBusinessStaticMap;
+    private ImageView mDetailBusinessLogo;
     private TextView mDetailBusinessName;
     private TextView mDetailBusinessSnippet;
 
@@ -83,7 +84,8 @@ public class SubscriptionDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscription_detail, container, false);
 
-        mDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.detail_map_static);
+        mDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.detail_business_map);
+        mDetailBusinessLogo = (ImageView) view.findViewById(R.id.detail_business_logo);
         mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
         mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
 
@@ -99,13 +101,15 @@ public class SubscriptionDetailFragment extends Fragment {
             int h = mDetailBusinessStaticMap.getHeight() / 2;
             String uri = Util.MAP_BASE_URI;
             uri = uri.concat("&center=" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude() + "");
-            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:blue%7Clabel:P%7C" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude()+"");
+            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:green%7Clabel:P%7C" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude()+"");
 
             Log.d(Util.TAG, "Static Map: " + uri);
 
-            Picasso.with(getActivity())
-                    .load(uri)
-                    .into(mDetailBusinessStaticMap);
+            ParseFile file = mBusiness.getLogo();
+            String logoUrl = file.getUrl();
+
+            Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
+            Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
             mDetailBusinessName.setText(mBusiness.getName());
             mDetailBusinessSnippet.setText(mBusiness.getSnippet());
         }
