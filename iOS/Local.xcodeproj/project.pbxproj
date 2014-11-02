@@ -30,7 +30,6 @@
 		CFA44AC119FC95A900D4B038 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFA44ABF19FC95A900D4B038 /* LaunchScreen.xib */; };
 		CFA44ACD19FC95A900D4B038 /* LocalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA44ACC19FC95A900D4B038 /* LocalTests.m */; };
 		CFA9ACD11A051EDD0060BA19 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA9ACD01A051EDD0060BA19 /* DetailViewController.m */; };
-		CFA9ACD31A056D720060BA19 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACD21A056D720060BA19 /* GoogleMaps.framework */; };
 		CFA9ACE41A056F540060BA19 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACE21A056EA80060BA19 /* OpenGLES.framework */; };
 		CFA9ACE51A056F6E0060BA19 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACD41A056E3A0060BA19 /* AVFoundation.framework */; };
 		CFA9ACE61A056F840060BA19 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACD61A056E440060BA19 /* CoreData.framework */; };
@@ -39,8 +38,9 @@
 		CFA9ACE91A056FA20060BA19 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACDC1A056E700060BA19 /* ImageIO.framework */; };
 		CFA9ACEA1A056FAE0060BA19 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACDE1A056E7F0060BA19 /* libc++.dylib */; };
 		CFA9ACEB1A056FBC0060BA19 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACE01A056E8F0060BA19 /* libicucore.dylib */; };
-		CFA9ACEE1A0575B40060BA19 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CFA9ACED1A0575B40060BA19 /* GoogleMaps.bundle */; };
 		CFA9ACF21A06B2AD0060BA19 /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFA9ACF11A06B2AD0060BA19 /* TabViewController.m */; };
+		CFA9ACF51A06C7FF0060BA19 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA9ACF41A06C7FF0060BA19 /* GoogleMaps.framework */; };
+		CFA9ACF71A06C81A0060BA19 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CFA9ACF61A06C81A0060BA19 /* GoogleMaps.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,7 +87,6 @@
 		CFA44ACC19FC95A900D4B038 /* LocalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalTests.m; sourceTree = "<group>"; };
 		CFA9ACCF1A051EDD0060BA19 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		CFA9ACD01A051EDD0060BA19 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		CFA9ACD21A056D720060BA19 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "../../Downloads/GoogleMaps-iOS-1.8.1/GoogleMaps.framework"; sourceTree = "<group>"; };
 		CFA9ACD41A056E3A0060BA19 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CFA9ACD61A056E440060BA19 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CFA9ACD81A056E580060BA19 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -96,9 +95,10 @@
 		CFA9ACDE1A056E7F0060BA19 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		CFA9ACE01A056E8F0060BA19 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		CFA9ACE21A056EA80060BA19 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		CFA9ACED1A0575B40060BA19 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "../../Downloads/GoogleMaps-iOS-1.8.1/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		CFA9ACF01A06B2AD0060BA19 /* TabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
 		CFA9ACF11A06B2AD0060BA19 /* TabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
+		CFA9ACF41A06C7FF0060BA19 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		CFA9ACF61A06C81A0060BA19 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,9 +121,9 @@
 				CFA1EF4D19FF18D0001F08BC /* StoreKit.framework in Frameworks */,
 				CFA1EF4B19FF18CA001F08BC /* Security.framework in Frameworks */,
 				CFA1EF4719FF18BF001F08BC /* MobileCoreServices.framework in Frameworks */,
+				CFA9ACF51A06C7FF0060BA19 /* GoogleMaps.framework in Frameworks */,
 				CFA1EF4119FF18AA001F08BC /* CoreGraphics.framework in Frameworks */,
 				CFA1EF3F19FF18A1001F08BC /* CFNetwork.framework in Frameworks */,
-				CFA9ACD31A056D720060BA19 /* GoogleMaps.framework in Frameworks */,
 				CFA1EF3D19FF1897001F08BC /* AudioToolbox.framework in Frameworks */,
 				CFA1EF3B19FF1852001F08BC /* Parse.framework in Frameworks */,
 				CFA1EF3A19FF1852001F08BC /* Bolts.framework in Frameworks */,
@@ -143,16 +143,16 @@
 		CFA1EF3719FF17D6001F08BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CFA9ACF61A06C81A0060BA19 /* GoogleMaps.bundle */,
+				CFA9ACF41A06C7FF0060BA19 /* GoogleMaps.framework */,
 				CFA9ACE21A056EA80060BA19 /* OpenGLES.framework */,
 				CFA9ACE01A056E8F0060BA19 /* libicucore.dylib */,
-				CFA9ACED1A0575B40060BA19 /* GoogleMaps.bundle */,
 				CFA9ACDE1A056E7F0060BA19 /* libc++.dylib */,
 				CFA9ACDC1A056E700060BA19 /* ImageIO.framework */,
 				CFA9ACDA1A056E630060BA19 /* GLKit.framework */,
 				CFA9ACD81A056E580060BA19 /* CoreText.framework */,
 				CFA9ACD61A056E440060BA19 /* CoreData.framework */,
 				CFA9ACD41A056E3A0060BA19 /* AVFoundation.framework */,
-				CFA9ACD21A056D720060BA19 /* GoogleMaps.framework */,
 				CFA1EF4E19FF18D8001F08BC /* SystemConfiguration.framework */,
 				CFA1EF4C19FF18D0001F08BC /* StoreKit.framework */,
 				CFA1EF4A19FF18CA001F08BC /* Security.framework */,
@@ -348,7 +348,7 @@
 				CFA44ABC19FC95A900D4B038 /* Main.storyboard in Resources */,
 				CFA44AC119FC95A900D4B038 /* LaunchScreen.xib in Resources */,
 				CFA44ABE19FC95A900D4B038 /* Images.xcassets in Resources */,
-				CFA9ACEE1A0575B40060BA19 /* GoogleMaps.bundle in Resources */,
+				CFA9ACF71A06C81A0060BA19 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
