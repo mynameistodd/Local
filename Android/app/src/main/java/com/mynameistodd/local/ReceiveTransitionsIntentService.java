@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,8 +16,11 @@ import android.widget.Toast;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,12 +91,32 @@ public class ReceiveTransitionsIntentService extends IntentService {
                             for (Business business : businesses) {
                                 PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                         .setSmallIcon(R.drawable.ic_launcher)
                                         .setContentTitle(business.getName())
                                         .setContentText(business.getSnippet())
                                         .setContentIntent(pendingIntent)
                                         .setAutoCancel(true);
+
+
+                                String logoUrl = business.getLogo().getUrl();
+
+                                Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
+                                    @Override
+                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                        mBuilder.setLargeIcon(bitmap);
+                                    }
+
+                                    @Override
+                                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                                    }
+
+                                    @Override
+                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                    }
+                                });
 
                                 mNotificationManager.notify(1, mBuilder.build());
                             }
