@@ -18,6 +18,8 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 
@@ -31,9 +33,10 @@ import com.squareup.picasso.Picasso;
  *
  */
 public class SubscriptionDetailFragment extends Fragment {
-    private static final String ARG_OBJECTID = "";
+    private static final String ARG_OBJECTID = "ARG_OBJECTID";
 
     private String mObjectId;
+    private Boolean mEditable = false;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,6 +78,7 @@ public class SubscriptionDetailFragment extends Fragment {
                 if (e == null) {
                     mBusiness = business;
                     setData();
+                    setEditable();
                 } else {
                     e.printStackTrace();
                 }
@@ -92,9 +96,6 @@ public class SubscriptionDetailFragment extends Fragment {
         mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
         mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
 
-        if (mBusiness != null) {
-            setData();
-        }
         return view;
     }
 
@@ -106,8 +107,7 @@ public class SubscriptionDetailFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //TODO needs to only add edit menu if this is a person managing the business.
-        if (true) {
+        if (mEditable) {
             inflater.inflate(R.menu.subscription_detail, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -131,6 +131,23 @@ public class SubscriptionDetailFragment extends Fragment {
             mDetailBusinessName.setText(mBusiness.getName());
             mDetailBusinessSnippet.setText(mBusiness.getSnippet());
         }
+    }
+
+    private void setEditable() {
+        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+        businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
+            @Override
+            public void done(Business business, ParseException e) {
+                if (business != null) {
+                    if (mBusiness.getObjectId().equals(business.getObjectId())) {
+                        mEditable = true;
+                        getActivity().invalidateOptionsMenu();
+                    }
+                } else if (e != null) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
