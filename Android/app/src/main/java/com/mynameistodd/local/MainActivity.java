@@ -76,7 +76,6 @@ public class MainActivity extends Activity
     // Store the list of geofence Ids to remove
     List<String> mGeofencesToRemove;
 
-    private ParseUser mCurrentUser;
     private Business mMyBusiness;
 
     @Override
@@ -101,8 +100,7 @@ public class MainActivity extends Activity
         List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
         addGeofence(channelIds);
 
-        mCurrentUser = ParseUser.getCurrentUser();
-        ParseRelation<Business> businesses = mCurrentUser.getRelation("Business");
+        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
         businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
             @Override
             public void done(Business business, ParseException e) {
@@ -196,8 +194,13 @@ public class MainActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_edit:
+                Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
