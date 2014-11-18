@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
+                android:textColor="@android:color/black"
                 android:text="Acme Bakery Stand"
                 android:id="@+id/business_name"/>
             <LinearLayout
@@ -49,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:maxWidth="175dp"
                     android:text="You'll never catch him, he's too fast for you."
+                    android:textColor="@android:color/black"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:scrollHorizontally="true"

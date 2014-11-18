@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -93,6 +96,21 @@ public class SubscriptionDetailFragment extends Fragment {
             setData();
         }
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //TODO needs to only add edit menu if this is a person managing the business.
+        if (true) {
+            inflater.inflate(R.menu.subscription_detail, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void setData() {
