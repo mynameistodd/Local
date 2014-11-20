@@ -19,5 +19,6 @@
     <string name="about_text">created by @todd</string>
     <string name="action_edit">Edit</string>
     <string name="send_message">Send Message</string>
+    <string name="action_save">Save</string>
 
 </resources>

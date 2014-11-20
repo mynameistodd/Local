@@ -47,6 +47,7 @@ public class MainActivity extends Activity
         AboutFragment.OnFragmentInteractionListener,
         MapsFragment.OnFragmentInteractionListener,
         MessageFragment.OnFragmentInteractionListener,
+        EditBusinessFragment.OnFragmentInteractionListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationClient.OnAddGeofencesResultListener,
@@ -133,7 +134,7 @@ public class MainActivity extends Activity
                 break;
             case 1:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new MapsFragment())
+                        .add(R.id.container, new MapsFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("mapsFragment")
                         .commit();
@@ -141,7 +142,7 @@ public class MainActivity extends Activity
                 break;
             case 2:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
+                        .add(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("subscriptionDetailFragment")
                         .commit();
@@ -149,7 +150,7 @@ public class MainActivity extends Activity
                 break;
             case 3:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, MessageFragment.newInstance("", ""))
+                        .add(R.id.container, MessageFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("messageFragment")
                         .commit();
@@ -157,7 +158,7 @@ public class MainActivity extends Activity
                 break;
             case 4:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, AboutFragment.newInstance("", ""))
+                        .add(R.id.container, AboutFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("aboutFragment")
                         .commit();
@@ -194,13 +195,9 @@ public class MainActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id) {
-            case R.id.action_settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.action_edit:
-                Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show();
-                break;
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

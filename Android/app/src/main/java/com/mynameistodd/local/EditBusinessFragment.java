@@ -12,56 +12,55 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SubscriptionDetailFragment.OnFragmentInteractionListener} interface
+ * {@link EditBusinessFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SubscriptionDetailFragment#newInstance} factory method to
+ * Use the {@link EditBusinessFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
-public class SubscriptionDetailFragment extends Fragment {
+public class EditBusinessFragment extends Fragment {
     private static final String ARG_OBJECTID = "ARG_OBJECTID";
 
     private String mObjectId;
-    private Boolean mEditable = false;
 
     private OnFragmentInteractionListener mListener;
 
     private Business mBusiness;
-    private ImageView mDetailBusinessStaticMap;
-    private ImageView mDetailBusinessLogo;
-    private TextView mDetailBusinessName;
-    private TextView mDetailBusinessSnippet;
+    private ImageView mEditDetailBusinessStaticMap;
+    private ImageView mEditDetailBusinessLogo;
+    private EditText mEditDetailBusinessName;
+    private EditText mEditDetailBusinessSnippet;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param objectId The Parse Business objectId.
-     * @return A new instance of fragment SubscriptionDetailFragment.
+     * @return A new instance of fragment EditBusinessFragment.
      */
-    public static SubscriptionDetailFragment newInstance(String objectId) {
-        SubscriptionDetailFragment fragment = new SubscriptionDetailFragment();
+    public static EditBusinessFragment newInstance(String objectId) {
+        EditBusinessFragment fragment = new EditBusinessFragment();
         Bundle args = new Bundle();
         args.putString(ARG_OBJECTID, objectId);
         fragment.setArguments(args);
         return fragment;
     }
-    public SubscriptionDetailFragment() {
+
+    public EditBusinessFragment() {
         // Required empty public constructor
     }
 
@@ -79,7 +78,6 @@ public class SubscriptionDetailFragment extends Fragment {
                 if (e == null) {
                     mBusiness = business;
                     setData();
-                    setEditable();
                 } else {
                     e.printStackTrace();
                 }
@@ -90,12 +88,12 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_subscription_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_business, container, false);
 
-        mDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.detail_business_map);
-        mDetailBusinessLogo = (ImageView) view.findViewById(R.id.detail_business_logo);
-        mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
-        mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
+        mEditDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.edit_detail_business_map);
+        mEditDetailBusinessLogo = (ImageView) view.findViewById(R.id.edit_detail_business_logo);
+        mEditDetailBusinessName = (EditText) view.findViewById(R.id.edit_detail_business_name);
+        mEditDetailBusinessSnippet = (EditText) view.findViewById(R.id.edit_detail_business_snippet);
 
         return view;
     }
@@ -108,21 +106,16 @@ public class SubscriptionDetailFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mEditable) {
-            inflater.inflate(R.menu.subscription_detail, menu);
-        }
+        menu.removeItem(R.id.action_edit);
+        inflater.inflate(R.menu.edit_business, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_edit) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, EditBusinessFragment.newInstance(mBusiness.getObjectId()))
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .addToBackStack("editBusinessFragment")
-                    .commit();
+        if (id == R.id.action_save) {
+            saveData();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -130,8 +123,8 @@ public class SubscriptionDetailFragment extends Fragment {
 
     private void setData() {
         if (mBusiness != null) {
-            int w = mDetailBusinessStaticMap.getWidth() / 2;
-            int h = mDetailBusinessStaticMap.getHeight() / 2;
+            int w = mEditDetailBusinessStaticMap.getWidth() / 2;
+            int h = mEditDetailBusinessStaticMap.getHeight() / 2;
             String uri = Util.MAP_BASE_URI;
             uri = uri.concat("&center=" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude() + "");
             uri = uri.concat("&size=" + w + "x" + h + "&markers=color:green%7Clabel:P%7C" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude()+"");
@@ -141,28 +134,29 @@ public class SubscriptionDetailFragment extends Fragment {
             ParseFile file = mBusiness.getLogo();
             String logoUrl = file.getUrl();
 
-            Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
-            Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
-            mDetailBusinessName.setText(mBusiness.getName());
-            mDetailBusinessSnippet.setText(mBusiness.getSnippet());
+            Picasso.with(getActivity()).load(uri).into(mEditDetailBusinessStaticMap);
+            Picasso.with(getActivity()).load(logoUrl).into(mEditDetailBusinessLogo);
+            mEditDetailBusinessName.setText(mBusiness.getName());
+            mEditDetailBusinessSnippet.setText(mBusiness.getSnippet());
         }
     }
 
-    private void setEditable() {
-        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
-        businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
-            @Override
-            public void done(Business business, ParseException e) {
-                if (business != null) {
-                    if (mBusiness.getObjectId().equals(business.getObjectId())) {
-                        mEditable = true;
-                        getActivity().invalidateOptionsMenu();
+    private void saveData() {
+        if (mBusiness != null) {
+            mBusiness.setName(mEditDetailBusinessName.getText().toString());
+            mBusiness.setSnippet(mEditDetailBusinessSnippet.getText().toString());
+            mBusiness.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        e.printStackTrace();
+                    } else {
+                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                        getFragmentManager().popBackStack();
                     }
-                } else if (e != null) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -187,7 +181,7 @@ public class SubscriptionDetailFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
