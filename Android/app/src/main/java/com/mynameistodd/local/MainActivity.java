@@ -84,8 +84,7 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
@@ -126,7 +125,7 @@ public class MainActivity extends Activity
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
+                        .add(R.id.container, SubscriptionFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         //.addToBackStack("subscriptionFragment")
                         .commit();
@@ -204,9 +203,8 @@ public class MainActivity extends Activity
 
     @Override
     public void onSubscriptionItemClick(Business business) {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
+        getFragmentManager().beginTransaction()
+                .add(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
