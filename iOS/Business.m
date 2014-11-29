@@ -17,6 +17,7 @@
 + (NSString *)parseClassName {
     return @"Business";
 }
+
 @dynamic name;
 @dynamic snipppet;
 //@dynamic location;
