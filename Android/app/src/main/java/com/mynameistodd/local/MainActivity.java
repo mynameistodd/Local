@@ -27,10 +27,13 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationStatusCodes;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class MainActivity extends Activity
         SubscriptionDetailFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
         MapsFragment.OnFragmentInteractionListener,
+        MessageFragment.OnFragmentInteractionListener,
+        EditBusinessFragment.OnFragmentInteractionListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationClient.OnAddGeofencesResultListener,
@@ -72,13 +77,14 @@ public class MainActivity extends Activity
     // Store the list of geofence Ids to remove
     List<String> mGeofencesToRemove;
 
+    private Business mMyBusiness;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
@@ -93,6 +99,18 @@ public class MainActivity extends Activity
 
         List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
         addGeofence(channelIds);
+
+        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+        businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
+            @Override
+            public void done(Business business, ParseException e) {
+                if (business != null) {
+                    mMyBusiness = business;
+                } else if (e != null) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -102,12 +120,12 @@ public class MainActivity extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
+        //TODO position should be an enum or something better
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
+                        .add(R.id.container, SubscriptionFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         //.addToBackStack("subscriptionFragment")
                         .commit();
@@ -115,7 +133,7 @@ public class MainActivity extends Activity
                 break;
             case 1:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new MapsFragment())
+                        .add(R.id.container, new MapsFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("mapsFragment")
                         .commit();
@@ -123,7 +141,23 @@ public class MainActivity extends Activity
                 break;
             case 2:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, AboutFragment.newInstance("", ""))
+                        .add(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack("subscriptionDetailFragment")
+                        .commit();
+                mTitle = getString(R.string.my_business);
+                break;
+            case 3:
+                fragmentManager.beginTransaction()
+                        .add(R.id.container, MessageFragment.newInstance("", ""))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack("messageFragment")
+                        .commit();
+                mTitle = getString(R.string.send_message);
+                break;
+            case 4:
+                fragmentManager.beginTransaction()
+                        .add(R.id.container, AboutFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("aboutFragment")
                         .commit();
@@ -161,6 +195,7 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -168,9 +203,8 @@ public class MainActivity extends Activity
 
     @Override
     public void onSubscriptionItemClick(Business business) {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
+        getFragmentManager().beginTransaction()
+                .add(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();

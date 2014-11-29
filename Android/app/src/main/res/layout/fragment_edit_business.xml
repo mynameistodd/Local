@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/feed_bg"
     android:orientation="vertical"
-    tools:context="com.mynameistodd.local.SubscriptionDetailFragment">
+    tools:context="com.mynameistodd.local.EditBusinessFragment">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:id="@+id/detail_business_map"
+            android:id="@+id/edit_detail_business_map"
             android:layout_gravity="center_horizontal|top"
             android:src="@drawable/teststaticmap" />
         <LinearLayout
@@ -32,7 +32,7 @@
                 android:layout_height="@dimen/feed_item_profile_pic"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_launcher"
-                android:id="@+id/detail_business_logo"/>
+                android:id="@+id/edit_detail_business_logo"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,22 +40,25 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:orientation="vertical">
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Acme Bakery Stand"
-                    android:id="@+id/detail_business_name"
+                    android:id="@+id/edit_detail_business_name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     />
-
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Small snippet here."
                     android:textColor="@android:color/black"
-                    android:id="@+id/detail_business_snippet"
+                    android:id="@+id/edit_detail_business_snippet"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
                     />
             </LinearLayout>
         </LinearLayout>

@@ -7,15 +7,18 @@
     <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="subscribed">Subscribed</string>
     <string name="map">Find and Follow</string>
+    <string name="my_business">My Business</string>
     <string name="about">About</string>
     <string name="dialog_subscribe">Subscribe to Business?</string>
     <string name="dialog_unsubscribe">Unsubscribe from Business?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about_text">created by @todd</string>
+    <string name="action_edit">Edit</string>
+    <string name="send_message">Send Message</string>
+    <string name="action_save">Save</string>
 
 </resources>

@@ -75,8 +75,10 @@ public class NavigationDrawerFragment extends Fragment {
             mFromSavedInstanceState = true;
         }
 
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
+        if (savedInstanceState == null) {
+            // Select either the default item (0) or the last selected item.
+            selectItem(mCurrentSelectedPosition);
+        }
     }
 
     @Override
@@ -104,6 +106,8 @@ public class NavigationDrawerFragment extends Fragment {
                 new String[]{
                         getString(R.string.subscribed),
                         getString(R.string.map),
+                        getString(R.string.my_business),
+                        getString(R.string.send_message),
                         getString(R.string.about),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -244,11 +248,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
