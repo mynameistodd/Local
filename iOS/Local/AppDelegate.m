@@ -26,13 +26,13 @@
     
     // to track statistics around application opens
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    
-    //Business *aBusiness[1];
+
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     UITabBar *tabBar = tabBarController.tabBar;
     UITabBarItem *tabBarItem_0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *tabBarItem_1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *tabBarItem_2 = [tabBar.items objectAtIndex:2];
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     //tabBarItem_0.title = @"List";
     //tabBarItem_1.title = @"Map";

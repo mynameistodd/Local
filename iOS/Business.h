@@ -11,11 +11,11 @@
 #import <Parse/PFObject+Subclass.h>
 
 @interface Business : PFObject<PFSubclassing>
-+ (NSString *)Business;
+//+ (NSString *)Business;
 @property (retain) NSString *name;
-//@property NSString *name;
 @property NSString *snipppet;
-//@property PFGeoPoint *location;
+@property PFGeoPoint *location;
 //@property NSString *objectId;
+@property PFFile *logo;
 
 @end

@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,7 +41,9 @@
             break;
         case 1:
             NSLog(@"Selected the MapView Tab");
-            
+            //somehow need to pass data from the listview to the mapview via this thing
+            //AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            //NSString *valueInTab = delegate.myProperty;
             break;
         case 2:
             NSLog(@"Selected the SettingsView Tab");

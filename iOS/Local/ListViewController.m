@@ -35,15 +35,16 @@
             //now we have to pass our array to the next control
             //the control needs a MSMutableArray also, kinda like .ascx controls being rendered.
             //in this case its going to be the tablelistthingy
-            /*
+            
              for (Business *object in aBusiness) {
-             NSLog(@"ParseObject: %@", object);
-             NSLog(@"%@",object[@"objectid"]);
-             NSLog(@"%@",object[@"location"]);
-             NSLog(@"%@",object[@"name"]);
-             NSLog(@"%@",object[@"snippet"]);
+                NSLog(@"ParseObject: %@", object);
+                 NSLog(@"%@",object[@"objectid"]);
+                 NSLog(@"%@",object[@"location"]);
+                 NSLog(@"%@",object[@"name"]);
+                 NSLog(@"%@",object[@"snippet"]);
              }
-             */
+            
+             
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);

@@ -20,7 +20,7 @@
 
 @dynamic name;
 @dynamic snipppet;
-//@dynamic location;
-//@dynamic objectId;
-
+@dynamic location;
+@dynamic objectId;
+@dynamic logo;
 @end
