@@ -30,9 +30,10 @@
             for (Business *object in objects) {
                 [aBusiness addObject:object];
             }
+            //this is a trick for sending the data loaded in this view to the map view
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            delegate.aBusiness = aBusiness;
             
-            delegate.aBusiness = nil;
             dispatch_async(dispatch_get_main_queue(), ^ {
                 [self.tableView reloadData];
             });
@@ -40,6 +41,7 @@
             //the control needs a MSMutableArray also, kinda like .ascx controls being rendered.
             //in this case its going to be the tablelistthingy
             
+            /*
              for (Business *object in aBusiness) {
                 NSLog(@"ParseObject: %@", object);
                  NSLog(@"%@",object[@"objectid"]);
@@ -47,7 +49,7 @@
                  NSLog(@"%@",object[@"name"]);
                  NSLog(@"%@",object[@"snippet"]);
              }
-            
+            */
              
         } else {
             // Log details of the failure

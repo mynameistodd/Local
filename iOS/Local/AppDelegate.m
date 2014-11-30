@@ -33,7 +33,7 @@
     UITabBarItem *tabBarItem_0 = [tabBar.items objectAtIndex:0];
     UITabBarItem *tabBarItem_1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *tabBarItem_2 = [tabBar.items objectAtIndex:2];
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
 
     [tabBarItem_0 initWithTitle:@"" image:[UIImage imageNamed:@"bullet4.png"] selectedImage:[UIImage imageNamed:@"bullet4.png"]];
     [tabBarItem_1 initWithTitle:@"" image:[UIImage imageNamed:@"geo_fence-32.png"] selectedImage:[UIImage imageNamed:@"geo_fence-32.png"]];

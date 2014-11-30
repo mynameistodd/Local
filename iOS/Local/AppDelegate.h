@@ -11,7 +11,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) Business *aBusiness;
+@property (strong, nonatomic) NSMutableArray *aBusiness;
 
 
 @end
