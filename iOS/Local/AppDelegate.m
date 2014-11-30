@@ -18,6 +18,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     // Override point for customization after application launch.
     [GMSServices provideAPIKey:@"AIzaSyDLbCLs2w6xR9gC1WMJjlMdT9F987lh-Qo"];
     
@@ -33,19 +34,10 @@
     UITabBarItem *tabBarItem_1 = [tabBar.items objectAtIndex:1];
     UITabBarItem *tabBarItem_2 = [tabBar.items objectAtIndex:2];
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    //tabBarItem_0.title = @"List";
-    //tabBarItem_1.title = @"Map";
-    //tabBarItem_2.title = @"Settings";
-    
-   //[tabBarItem_0 setFinishedSelectedImage:[UIImage imageNamed:@"waypoint_map-32"] withFinishedUnselectedImage:[UIImage imageNamed:@"waypoint_map-32"]];
-    
-    //this is the new way the old way is above, both generatre a warning
+
     [tabBarItem_0 initWithTitle:@"" image:[UIImage imageNamed:@"bullet4.png"] selectedImage:[UIImage imageNamed:@"bullet4.png"]];
-        [tabBarItem_1 setFinishedSelectedImage:[UIImage imageNamed:@"geo_fence-32.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"geo_fence-32.png"]];
-    
-        [tabBarItem_2 setFinishedSelectedImage:[UIImage imageNamed:@"internet_explorer-32.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"internet_explorer-32.png"]];
-    
+    [tabBarItem_1 initWithTitle:@"" image:[UIImage imageNamed:@"geo_fence-32.png"] selectedImage:[UIImage imageNamed:@"geo_fence-32.png"]];
+    [tabBarItem_2 initWithTitle:@"" image:[UIImage imageNamed:@"internet_explorer-32.png"] selectedImage:[UIImage imageNamed:@"internet_explorer-32.png"]];
     [[UITabBar appearance] setBackgroundColor:[UIColor colorWithRed:0.71 green:0.84 blue:0.66 alpha:1.0]];
     
     

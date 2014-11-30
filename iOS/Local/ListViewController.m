@@ -10,6 +10,7 @@
 #import "Parse/Parse.h"
 #import "Business.h"
 #import "DetailViewController.h"
+#import "AppDelegate.h"
 @interface ListViewController()
 @end
 
@@ -29,6 +30,9 @@
             for (Business *object in objects) {
                 [aBusiness addObject:object];
             }
+            AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            
+            delegate.aBusiness = nil;
             dispatch_async(dispatch_get_main_queue(), ^ {
                 [self.tableView reloadData];
             });
@@ -78,11 +82,9 @@
     if ([[segue identifier] isEqualToString:@"DetailViewSegue"])
     {
         DetailViewController *detailViewController = [segue destinationViewController];
-        
         NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
-    
-        Business *  b = [aBusiness objectAtIndex:myIndexPath.row];
         
+        Business *  b = [aBusiness objectAtIndex:myIndexPath.row];
         detailViewController.business = b;
     }
 }

@@ -9,13 +9,17 @@
 #import "MapViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import "Business.h"
+
+#import "AppDelegate.h"
+#import "ListViewController.h"
+
 @interface MapViewController ()
 
 @end
 
 @implementation MapViewController
 GMSMapView *mapView_;
-NSMutableArray *aBusiness;
+//NSMutableArray *aBusiness;
 
 - (void)loadView {
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:42.2814
