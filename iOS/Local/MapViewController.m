@@ -44,14 +44,19 @@ NSMutableArray *aBusiness;
     mapView_.myLocationEnabled = YES;
     self.view = mapView_;
     mapView_.delegate = self;
+
     for (Business *b in aBusiness) {
         GMSMarker *marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(b.location.latitude, b.location.longitude);
         marker.title = b.name;
         marker.tappable = YES;
-        marker.snippet = b.snipppet;
+        //marker.snippet = b.snipppet;
         marker.map = mapView_;
+    
+        //[mapView_ setSelectedMarker:marker];
     }
+
+
     /*
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(42.2814, -83.7483);
