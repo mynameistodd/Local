@@ -13,7 +13,7 @@
 @interface Business : PFObject<PFSubclassing>
 //+ (NSString *)Business;
 @property (retain) NSString *name;
-@property NSString *snipppet;
+@property NSString *snippet;
 @property PFGeoPoint *location;
 //@property NSString *objectId;
 @property PFFile *logo;
