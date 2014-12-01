@@ -55,7 +55,13 @@ NSMutableArray *aBusiness;
         marker.tappable = YES;
         marker.snippet = b.snippet;
         marker.map = mapView_;
-    
+        
+        //this is the offset for the window
+        //marker.infoWindowAnchor = CGPointMake(1.0, 0.5);
+        
+        //changes the marker image, we should do thiswpmap25
+        //marker.icon = [UIImage imageNamed:@"wpmap25"];
+        [mapView_ setSelectedMarker:marker];
     }
 }
 -(BOOL) mapView:(GMSMapView *) mapView didTapMarker:(GMSMarker *)marker
