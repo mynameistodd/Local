@@ -110,6 +110,7 @@ public class SubscriptionDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mEditable) {
             inflater.inflate(R.menu.subscription_detail, menu);
+            getActivity().getActionBar().setTitle(R.string.my_business);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

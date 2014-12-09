@@ -90,6 +90,7 @@ public class MapsFragment extends MapFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().getActionBar().setTitle(R.string.map);
         setUpMapIfNeeded();
     }
 

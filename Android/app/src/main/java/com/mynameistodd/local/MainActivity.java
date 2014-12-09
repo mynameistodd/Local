@@ -125,54 +125,56 @@ public class MainActivity extends Activity
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                        .add(R.id.container, SubscriptionFragment.newInstance("", ""))
+                        .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         //.addToBackStack("subscriptionFragment")
                         .commit();
-                mTitle = getString(R.string.subscribed);
+                //mTitle = getString(R.string.subscribed);
                 break;
             case 1:
                 fragmentManager.beginTransaction()
-                        .add(R.id.container, new MapsFragment())
+                        .replace(R.id.container, new MapsFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("mapsFragment")
                         .commit();
-                mTitle = getString(R.string.map);
+                //mTitle = getString(R.string.map);
                 break;
             case 2:
-                fragmentManager.beginTransaction()
-                        .add(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack("subscriptionDetailFragment")
-                        .commit();
-                mTitle = getString(R.string.my_business);
+                if (mMyBusiness != null) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .addToBackStack("subscriptionDetailFragment")
+                            .commit();
+                    //mTitle = getString(R.string.my_business);
+                }
                 break;
             case 3:
                 fragmentManager.beginTransaction()
-                        .add(R.id.container, MessageFragment.newInstance("", ""))
+                        .replace(R.id.container, MessageFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("messageFragment")
                         .commit();
-                mTitle = getString(R.string.send_message);
+                //mTitle = getString(R.string.send_message);
                 break;
             case 4:
                 fragmentManager.beginTransaction()
-                        .add(R.id.container, AboutFragment.newInstance("", ""))
+                        .replace(R.id.container, AboutFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("aboutFragment")
                         .commit();
-                mTitle = getString(R.string.about);
+                //mTitle = getString(R.string.about);
                 break;
         }
 
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
+//    public void restoreActionBar() {
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setTitle(mTitle);
+//    }
 
 
     @Override
@@ -182,7 +184,7 @@ public class MainActivity extends Activity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
+            //restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);

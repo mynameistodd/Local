@@ -67,6 +67,12 @@ public class MessageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setTitle(R.string.send_message);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

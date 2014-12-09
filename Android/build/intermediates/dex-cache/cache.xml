@@ -1,59 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pre-dex-items>
+<items version="2" >
 
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/picasso-2.3.4-bbabd323000311434e411174e8b554f4288d9c28.jar"
-        jar="/Users/todd/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.3.4/3b646ddbdac8a33fc45b64564011da81d23e4635/picasso-2.3.4.jar"
+        jar="C:\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="3b646ddbdac8a33fc45b64564011da81d23e4635"/>
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-2d6fe196a4494ab4a276bcc2e3a1e0d7763f8dda.jar" />
+    </item>
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/classes-5b3f67f88924e10c82f08c53341df79d8ff1a4ee.jar"
-        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/classes.jar"
+        jar="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="686344a780033e4ba22b926cd225f8d4941247e6"/>
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\classes-94520146b4ea8ac83029fa5d782e530a20dc67b0.jar" />
+    </item>
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/classes-fc4df791977ef3f61128442ca13185ab2175cf1e.jar"
-        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/classes.jar"
+        jar="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\libs\internal_impl-21.0.0.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="95fd37732ec852e99f07eeb516a3650172f1d136"/>
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-a4d7eec53754abb36dd16bffa4e96bd58023aeb5.jar" />
+    </item>
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/picasso-2.3.4-bbabd323000311434e411174e8b554f4288d9c28.jar"
-        jar="/Users/todd/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.3.4/3b646ddbdac8a33fc45b64564011da81d23e4635/picasso-2.3.4.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="3b646ddbdac8a33fc45b64564011da81d23e4635"/>
-    <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/Parse-1.7.0-792ef665ed19aa4353190826051e717fc90f558e.jar"
-        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/libs/Parse-1.7.0.jar"
+        jar="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="403b8fa0a90f1ff714ad1f40382e7a448ed4f25b"/>
+        sha1="95fd37732ec852e99f07eeb516a3650172f1d136">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\classes-ffd850c29c3a03a8ff6e041940cfb7312cc7b743.jar" />
+    </item>
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-da868e4d153eab4c8e9ae9e7eb083909d5768597.jar"
-        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/libs/internal_impl-21.0.0.jar"
+        jar="C:\Users\Todd DeLand\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.3.4\3b646ddbdac8a33fc45b64564011da81d23e4635\picasso-2.3.4.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0"/>
+        sha1="3b646ddbdac8a33fc45b64564011da81d23e4635">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\picasso-2.3.4-9e51c373ed8e04004c0bc365a15447b64265ae08.jar" />
+    </item>
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-510146d7f984824259ea7f6023d341183f3105eb.jar"
-        jar="/Users/todd/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar"
+        jar="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.1.71\classes.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e"/>
+        sha1="0f6d5c1ef2e982c3b7858408e3df389cf5d202da">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\classes-0887e2edb4ce1cf90d176289d3e67a8c0f01a5a1.jar" />
+    </item>
     <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/classes-da63f88c40f5b922b0cd02d3d0a9194de2570f92.jar"
-        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/classes.jar"
+        jar="C:\AndroidStudioProjects\Local\Android\app\libs\Parse-1.7.0.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="0f6d5c1ef2e982c3b7858408e3df389cf5d202da"/>
-    <item
-        dex="/Users/todd/AndroidStudioProjects/Local/Android/app/build/intermediates/pre-dexed/debug/Parse-1.7.0-792ef665ed19aa4353190826051e717fc90f558e.jar"
-        jar="/Users/todd/AndroidStudioProjects/Local/Android/app/libs/Parse-1.7.0.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="403b8fa0a90f1ff714ad1f40382e7a448ed4f25b"/>
+        sha1="403b8fa0a90f1ff714ad1f40382e7a448ed4f25b">
+        <dex dex="C:\AndroidStudioProjects\Local\Android\app\build\intermediates\pre-dexed\debug\Parse-1.7.0-f537e2956969bd1b2e3df79be1ef14462fbab258.jar" />
+    </item>
 
-</pre-dex-items>
+</items>

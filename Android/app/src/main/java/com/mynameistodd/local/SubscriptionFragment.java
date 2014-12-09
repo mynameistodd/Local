@@ -101,6 +101,7 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().getActionBar().setTitle(R.string.subscribed);
         if (mSubscribedChannels != null) {
             ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
             query.whereContainedIn("channelId", mSubscribedChannels);
