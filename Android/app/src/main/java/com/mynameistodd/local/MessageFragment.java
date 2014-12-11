@@ -1,12 +1,20 @@
 package com.mynameistodd.local;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 
 /**
@@ -27,7 +35,15 @@ public class MessageFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private EditText messageText;
+    private Button sendMessage;
+
+    private String mMyBusinessChannelId;
     private OnFragmentInteractionListener mListener;
+
+    public MessageFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -47,10 +63,6 @@ public class MessageFragment extends Fragment {
         return fragment;
     }
 
-    public MessageFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +70,46 @@ public class MessageFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+        businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
+            @Override
+            public void done(Business business, ParseException e) {
+                if (business != null) {
+                    mMyBusinessChannelId = business.getChannelId();
+                } else if (e != null) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false);
+
+        View layout = inflater.inflate(R.layout.fragment_message, container, false);
+        messageText = (EditText) layout.findViewById(R.id.messageText);
+        sendMessage = (Button) layout.findViewById(R.id.sendMessage);
+
+        sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+                getFragmentManager().popBackStack();
+            }
+        });
+
+        return layout;
+    }
+
+    private void sendMessage() {
+        if (mMyBusinessChannelId != null) {
+            ParsePush push = new ParsePush();
+            push.setChannel(mMyBusinessChannelId);
+            push.setMessage(messageText.getText().toString());
+            push.sendInBackground();
+        }
     }
 
     @Override

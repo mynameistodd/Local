@@ -20,5 +20,8 @@
     <string name="action_edit">Edit</string>
     <string name="send_message">Send Message</string>
     <string name="action_save">Save</string>
+    <string name="submit">Submit</string>
+    <string name="sendMessage">Send Message</string>
+    <string name="messageTextHint">Enter a message to send to your subscribers.</string>
 
 </resources>
