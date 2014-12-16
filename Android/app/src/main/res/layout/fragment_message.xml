@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.mynameistodd.local.MessageFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mynameistodd.local.MessageFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -12,8 +14,8 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal|top"
         android:hint="@string/messageTextHint"
-        android:inputType="textLongMessage|text|textMultiLine"
-        android:singleLine="false" />
+        android:imeOptions="actionSend"
+        android:inputType="text" />
 
     <Button
         android:id="@+id/sendMessage"

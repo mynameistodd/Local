@@ -15,6 +15,8 @@ import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.parse.SendCallback;
 
 
 /**
@@ -38,7 +40,7 @@ public class MessageFragment extends Fragment {
     private EditText messageText;
     private Button sendMessage;
 
-    private String mMyBusinessChannelId;
+    private Business mMyBusiness;
     private OnFragmentInteractionListener mListener;
 
     public MessageFragment() {
@@ -76,7 +78,7 @@ public class MessageFragment extends Fragment {
             @Override
             public void done(Business business, ParseException e) {
                 if (business != null) {
-                    mMyBusinessChannelId = business.getChannelId();
+                    mMyBusiness = business;
                 } else if (e != null) {
                     e.printStackTrace();
                 }
@@ -96,7 +98,6 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendMessage();
-                getFragmentManager().popBackStack();
             }
         });
 
@@ -104,11 +105,35 @@ public class MessageFragment extends Fragment {
     }
 
     private void sendMessage() {
-        if (mMyBusinessChannelId != null) {
-            ParsePush push = new ParsePush();
-            push.setChannel(mMyBusinessChannelId);
-            push.setMessage(messageText.getText().toString());
-            push.sendInBackground();
+//        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.SHOW_IMPLICIT);
+        if (mMyBusiness != null) {
+            final String inputText = messageText.getText().toString();
+
+            //TODO: This should all be moved to the MainActivity so it can finish when this fragment is destroyed.
+            final Message message = new Message();
+            message.setText(inputText);
+            message.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    ParseRelation<Message> relation = mMyBusiness.getRelation("Message");
+                    relation.add(message);
+                    mMyBusiness.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            ParsePush push = new ParsePush();
+                            push.setChannel(mMyBusiness.getChannelId());
+                            push.setMessage(inputText);
+                            push.sendInBackground(new SendCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    getFragmentManager().popBackStack();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         }
     }
 
