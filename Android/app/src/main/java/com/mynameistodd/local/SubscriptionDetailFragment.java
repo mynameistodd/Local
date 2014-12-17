@@ -1,10 +1,10 @@
 package com.mynameistodd.local;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,15 +12,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 
@@ -46,6 +49,11 @@ public class SubscriptionDetailFragment extends Fragment {
     private ImageView mDetailBusinessLogo;
     private TextView mDetailBusinessName;
     private TextView mDetailBusinessSnippet;
+    private Button mDetailBusinessUnsubscribe;
+
+    public SubscriptionDetailFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -60,9 +68,6 @@ public class SubscriptionDetailFragment extends Fragment {
         args.putString(ARG_OBJECTID, objectId);
         fragment.setArguments(args);
         return fragment;
-    }
-    public SubscriptionDetailFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -96,6 +101,7 @@ public class SubscriptionDetailFragment extends Fragment {
         mDetailBusinessLogo = (ImageView) view.findViewById(R.id.detail_business_logo);
         mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
         mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
+        mDetailBusinessUnsubscribe = (Button) view.findViewById(R.id.detail_business_unsubscribe);
 
         return view;
     }
@@ -146,6 +152,27 @@ public class SubscriptionDetailFragment extends Fragment {
             Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
             mDetailBusinessName.setText(mBusiness.getName());
             mDetailBusinessSnippet.setText(mBusiness.getSnippet());
+
+            final String channelId = mBusiness.getChannelId();
+            mDetailBusinessUnsubscribe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ParsePush.unsubscribeInBackground(channelId, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d(Util.TAG, "Successfully unsubscribed from " + channelId);
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    if (mListener != null) {
+                        mListener.onSubscribe(false, channelId);
+                    }
+                    getFragmentManager().popBackStack();
+                }
+            });
         }
     }
 
@@ -196,6 +223,8 @@ public class SubscriptionDetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+
+        public void onSubscribe(Boolean subscribe, String channelId);
     }
 
 }

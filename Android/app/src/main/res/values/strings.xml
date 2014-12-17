@@ -23,5 +23,6 @@
     <string name="submit">Submit</string>
     <string name="sendMessage">Send Message</string>
     <string name="messageTextHint">Enter a message to send to your subscribers.</string>
+    <string name="unsubscribe">Unsubscribe</string>
 
 </resources>

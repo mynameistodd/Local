@@ -2,6 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/feed_item_margin"
+    android:layout_marginRight="@dimen/feed_item_margin"
+    android:layout_marginTop="@dimen/feed_item_margin"
     android:background="@color/feed_bg"
     android:orientation="vertical"
     tools:context="com.mynameistodd.local.SubscriptionDetailFragment">
@@ -9,16 +12,13 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/white"
-        android:layout_marginLeft="@dimen/feed_item_margin"
-        android:layout_marginRight="@dimen/feed_item_margin"
-        android:layout_marginTop="@dimen/feed_item_margin"
+        android:orientation="vertical"
         android:paddingBottom="15dp">
         <ImageView
+            android:id="@+id/detail_business_map"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:id="@+id/detail_business_map"
             android:layout_gravity="center_horizontal|top"
             android:src="@drawable/teststaticmap" />
         <LinearLayout
@@ -28,36 +28,46 @@
             android:paddingLeft="@dimen/feed_item_padding_left_right"
             android:paddingRight="@dimen/feed_item_padding_left_right">
             <ImageView
+                android:id="@+id/detail_business_logo"
                 android:layout_width="@dimen/feed_item_profile_pic"
                 android:layout_height="@dimen/feed_item_profile_pic"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_launcher"
-                android:id="@+id/detail_business_logo"/>
+                android:src="@drawable/ic_launcher" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/detail_business_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Acme Bakery Stand"
-                    android:id="@+id/detail_business_name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold"
                     android:textColor="@android:color/black"
+                    android:textStyle="bold"
                     />
 
                 <TextView
+                    android:id="@+id/detail_business_snippet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Small snippet here."
                     android:textColor="@android:color/black"
-                    android:id="@+id/detail_business_snippet"
                     />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/detail_business_unsubscribe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_red_light"
+        android:text="@string/unsubscribe" />
 </LinearLayout>
