@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseCrashReporting;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -20,10 +21,16 @@ public class LocalApplication extends Application {
         super.onCreate();
         ParseObject.registerSubclass(Business.class);
         ParseObject.registerSubclass(Message.class);
-        Parse.initialize(this, "m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN", "tdKfe6bJDPpstLEigKmnhyRyBhSV7vy94IA1SVHM");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        Parse.enableLocalDatastore(this);
         ParseUser.enableAutomaticUser();
+        ParseCrashReporting.enable(this);
+
+        Parse.initialize(this, "m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN", "tdKfe6bJDPpstLEigKmnhyRyBhSV7vy94IA1SVHM");
+
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         ParseUser.getCurrentUser().saveInBackground();
+
         Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
 
 
