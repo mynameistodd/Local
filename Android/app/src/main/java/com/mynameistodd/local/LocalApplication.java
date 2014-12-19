@@ -22,11 +22,11 @@ public class LocalApplication extends Application {
         ParseObject.registerSubclass(Business.class);
         ParseObject.registerSubclass(Message.class);
 
+        ParseCrashReporting.enable(this);
+        Parse.initialize(this, "m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN", "tdKfe6bJDPpstLEigKmnhyRyBhSV7vy94IA1SVHM");
+
         Parse.enableLocalDatastore(this);
         ParseUser.enableAutomaticUser();
-        ParseCrashReporting.enable(this);
-
-        Parse.initialize(this, "m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN", "tdKfe6bJDPpstLEigKmnhyRyBhSV7vy94IA1SVHM");
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParseUser.getCurrentUser().saveInBackground();
