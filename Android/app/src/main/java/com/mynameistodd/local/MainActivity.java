@@ -1,9 +1,7 @@
 package com.mynameistodd.local;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -13,11 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -53,30 +48,24 @@ public class MainActivity extends Activity
         LocationClient.OnAddGeofencesResultListener,
         LocationClient.OnRemoveGeofencesResultListener {
 
+    List<Geofence> mGeofenceList;
+    // Store the list of geofence Ids to remove
+    List<String> mGeofencesToRemove;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-
-    List<Geofence> mGeofenceList;
-
     // Holds the location client
     private LocationClient mLocationClient;
     // Stores the PendingIntent used to request geofence monitoring
     private PendingIntent mGeofenceRequestIntent;
-    // Defines the allowable request types.
-    public enum REQUEST_TYPE { ADD, REMOVE_INTENT, REMOVE_LIST }
     private REQUEST_TYPE mRequestType;
     // Flag that indicates if a request is underway.
     private boolean mInProgress;
-    // Store the list of geofence Ids to remove
-    List<String> mGeofencesToRemove;
-
     private Business mMyBusiness;
 
     @Override
@@ -84,7 +73,7 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
@@ -127,7 +116,7 @@ public class MainActivity extends Activity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        //.addToBackStack("subscriptionFragment")
+                                //.addToBackStack("subscriptionFragment")
                         .commit();
                 //mTitle = getString(R.string.subscribed);
                 break;
@@ -169,13 +158,6 @@ public class MainActivity extends Activity
 
     }
 
-//    public void restoreActionBar() {
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-//        actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setTitle(mTitle);
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -188,6 +170,13 @@ public class MainActivity extends Activity
         }
         return super.onCreateOptionsMenu(menu);
     }
+
+//    public void restoreActionBar() {
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setTitle(mTitle);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -205,7 +194,7 @@ public class MainActivity extends Activity
     @Override
     public void onSubscriptionItemClick(Business business) {
         getFragmentManager().beginTransaction()
-                .add(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
@@ -241,10 +230,10 @@ public class MainActivity extends Activity
                     mLocationClient.addGeofences(mGeofenceList, mGeofenceRequestIntent, this);
                 }
                 break;
-            case REMOVE_INTENT :
+            case REMOVE_INTENT:
                 mLocationClient.removeGeofences(mGeofenceRequestIntent, this);
                 break;
-            case REMOVE_LIST :
+            case REMOVE_LIST:
                 mLocationClient.removeGeofences(mGeofencesToRemove, this);
                 break;
         }
@@ -277,8 +266,8 @@ public class MainActivity extends Activity
      * When the request to remove geofences by PendingIntent returns,
      * handle the result.
      *
-     *@param statusCode the code returned by Location Services
-     *@param requestIntent The Intent used to request the removal.
+     * @param statusCode    the code returned by Location Services
+     * @param requestIntent The Intent used to request the removal.
      */
     @Override
     public void onRemoveGeofencesByPendingIntentResult(int statusCode, PendingIntent requestIntent) {
@@ -383,6 +372,7 @@ public class MainActivity extends Activity
         channelIds.add(channelId);
         addGeofence(channelIds);
     }
+
     public void addGeofence(List<String> channelIds) {
         // Start a request to add geofences
         mRequestType = REQUEST_TYPE.ADD;
@@ -413,7 +403,7 @@ public class MainActivity extends Activity
                 public void done(List<Business> businesses, ParseException e) {
                     if (businesses != null) {
                         mGeofenceList.clear();
-                        
+
                         for (Business business : businesses) {
                             mGeofenceList.add(Util.getGeofence(business));
                         }
@@ -513,4 +503,8 @@ public class MainActivity extends Activity
              */
         }
     }
+
+    // Defines the allowable request types.
+    public enum REQUEST_TYPE {
+        ADD, REMOVE_INTENT, REMOVE_LIST }
 }

@@ -2,7 +2,6 @@ package com.mynameistodd.local;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +53,13 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     private List<String> mSubscribedChannels;
     private List<Business> mBusinesses;
 
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public SubscriptionFragment() {
+    }
+
     // TODO: Rename and change types of parameters
     public static SubscriptionFragment newInstance(String param1, String param2) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -64,13 +70,6 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         return fragment;
     }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public SubscriptionFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +78,6 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
     }
 
     @Override
@@ -102,6 +99,8 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     public void onResume() {
         super.onResume();
         getActivity().getActionBar().setTitle(R.string.subscribed);
+        mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
+
         if (mSubscribedChannels != null) {
             ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
             query.whereContainedIn("channelId", mSubscribedChannels);
