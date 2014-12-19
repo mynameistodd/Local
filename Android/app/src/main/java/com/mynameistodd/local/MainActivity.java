@@ -84,7 +84,7 @@ public class MainActivity extends Activity
         mInProgress = false;
         mGeofenceList = new ArrayList<Geofence>();
 
-        ParseAnalytics.trackAppOpened(getIntent());
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
         addGeofence(channelIds);
