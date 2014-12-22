@@ -10,6 +10,9 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.Geofence;
+import com.parse.ParseException;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 /**
  * Created by todd on 10/14/14.
@@ -97,5 +100,34 @@ public class Util {
                 .setLoiteringDelay(60000)
                 .setNotificationResponsiveness(60000)
                 .build();
+    }
+
+    public static String[] getTabs(Context context) {
+        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+        try {
+            int count = businesses.getQuery().count();
+            if (count > 0) {
+                return new String[]{
+                        context.getString(R.string.subscribed),
+                        context.getString(R.string.map),
+                        context.getString(R.string.my_business),
+                        context.getString(R.string.send_message),
+                        context.getString(R.string.about),
+                };
+            } else {
+                return new String[]{
+                        context.getString(R.string.subscribed),
+                        context.getString(R.string.map),
+                        context.getString(R.string.about),
+                };
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new String[]{
+                context.getString(R.string.subscribed),
+                context.getString(R.string.map),
+                context.getString(R.string.about),
+        };
     }
 }

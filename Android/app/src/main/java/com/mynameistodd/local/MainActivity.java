@@ -108,54 +108,43 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        //TODO position should be an enum or something better
+    public void onNavigationDrawerItemSelected(String tab) {
         FragmentManager fragmentManager = getFragmentManager();
-        switch (position) {
-            case 0:
+
+        if (tab.equals(getString(R.string.subscribed))) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        } else if (tab.equals(getString(R.string.map))) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, new MapsFragment())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack("mapsFragment")
+                    .commit();
+        } else if (tab.equals(getString(R.string.my_business))) {
+            if (mMyBusiness != null) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SubscriptionFragment.newInstance("", ""))
+                        .replace(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                //.addToBackStack("subscriptionFragment")
+                        .addToBackStack("subscriptionDetailFragment")
                         .commit();
-                //mTitle = getString(R.string.subscribed);
-                break;
-            case 1:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, new MapsFragment())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack("mapsFragment")
-                        .commit();
-                //mTitle = getString(R.string.map);
-                break;
-            case 2:
-                if (mMyBusiness != null) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, SubscriptionDetailFragment.newInstance(mMyBusiness.getObjectId()))
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .addToBackStack("subscriptionDetailFragment")
-                            .commit();
-                    //mTitle = getString(R.string.my_business);
-                }
-                break;
-            case 3:
+            }
+        } else if (tab.equals(getString(R.string.send_message))) {
+            if (mMyBusiness != null) {
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MessageFragment.newInstance("", ""))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack("messageFragment")
                         .commit();
-                //mTitle = getString(R.string.send_message);
-                break;
-            case 4:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, AboutFragment.newInstance("", ""))
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack("aboutFragment")
-                        .commit();
-                //mTitle = getString(R.string.about);
-                break;
+            }
+        } else if (tab.equals(getString(R.string.about))) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, AboutFragment.newInstance("", ""))
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack("aboutFragment")
+                    .commit();
         }
-
     }
 
     @Override
