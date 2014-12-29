@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "ListViewController.h"
 
-@interface MapViewController () <GMSMapViewDelegate>
+@interface MapViewController () <GMSMapViewDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -25,8 +25,7 @@ NSMutableArray *aBusiness;
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     aBusiness = delegate.aBusiness;
     
-    // Create a GMSCameraPosition that tells the map to display the
-    // coordinate -33.86,151.20 at zoom level 6.
+    //hard coded for now
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:42.2814
                                                             longitude:-83.7483
                                                                  zoom:15];
@@ -51,41 +50,58 @@ NSMutableArray *aBusiness;
         GMSMarker *marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(b.location.latitude, b.location.longitude);
         marker.title = b.name;
-        marker.tappable = YES;
         marker.snippet = b.snippet;
+        marker.tappable = YES;
+        marker.appearAnimation = kGMSMarkerAnimationPop;
         marker.map = mapView_;
+        
         //this is the offset for the window
         //marker.infoWindowAnchor = CGPointMake(1.0, 0.5);
-        
         //changes the marker image, we should do thiswpmap25
         //marker.icon = [UIImage imageNamed:@"wpmap25"];
-        [mapView_ setSelectedMarker:marker];
+        
+        //[mapView_ setSelectedMarker:marker];
     }
 }
+
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
     //alert for Unsubscribe
     NSString *message = [@"Unsubscribe from " stringByAppendingString:marker.title];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lowecal Unsubscribe"
                                                     message:message
-                                                   delegate:nil
+                                                   delegate:self
                                           cancelButtonTitle:@"Yeah"
                                           otherButtonTitles:@"Nope", nil];
     [alert show];
 
     NSLog(@"window tap");
 }
+
 -(BOOL)mapView:(GMSMapView *) mapView didTapMarker:(GMSMarker *)marker
 {
-    NSLog(@"marker tap");
-    return YES;
+    NSString *logmessage = [@"tapped: " stringByAppendingString:marker.title];
+    NSLog(logmessage);
+    return NO;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+        NSLog(@"Yeah clicked");
+    }else{
+        //reset clicked
+        NSLog(@"Nope clicked");
+    }
 }
 
 @end
