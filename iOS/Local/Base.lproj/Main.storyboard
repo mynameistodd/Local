@@ -49,24 +49,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fIL-mA-jmJ">
-                                <rect key="frame" x="66" y="291" width="182" height="30"/>
-                                <state key="normal" title="Add me to someting">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="YeahMe.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-2z-ipp">
-                                <rect key="frame" x="86" y="227" width="162" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-2z-ipp">
+                                <rect key="frame" x="16" y="72" width="568" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="snippet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDZ-gP-Hhl">
+                                <rect key="frame" x="16" y="98" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hhv-ee-RUb">
+                                <rect key="frame" x="-7" y="333" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="button" destination="fIL-mA-jmJ" id="beW-Ff-NZi"/>
                         <outlet property="label" destination="5eZ-2z-ipp" id="LoP-qv-ndf"/>
+                        <outlet property="snippet" destination="wDZ-gP-Hhl" id="fHU-Zi-G0r"/>
+                        <outlet property="staticImage" destination="hhv-ee-RUb" id="ept-mF-qBW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oGU-Eg-25t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -155,7 +159,6 @@
         <!--Item-->
         <scene sceneID="hgd-Hn-o87">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="50H-rF-XUc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TH3-Jv-NbO" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="McY-Ma-rou"/>
                     <toolbarItems/>
@@ -168,6 +171,7 @@
                         <segue destination="eg1-GZ-3Qv" kind="relationship" relationship="rootViewController" id="ung-fx-XoT"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="50H-rF-XUc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="754" y="-1070"/>
         </scene>

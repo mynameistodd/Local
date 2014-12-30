@@ -20,10 +20,21 @@
 
     // Do any additional setup after loading the view.
     Business *b = self.business;
-    //self.button.titleLabel.text = @"fuck the police";
     self.label.text = [b objectForKey:@"name"];
+    self.snippet.text = [b objectForKey:@"snippet"];
     
     
+    //imgURL needs to be fixed up for getting the right GPS corrds
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *imgURL = @"https://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=11&size=200x200";
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imgURL]];
+        
+        //set your image on main thread.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.staticImage setImage:[UIImage imageWithData:data]];
+            
+        });    
+    });
     
 }
 
