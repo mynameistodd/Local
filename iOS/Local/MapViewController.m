@@ -38,6 +38,7 @@ NSMutableArray *aBusiness;
     self.view = mapView_;
     mapView_.delegate = self;
     
+    /*
     for (Business *object in aBusiness) {
         NSLog(@"ParseObject: %@", object);
         NSLog(@"%@",object[@"objectid"]);
@@ -45,7 +46,7 @@ NSMutableArray *aBusiness;
         NSLog(@"%@",object[@"name"]);
         NSLog(@"%@",object[@"snippet"]);
     }
-    
+    */
     for (Business *b in aBusiness) {
         GMSMarker *marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(b.location.latitude, b.location.longitude);

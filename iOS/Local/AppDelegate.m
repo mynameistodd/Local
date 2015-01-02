@@ -35,12 +35,10 @@
     UITabBarItem *tabBarItem_2 = [tabBar.items objectAtIndex:2];
 
 
-    [tabBarItem_0 initWithTitle:@"" image:[UIImage imageNamed:@"bullet4.png"] selectedImage:[UIImage imageNamed:@"bullet4.png"]];
-    [tabBarItem_1 initWithTitle:@"" image:[UIImage imageNamed:@"geo_fence-32.png"] selectedImage:[UIImage imageNamed:@"geo_fence-32.png"]];
-    [tabBarItem_2 initWithTitle:@"" image:[UIImage imageNamed:@"internet_explorer-32.png"] selectedImage:[UIImage imageNamed:@"internet_explorer-32.png"]];
+    tabBarItem_0 = [tabBarItem_0 initWithTitle:@"" image:[UIImage imageNamed:@"bullet4.png"] selectedImage:[UIImage imageNamed:@"bullet4.png"]];
+    tabBarItem_1 = [tabBarItem_1 initWithTitle:@"" image:[UIImage imageNamed:@"geo_fence-32.png"] selectedImage:[UIImage imageNamed:@"geo_fence-32.png"]];
+    tabBarItem_2 = [tabBarItem_2 initWithTitle:@"" image:[UIImage imageNamed:@"internet_explorer-32.png"] selectedImage:[UIImage imageNamed:@"internet_explorer-32.png"]];
     [[UITabBar appearance] setBackgroundColor:[UIColor colorWithRed:0.71 green:0.84 blue:0.66 alpha:1.0]];
-    
-    
     
     // Change the title color of tab bar items
     //example on how to change text color, keep in for now
@@ -57,6 +55,8 @@
     
     return YES;
 }
+//NSLog(@"%@",@"didRegisterForRemoteNotificationsWithDeviceToken");
+//NSLog(@"%@",@"didReceiveRemoteNotification");
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
