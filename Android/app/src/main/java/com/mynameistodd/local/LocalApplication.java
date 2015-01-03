@@ -2,6 +2,7 @@ package com.mynameistodd.local;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
@@ -12,6 +13,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by todd on 10/7/14.
@@ -20,6 +22,7 @@ public class LocalApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         ParseObject.registerSubclass(Business.class);
         ParseObject.registerSubclass(Message.class);
 
