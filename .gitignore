@@ -15,3 +15,5 @@ Android/app/app.iml
 Android/.idea/gradle.xml
 
 Android/build/intermediates/dex-cache/cache.xml
+
+Android/build/intermediates/dex-cache/cache.xml

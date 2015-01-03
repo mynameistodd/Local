@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.facebook.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -24,11 +25,14 @@ import com.google.android.gms.location.LocationStatusCodes;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,40 +75,74 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (ParseUser.getCurrentUser() == null) {
+            ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
+            startActivityForResult(builder.build(), 0);
+        }
+
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         mInProgress = false;
         mGeofenceList = new ArrayList<Geofence>();
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
-        List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
-        addGeofence(channelIds);
-
-        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
-        businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
-            @Override
-            public void done(Business business, ParseException e) {
-                if (business != null) {
-                    mMyBusiness = business;
-                } else if (e != null) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+
+        List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
+        addGeofence(channelIds);
+
+        if (ParseUser.getCurrentUser() != null) {
+            ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+            businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
+                @Override
+                public void done(Business business, ParseException e) {
+                    if (business != null) {
+                        mMyBusiness = business;
+                    } else if (e != null) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 0:
+                switch (resultCode) {
+                    case RESULT_OK:
+                        Toast.makeText(this, "Logged in!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_CANCELED:
+                        finish();
+                        break;
+                }
+                break;
+
+        }
     }
 
     @Override
@@ -144,6 +182,10 @@ public class MainActivity extends Activity
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack("aboutFragment")
                     .commit();
+        } else if (tab.equals(getString(R.string.logout))) {
+            ParseUser.getCurrentUser().logOut();
+            ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
+            startActivityForResult(builder.build(), 0);
         }
     }
 
