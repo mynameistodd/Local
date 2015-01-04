@@ -56,6 +56,15 @@ NSMutableArray *aBusiness;
         marker.appearAnimation = kGMSMarkerAnimationPop;
         marker.map = mapView_;
         
+        // Build a circle for the GMSMapView
+        GMSCircle *geoFenceCircle = [[GMSCircle alloc] init];
+        geoFenceCircle.radius = 130; // Meters
+        geoFenceCircle.position = CLLocationCoordinate2DMake(b.location.latitude, b.location.longitude);
+        geoFenceCircle.fillColor = [UIColor colorWithWhite:0.7 alpha:0.5];
+        geoFenceCircle.strokeWidth = 3;
+        geoFenceCircle.strokeColor = [UIColor orangeColor];
+        geoFenceCircle.map = mapView_; // Add it to the map.
+        
         //this is the offset for the window
         //marker.infoWindowAnchor = CGPointMake(1.0, 0.5);
         //changes the marker image, we should do thiswpmap25
