@@ -84,6 +84,7 @@
             android:exported="false" >
         </service>
         <meta-data android:name="com.crashlytics.ApiKey" android:value="cb68486cf7bf9c734391abe526decb95709e9933"/>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_stat_name"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -20,9 +22,7 @@ import org.json.JSONObject;
 public class LocalPushBroadcastReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected void onPushOpen(Context context, Intent intent) {
-        //super.onPushOpen(context, intent);
-
-        ParseAnalytics.trackAppOpened(intent);
+        ParseAnalytics.trackAppOpenedInBackground(intent);
 
         String uriString = null;
         try {
@@ -50,4 +50,10 @@ public class LocalPushBroadcastReceiver extends ParsePushBroadcastReceiver {
             context.startActivity(activityIntent);
         }
     }
+
+    //TODO This should eventually be the icon from the business, our icon is the small one.
+//    @Override
+//    protected Bitmap getLargeIcon(Context context, Intent intent) {
+//        return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//    }
 }
