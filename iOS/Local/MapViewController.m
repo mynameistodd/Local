@@ -24,20 +24,21 @@ NSMutableArray *aBusiness;
 - (void)loadView {
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     aBusiness = delegate.aBusiness;
+
     
     //hard coded for now
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:42.2814
                                                             longitude:-83.7483
                                                                  zoom:15];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    mapView_.settings.myLocationButton = YES;
     mapView_.myLocationEnabled = YES;
-    
     //the order in which the delegate is set matters, I am not sure why, many examples have it both ways...
     //so for now, set the view, then set the delegate. -mx
     //this issue effects the tap events for the map markers
     self.view = mapView_;
     mapView_.delegate = self;
-    
+    CLLocation *mylocation = mapView_.myLocation;
     /*
     for (Business *object in aBusiness) {
         NSLog(@"ParseObject: %@", object);
@@ -73,7 +74,11 @@ NSMutableArray *aBusiness;
         //[mapView_ setSelectedMarker:marker];
     }
 }
-
+// Location Manager Delegate Methods
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    NSLog(@"%@", [locations lastObject]);
+}
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
     //alert for Unsubscribe
     NSString *message = [@"Unsubscribe from " stringByAppendingString:marker.title];

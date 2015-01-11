@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "Business.h"
 #import <GoogleMaps/GoogleMaps.h>
-@interface MapViewController : UIViewController <GMSMapViewDelegate, UIAlertViewDelegate>
-
-
+#import <CoreLocation/CoreLocation.h>
+@interface MapViewController : UIViewController <GMSMapViewDelegate, UIAlertViewDelegate> {
+    
+}
 
 @end
 
