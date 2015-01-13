@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-//#import "Business.h"
+#import <CoreLocation/CoreLocation.h>
 @interface ListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
-//@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end

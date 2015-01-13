@@ -12,7 +12,7 @@
 
 #import "AppDelegate.h"
 #import "ListViewController.h"
-
+#import "AppDelegate.h"
 @interface MapViewController () <GMSMapViewDelegate, UIAlertViewDelegate>
 
 @end
@@ -20,15 +20,20 @@
 @implementation MapViewController
 GMSMapView *mapView_;
 NSMutableArray *aBusiness;
+CLLocationManager *locationManager;
 
 - (void)loadView {
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    aBusiness = delegate.aBusiness;
-
     
+    locationManager = delegate.locationManager;
+    aBusiness = delegate.aBusiness;
+    
+    //CLLocationCoordinate2D * myLocation = CLLocationCoordinate2DMake(locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude);
+    //locationManager.location.coordinate.latitude;
+    //locationManager.location.coordinate.longitude
     //hard coded for now
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:42.2814
-                                                            longitude:-83.7483
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:locationManager.location.coordinate.latitude
+                                                            longitude:locationManager.location.coordinate.longitude
                                                                  zoom:15];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.settings.myLocationButton = YES;
@@ -38,7 +43,7 @@ NSMutableArray *aBusiness;
     //this issue effects the tap events for the map markers
     self.view = mapView_;
     mapView_.delegate = self;
-    CLLocation *mylocation = mapView_.myLocation;
+
     /*
     for (Business *object in aBusiness) {
         NSLog(@"ParseObject: %@", object);

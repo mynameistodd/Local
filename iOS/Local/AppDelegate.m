@@ -29,18 +29,19 @@
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 
     
+    //for push code
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
                                                     UIUserNotificationTypeSound);
+    
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
                                                                              categories:nil];
     [application registerUserNotificationSettings:settings];
     [application registerForRemoteNotifications];
     
-    //fuck what does it take to get this to fucking work, fuck.
+    //for geofencing, knowing where the client is
     self.locationManager = [[CLLocationManager alloc] init];
     
-    //delagate are fucking usless if we keep assinging them to the calling object, this is fucking fucked.
     self.locationManager.delegate = self;
     [self.locationManager requestAlwaysAuthorization];
     
@@ -48,7 +49,11 @@
         [self.locationManager requestWhenInUseAuthorization];
     }
     [self.locationManager startUpdatingLocation];
+    //used to pass the locationManger object to the mapview, so we dont need to recreate it again.
+    AppDelegate *LMdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    LMdelegate.locationManager = self.locationManager;
     
+    //created the tabs here
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     UITabBar *tabBar = tabBarController.tabBar;
     UITabBarItem *tabBarItem_0 = [tabBar.items objectAtIndex:0];
@@ -60,6 +65,10 @@
     tabBarItem_1 = [tabBarItem_1 initWithTitle:@"" image:[UIImage imageNamed:@"geo_fence-32.png"] selectedImage:[UIImage imageNamed:@"geo_fence-32.png"]];
     tabBarItem_2 = [tabBarItem_2 initWithTitle:@"" image:[UIImage imageNamed:@"internet_explorer-32.png"] selectedImage:[UIImage imageNamed:@"internet_explorer-32.png"]];
     [[UITabBar appearance] setBackgroundColor:[UIColor colorWithRed:0.71 green:0.84 blue:0.66 alpha:1.0]];
+    
+    //create geofences here?  It should be in its own class(es)
+    
+    
     
     // Change the title color of tab bar items
     //example on how to change text color, keep in for now
@@ -77,7 +86,7 @@
     return YES;
 }
 
-
+//the request for location services will be here, one the user sets it up they wont need to do it again.
 - (void)requestAlwaysAuthorization
 {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
