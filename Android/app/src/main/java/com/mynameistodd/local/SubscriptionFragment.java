@@ -3,6 +3,8 @@ package com.mynameistodd.local;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class SubscriptionFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class SubscriptionFragment extends Fragment implements SubscriptionRecyclerAdapter.IAdapterClicks {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,19 +41,24 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private SubscriptionRecyclerAdapter.IAdapterClicks mAdapterClicks;
 
     /**
      * The fragment's ListView/GridView.
      */
-    private AbsListView mListView;
+    //private AbsListView mListView;
 
     /**
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListAdapter mAdapter;
+    //private ListAdapter mAdapter;
     private List<String> mSubscribedChannels;
     private List<Business> mBusinesses;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,6 +85,7 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mAdapterClicks = (SubscriptionRecyclerAdapter.IAdapterClicks) this;
     }
 
     @Override
@@ -86,11 +94,18 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         View view = inflater.inflate(R.layout.fragment_subscription, container, false);
 
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        //mListView = (AbsListView) view.findViewById(android.R.id.list);
+        //((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
 
         // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
+        //mListView.setOnItemClickListener(this);
 
         return view;
     }
@@ -108,10 +123,12 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
                 @Override
                 public void done(List<Business> businesses, ParseException e) {
                     mBusinesses = businesses;
-                    mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
+                    //mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
+                    mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
 
                     // Set the adapter
-                    ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+                    //((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
             });
         }
@@ -134,15 +151,19 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
         mListener = null;
     }
 
-
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onSubscriptionItemClick(mBusinesses.get(position));
-        }
+    public void onItemClick(int position) {
+        mListener.onSubscriptionItemClick(mBusinesses.get(position));
     }
+
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        if (null != mListener) {
+//            // Notify the active callbacks interface (the activity, if the
+//            // fragment is attached to one) that an item has been selected.
+//            mListener.onSubscriptionItemClick(mBusinesses.get(position));
+//        }
+//    }
 
     /**
      * The default content for this Fragment has a TextView that is shown when
@@ -150,11 +171,11 @@ public class SubscriptionFragment extends Fragment implements AbsListView.OnItem
      * to supply the text it should use.
      */
     public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyText instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
-        }
+//        View emptyView = mListView.getEmptyView();
+//
+//        if (emptyText instanceof TextView) {
+//            ((TextView) emptyView).setText(emptyText);
+//        }
     }
 
     /**
