@@ -8,10 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -43,22 +39,13 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     private OnFragmentInteractionListener mListener;
     private SubscriptionRecyclerAdapter.IAdapterClicks mAdapterClicks;
 
-    /**
-     * The fragment's ListView/GridView.
-     */
-    //private AbsListView mListView;
-
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
-    //private ListAdapter mAdapter;
     private List<String> mSubscribedChannels;
     private List<Business> mBusinesses;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.ItemDecoration mItemDecoration;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -93,19 +80,14 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscription, container, false);
 
-        // Set the adapter
-        //mListView = (AbsListView) view.findViewById(android.R.id.list);
-        //((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
+        mItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        //mListView.setOnItemClickListener(this);
+        mRecyclerView.addItemDecoration(mItemDecoration);
 
         return view;
     }
@@ -123,11 +105,8 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
                 @Override
                 public void done(List<Business> businesses, ParseException e) {
                     mBusinesses = businesses;
-                    //mAdapter = new SubscriptionAdapter(getActivity(), android.R.layout.list_content, mBusinesses);
                     mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
 
-                    // Set the adapter
-                    //((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
                     mRecyclerView.setAdapter(mAdapter);
                 }
             });
@@ -155,15 +134,6 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     public void onItemClick(int position) {
         mListener.onSubscriptionItemClick(mBusinesses.get(position));
     }
-
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        if (null != mListener) {
-//            // Notify the active callbacks interface (the activity, if the
-//            // fragment is attached to one) that an item has been selected.
-//            mListener.onSubscriptionItemClick(mBusinesses.get(position));
-//        }
-//    }
 
     /**
      * The default content for this Fragment has a TextView that is shown when

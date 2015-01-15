@@ -2,9 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/feed_item_margin"
-    android:layout_marginRight="@dimen/feed_item_margin"
-    android:layout_marginTop="@dimen/feed_item_margin"
+    android:layout_margin="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.mynameistodd.local.SubscriptionDetailFragment">
 
@@ -12,7 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="15dp">
+        android:paddingBottom="@dimen/feed_item_padding_top_bottom">
+
         <ImageView
             android:id="@+id/detail_business_map"
             android:layout_width="fill_parent"
@@ -20,24 +19,28 @@
             android:layout_gravity="center_horizontal|top"
             android:src="@drawable/teststaticmap" />
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/feed_item_padding_left_right"
-            android:paddingRight="@dimen/feed_item_padding_left_right">
-            <ImageView
-                android:id="@+id/detail_business_logo"
-                android:layout_width="@dimen/feed_item_profile_pic"
-                android:layout_height="@dimen/feed_item_profile_pic"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_launcher" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/feed_item_padding_left_right"
+                android:paddingRight="@dimen/feed_item_padding_left_right">
+
+                <ImageView
+                    android:id="@+id/detail_business_logo"
+                    android:layout_width="@dimen/feed_item_profile_pic"
+                    android:layout_height="@dimen/feed_item_profile_pic"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_launcher" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/detail_business_name"
@@ -65,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/feed_item_padding_top_bottom"
         android:background="@android:color/holo_red_light"
         android:text="@string/unsubscribe" />
 </LinearLayout>
