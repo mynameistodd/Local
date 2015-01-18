@@ -17,3 +17,7 @@ Android/.idea/gradle.xml
 Android/build/intermediates/dex-cache/cache.xml
 
 Android/build/intermediates/dex-cache/cache.xml
+
+Android/app/src/main/res/values/com_crashlytics_export_strings.xml
+
+Android/app/src/main/assets/crashlytics-build.properties

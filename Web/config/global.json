@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Lowecal": {
+            "applicationId": "m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN", 
+            "masterKey": "yGep8trq5bBLrrpeZEjZY4eSx4TKl37RUv4PJohp"
+        }, 
+        "_default": {
+            "link": "Lowecal"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.3"
+    }
+}
