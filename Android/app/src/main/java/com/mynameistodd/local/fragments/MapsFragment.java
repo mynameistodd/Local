@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,6 +29,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.R;
+import com.mynameistodd.local.utils.Util;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;

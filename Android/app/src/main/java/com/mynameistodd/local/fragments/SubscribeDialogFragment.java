@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.mynameistodd.local.R;
 import com.parse.ParsePush;
 
 /**

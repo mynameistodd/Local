@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.R;
 import com.parse.ParseFile;
 import com.squareup.picasso.Picasso;
 

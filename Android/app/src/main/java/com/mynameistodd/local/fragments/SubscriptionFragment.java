@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.R;
+import com.mynameistodd.local.adapters.SubscriptionRecyclerAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;

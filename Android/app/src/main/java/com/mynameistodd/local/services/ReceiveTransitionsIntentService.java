@@ -1,22 +1,21 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
+import com.mynameistodd.local.MainActivity;
+import com.mynameistodd.local.R;
+import com.mynameistodd.local.models.Business;
 import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;

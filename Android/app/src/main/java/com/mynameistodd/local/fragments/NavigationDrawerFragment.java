@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.fragments;
 
 
 import android.app.ActionBar;
@@ -20,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.mynameistodd.local.R;
+import com.mynameistodd.local.utils.Util;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

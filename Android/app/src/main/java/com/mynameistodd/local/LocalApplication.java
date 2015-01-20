@@ -3,6 +3,8 @@ package com.mynameistodd.local;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.models.Message;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;

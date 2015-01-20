@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;

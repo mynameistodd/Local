@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.receivers;
 
 import android.app.Activity;
 import android.app.TaskStackBuilder;
@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import com.mynameistodd.local.MainActivity;
 import com.parse.ParseAnalytics;
 import com.parse.ParsePushBroadcastReceiver;
 

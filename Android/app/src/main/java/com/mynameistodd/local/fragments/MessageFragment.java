@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.models.Message;
+import com.mynameistodd.local.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParsePush;

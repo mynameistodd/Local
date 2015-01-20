@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mynameistodd.local;
+package com.mynameistodd.local.fragments;
 
 import android.content.Context;
 import android.content.res.TypedArray;

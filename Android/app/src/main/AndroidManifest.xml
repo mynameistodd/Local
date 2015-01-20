@@ -62,7 +62,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".LocalPushBroadcastReceiver"
+            android:name=".receivers.LocalPushBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -83,7 +83,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".ReceiveTransitionsIntentService"
+            android:name=".services.ReceiveTransitionsIntentService"
             android:exported="false" >
         </service>
         <meta-data android:name="com.crashlytics.ApiKey" android:value="cb68486cf7bf9c734391abe526decb95709e9933"/>

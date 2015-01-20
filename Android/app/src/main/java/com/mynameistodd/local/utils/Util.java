@@ -1,4 +1,4 @@
-package com.mynameistodd.local;
+package com.mynameistodd.local.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,6 +10,9 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.Geofence;
+import com.mynameistodd.local.R;
+import com.mynameistodd.local.fragments.ErrorDialogFragment;
+import com.mynameistodd.local.models.Business;
 import com.parse.ParseException;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
