@@ -103,27 +103,24 @@ public class Util {
     }
 
     public static String[] getTabs(Context context) {
-//        ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
-//        try {
-//            int count = businesses.getQuery().count();
-//            if (count > 0) {
-//                return new String[]{
-//                        context.getString(R.string.subscribed),
-//                        context.getString(R.string.map),
-//                        context.getString(R.string.my_business),
-//                        context.getString(R.string.send_message),
-//                        context.getString(R.string.about),
-//                };
-//            } else {
-//                return new String[]{
-//                        context.getString(R.string.subscribed),
-//                        context.getString(R.string.map),
-//                        context.getString(R.string.about),
-//                };
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        if (ParseUser.getCurrentUser() != null) {
+            ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+            try {
+                int count = businesses.getQuery().count();
+                if (count > 0) {
+                    return new String[]{
+                            context.getString(R.string.subscribed),
+                            context.getString(R.string.map),
+                            context.getString(R.string.my_business),
+                            context.getString(R.string.send_message),
+                            context.getString(R.string.about),
+                    };
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         return new String[]{
                 context.getString(R.string.subscribed),
                 context.getString(R.string.map),

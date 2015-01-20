@@ -146,10 +146,13 @@ public class SubscriptionDetailFragment extends Fragment {
             Log.d(Util.TAG, "Static Map: " + uri);
 
             ParseFile file = mBusiness.getLogo();
-            String logoUrl = file.getUrl();
+            if (file != null) {
+                String logoUrl = file.getUrl();
+                Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
+            }
+
 
             Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
-            Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
             mDetailBusinessName.setText(mBusiness.getName());
             mDetailBusinessSnippet.setText(mBusiness.getSnippet());
 

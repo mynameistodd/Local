@@ -39,15 +39,15 @@ public class LocalApplication extends Application {
         Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
 
 
-//        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-//        query.getInBackground("53tjjL5sLh", new GetCallback<Business>() {
-//            @Override
-//            public void done(Business business, ParseException e) {
-//                ParseUser user = ParseUser.getCurrentUser();
-//                ParseRelation<Business> relation = user.getRelation("Business");
-//                relation.add(business);
-//                user.saveInBackground();
-//            }
-//        });
+        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+        query.getInBackground("53tjjL5sLh", new GetCallback<Business>() {
+            @Override
+            public void done(Business business, ParseException e) {
+                ParseUser user = ParseUser.getCurrentUser();
+                ParseRelation<Business> relation = user.getRelation("Business");
+                relation.add(business);
+                user.saveInBackground();
+            }
+        });
     }
 }

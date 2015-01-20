@@ -66,9 +66,11 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         Business business = mBusinesses.get(i);
 
         ParseFile file = business.getLogo();
-        String logoUrl = file.getUrl();
+        if (file != null) {
+            String logoUrl = file.getUrl();
+            Picasso.with(mContext).load(logoUrl).into(viewHolder.mLogo);
+        }
 
-        Picasso.with(mContext).load(logoUrl).into(viewHolder.mLogo);
         viewHolder.mName.setText(business.getName());
         viewHolder.mSnippet.setText(business.getSnippet());
     }
