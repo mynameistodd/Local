@@ -16,8 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.R;
+import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.Util;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -129,7 +129,7 @@ public class SubscriptionDetailFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_edit) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, EditBusinessFragment.newInstance(mBusiness.getObjectId()))
+                    .replace(R.id.container, EditBusinessFragment.newInstance(mBusiness.getObjectId()))
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack("editBusinessFragment")
                     .commit();
