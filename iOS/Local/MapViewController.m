@@ -27,11 +27,7 @@ CLLocationManager *locationManager;
     
     locationManager = delegate.locationManager;
     aBusiness = delegate.aBusiness;
-    
-    //CLLocationCoordinate2D * myLocation = CLLocationCoordinate2DMake(locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude);
-    //locationManager.location.coordinate.latitude;
-    //locationManager.location.coordinate.longitude
-    //hard coded for now
+
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:locationManager.location.coordinate.latitude
                                                             longitude:locationManager.location.coordinate.longitude
                                                                  zoom:15];

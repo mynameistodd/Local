@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import <CoreLocation/CoreLocation.h>
-@interface ListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate>
 
 @end

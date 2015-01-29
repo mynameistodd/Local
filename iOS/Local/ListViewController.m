@@ -25,7 +25,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     AppDelegate *LMdelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     locationManager = LMdelegate.locationManager;
-    
+    locationManager.delegate = self;
     PFQuery *query = [PFQuery queryWithClassName:@"Business"];
     aBusiness = [NSMutableArray array];
     
