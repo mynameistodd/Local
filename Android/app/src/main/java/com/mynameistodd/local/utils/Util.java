@@ -117,6 +117,7 @@ public class Util {
                             context.getString(R.string.my_business),
                             context.getString(R.string.send_message),
                             context.getString(R.string.about),
+                            context.getString(R.string.logout)
                     };
                 }
             } catch (ParseException e) {
