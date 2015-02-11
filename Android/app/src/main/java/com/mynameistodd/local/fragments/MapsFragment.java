@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -29,8 +30,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.R;
+import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.Util;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -40,9 +41,23 @@ import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.client.methods.HttpPost;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Place;
+import se.walkercrou.places.RequestHandler;
 
 //import android.support.v4.app.FragmentActivity;
 
@@ -60,6 +75,8 @@ public class MapsFragment extends MapFragment implements
     private LocationClient mLocationClient;
     private List<String> mSubscribedChannels;
     private Fragment mThisFragment;
+
+    private GooglePlaces client;
 
     public MapsFragment() {
     }
@@ -220,6 +237,82 @@ public class MapsFragment extends MapFragment implements
 
             }
         });
+        new PlacesAsyncTask().execute(latLng);
+    }
+
+    private class PlacesAsyncTask extends AsyncTask<LatLng, Void, List<Place>> {
+        @Override
+        protected List<Place> doInBackground(LatLng... params) {
+            client = new GooglePlaces("AIzaSyC-0QDSRvVHsX5T8ysLIN5Farm75xXheRM", new RequestHandler() {
+                public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
+                private HttpURLConnection client;
+                private String characterEncoding;
+
+                @Override
+                public String getCharacterEncoding() {
+                    return characterEncoding;
+                }
+
+                @Override
+                public void setCharacterEncoding(String s) {
+                    this.characterEncoding = s;
+                }
+
+                @Override
+                public InputStream getInputStream(String s) throws IOException {
+                    URL url = new URL(s);
+                    try {
+                        client = (HttpsURLConnection) url.openConnection();
+                        InputStream in = new BufferedInputStream(client.getInputStream());
+                        return in;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new IOException(e);
+                    }
+                }
+
+                @Override
+                public String get(String s) throws IOException {
+                    URL url = new URL(s);
+                    try {
+                        client = (HttpsURLConnection) url.openConnection();
+                        InputStream in = new BufferedInputStream(client.getInputStream());
+                        return IOUtils.toString(in);
+//                        InputStreamReader ins = new InputStreamReader(in);
+//                        BufferedReader br = new BufferedReader(ins);
+//                        StringBuilder sb = new StringBuilder();
+//                        String line;
+//                        while ((line = br.readLine()) != null) {
+//                            sb.append(line);
+//                        }
+//                        return sb.toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new IOException(e);
+                    }
+                }
+
+                @Override
+                public String post(HttpPost httpPost) throws IOException {
+                    return null;
+                }
+            });
+            List<Place> places = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 20.0);
+            return places;
+        }
+
+        @Override
+        protected void onPostExecute(List<Place> places) {
+            super.onPostExecute(places);
+            for (Place place : places) {
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(new LatLng(place.getLatitude(), place.getLongitude()))
+                        .title(place.getName())
+                        .snippet(place.getVicinity());
+                Marker marker = mMap.addMarker(markerOptions);
+                //mMarkers.put(marker, business.getChannelId());
+            }
+        }
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

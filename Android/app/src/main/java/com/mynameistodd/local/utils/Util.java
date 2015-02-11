@@ -25,6 +25,8 @@ public class Util {
     public static final String TAG = "MYNAMEISTODD.LOCAL";
     public static final String MAP_STATIC_API_KEY = "AIzaSyAxuSUZ7-cXhCDi--yo-XLxy3WtpBHb4bU"; //TODO all this map stuff should be in a static method to use the resource value.
     public static final String MAP_BASE_URI = "https://maps.googleapis.com/maps/api/staticmap?key=" + MAP_STATIC_API_KEY + "&maptype=roadmap&zoom=16&scale=2";
+    public static final String PLACES_API_KEY = "AIzaSyC-0QDSRvVHsX5T8ysLIN5Farm75xXheRM";
+    public static final String PLACES_BASE_URI = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=" + PLACES_API_KEY + "";
 
     public static boolean servicesConnected(Context context, Fragment fragment) {
         // Check that Google Play services is available
