@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4111762B1A93B74300B87748 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111762A1A93B74300B87748 /* User.swift */; };
+		4111762D1A93B74E00B87748 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111762C1A93B74E00B87748 /* Business.swift */; };
+		411176301A93C0B800B87748 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111762F1A93C0B800B87748 /* TabViewController.swift */; };
+		411176321A93D44000B87748 /* SubscriptionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411176311A93D44000B87748 /* SubscriptionListController.swift */; };
+		4111763A1A93DC9A00B87748 /* DetailViewSubscribedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411176391A93DC9A00B87748 /* DetailViewSubscribedViewController.swift */; };
 		413A265F1A9175E200143BE5 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413A265E1A9175E200143BE5 /* FacebookSDK.framework */; };
 		4143F5F71A8FCFED00987CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143F5F61A8FCFED00987CC7 /* AppDelegate.swift */; };
 		4143F5FA1A8FCFED00987CC7 /* SwiftyLocal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4143F5F81A8FCFED00987CC7 /* SwiftyLocal.xcdatamodeld */; };
-		4143F5FC1A8FCFED00987CC7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143F5FB1A8FCFED00987CC7 /* ViewController.swift */; };
+		4143F5FC1A8FCFED00987CC7 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143F5FB1A8FCFED00987CC7 /* LogInViewController.swift */; };
 		4143F5FF1A8FCFED00987CC7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4143F5FD1A8FCFED00987CC7 /* Main.storyboard */; };
 		4143F6011A8FCFED00987CC7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4143F6001A8FCFED00987CC7 /* Images.xcassets */; };
 		4143F6041A8FCFED00987CC7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4143F6021A8FCFED00987CC7 /* LaunchScreen.xib */; };
@@ -41,6 +46,7 @@
 		4143F6551A90FDE200987CC7 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4143F6541A90FDE200987CC7 /* ParseUI.framework */; };
 		414D53051A91021600E27ED9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414D53041A91021600E27ED9 /* Social.framework */; };
 		414D53071A91023B00E27ED9 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414D53061A91023B00E27ED9 /* Accounts.framework */; };
+		418330781A957E220056566A /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330771A957E220056566A /* PlacesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,12 +60,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4111762A1A93B74300B87748 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4111762C1A93B74E00B87748 /* Business.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
+		4111762F1A93C0B800B87748 /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		411176311A93D44000B87748 /* SubscriptionListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionListController.swift; sourceTree = "<group>"; };
+		411176391A93DC9A00B87748 /* DetailViewSubscribedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewSubscribedViewController.swift; sourceTree = "<group>"; };
 		413A265E1A9175E200143BE5 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		4143F5F11A8FCFED00987CC7 /* SwiftyLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4143F5F51A8FCFED00987CC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4143F5F61A8FCFED00987CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4143F5F91A8FCFED00987CC7 /* SwiftyLocal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SwiftyLocal.xcdatamodel; sourceTree = "<group>"; };
-		4143F5FB1A8FCFED00987CC7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4143F5FB1A8FCFED00987CC7 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4143F5FE1A8FCFED00987CC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4143F6001A8FCFED00987CC7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4143F6031A8FCFED00987CC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -93,6 +104,7 @@
 		4143F6541A90FDE200987CC7 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		414D53041A91021600E27ED9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		414D53061A91023B00E27ED9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		418330771A957E220056566A /* PlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +151,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4111762E1A93C08A00B87748 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4111762F1A93C0B800B87748 /* TabViewController.swift */,
+				411176311A93D44000B87748 /* SubscriptionListController.swift */,
+				411176391A93DC9A00B87748 /* DetailViewSubscribedViewController.swift */,
+				418330771A957E220056566A /* PlacesViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		4143F5E81A8FCFED00987CC7 = {
 			isa = PBXGroup;
 			children = (
@@ -161,9 +184,10 @@
 		4143F5F31A8FCFED00987CC7 /* SwiftyLocal */ = {
 			isa = PBXGroup;
 			children = (
+				4111762E1A93C08A00B87748 /* Controllers */,
 				4143F6511A8FE57C00987CC7 /* Model */,
 				4143F5F61A8FCFED00987CC7 /* AppDelegate.swift */,
-				4143F5FB1A8FCFED00987CC7 /* ViewController.swift */,
+				4143F5FB1A8FCFED00987CC7 /* LogInViewController.swift */,
 				4143F5FD1A8FCFED00987CC7 /* Main.storyboard */,
 				4143F6001A8FCFED00987CC7 /* Images.xcassets */,
 				4143F6021A8FCFED00987CC7 /* LaunchScreen.xib */,
@@ -236,6 +260,8 @@
 			isa = PBXGroup;
 			children = (
 				4143F6521A8FE59600987CC7 /* GoogleDataProvider.swift */,
+				4111762A1A93B74300B87748 /* User.swift */,
+				4111762C1A93B74E00B87748 /* Business.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -340,9 +366,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4143F5FC1A8FCFED00987CC7 /* ViewController.swift in Sources */,
+				411176321A93D44000B87748 /* SubscriptionListController.swift in Sources */,
+				4143F5FC1A8FCFED00987CC7 /* LogInViewController.swift in Sources */,
+				418330781A957E220056566A /* PlacesViewController.swift in Sources */,
+				4111763A1A93DC9A00B87748 /* DetailViewSubscribedViewController.swift in Sources */,
 				4143F6531A8FE59600987CC7 /* GoogleDataProvider.swift in Sources */,
 				4143F5F71A8FCFED00987CC7 /* AppDelegate.swift in Sources */,
+				4111762D1A93B74E00B87748 /* Business.swift in Sources */,
+				4111762B1A93B74300B87748 /* User.swift in Sources */,
+				411176301A93C0B800B87748 /* TabViewController.swift in Sources */,
 				4143F5FA1A8FCFED00987CC7 /* SwiftyLocal.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 import ParseUI
-class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
+class LogInViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
 
 
     override func viewDidLoad() {
