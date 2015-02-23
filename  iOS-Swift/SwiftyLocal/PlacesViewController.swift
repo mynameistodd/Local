@@ -29,6 +29,30 @@ class PlacesViewController: UITableViewController, UITableViewDelegate, UITableV
     func ShowGoogleMap(sender: UIBarButtonItem) {
         performSegueWithIdentifier("GoogleMapSegue", sender: self)
     }
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        var simpleTableIdentifier : String = "SimpleTableCell"
+        var cell = tableView.dequeueReusableCellWithIdentifier("SimpleTableCell") as? UITableViewCell
+        
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "SimpleTableCell")
+        }
+        cell?.textLabel?.text = "Places Cell Text"
+        //makes the little arrow on the right
+        //cell?.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        return cell!
+    }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        /*
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        performSegueWithIdentifier("DetailViewSegue", sender: cell)
+        */
+        
+    }
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
     /*
     // MARK: - Navigation
 

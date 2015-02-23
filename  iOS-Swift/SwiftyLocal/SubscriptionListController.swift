@@ -42,6 +42,8 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "SimpleTableCell")
         }
         cell?.textLabel?.text = "cell text"
+        //makes the little arrow on the right
+        cell?.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell!
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
