@@ -246,7 +246,7 @@ public class MapsFragment extends MapFragment implements
                         .title(place.getName())
                         .snippet(place.getVicinity());
                 Marker marker = mMap.addMarker(markerOptions);
-                //mMarkers.put(marker, business.getChannelId());
+                mMarkers.put(marker, place.getPlaceId());
             }
         }
     }

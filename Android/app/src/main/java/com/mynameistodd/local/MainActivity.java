@@ -46,6 +46,8 @@ import com.parse.ui.ParseLoginBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.walkercrou.places.Place;
+
 
 public class MainActivity extends Activity
         implements
@@ -68,9 +70,7 @@ public class MainActivity extends Activity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
+
     private CharSequence mTitle;
     // Holds the location client
     private LocationClient mLocationClient;
@@ -232,9 +232,9 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onSubscriptionItemClick(Business business) {
+    public void onSubscriptionItemClick(Place business) {
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getPlaceId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
