@@ -41,23 +41,12 @@ import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.client.methods.HttpPost;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
-import se.walkercrou.places.RequestHandler;
 
 //import android.support.v4.app.FragmentActivity;
 
@@ -243,60 +232,7 @@ public class MapsFragment extends MapFragment implements
     private class PlacesAsyncTask extends AsyncTask<LatLng, Void, List<Place>> {
         @Override
         protected List<Place> doInBackground(LatLng... params) {
-            client = new GooglePlaces("AIzaSyC-0QDSRvVHsX5T8ysLIN5Farm75xXheRM", new RequestHandler() {
-                public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
-                private HttpURLConnection client;
-                private String characterEncoding;
-
-                @Override
-                public String getCharacterEncoding() {
-                    return characterEncoding;
-                }
-
-                @Override
-                public void setCharacterEncoding(String s) {
-                    this.characterEncoding = s;
-                }
-
-                @Override
-                public InputStream getInputStream(String s) throws IOException {
-                    URL url = new URL(s);
-                    try {
-                        client = (HttpsURLConnection) url.openConnection();
-                        InputStream in = new BufferedInputStream(client.getInputStream());
-                        return in;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new IOException(e);
-                    }
-                }
-
-                @Override
-                public String get(String s) throws IOException {
-                    URL url = new URL(s);
-                    try {
-                        client = (HttpsURLConnection) url.openConnection();
-                        InputStream in = new BufferedInputStream(client.getInputStream());
-                        return IOUtils.toString(in);
-//                        InputStreamReader ins = new InputStreamReader(in);
-//                        BufferedReader br = new BufferedReader(ins);
-//                        StringBuilder sb = new StringBuilder();
-//                        String line;
-//                        while ((line = br.readLine()) != null) {
-//                            sb.append(line);
-//                        }
-//                        return sb.toString();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new IOException(e);
-                    }
-                }
-
-                @Override
-                public String post(HttpPost httpPost) throws IOException {
-                    return null;
-                }
-            });
+            client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
             List<Place> places = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 20.0);
             return places;
         }
