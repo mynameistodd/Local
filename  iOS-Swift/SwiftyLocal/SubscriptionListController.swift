@@ -10,7 +10,7 @@ import Foundation
 import ParseUI
 import Parse
 class SubscriptionListController : UITableViewController, UITableViewDelegate, UITableViewDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
-    
+    var BusinessData: [Business] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +21,7 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
         // Dispose of any resources that can be recreated.
     }
     override func viewDidAppear(animated: Bool) {
+        var debugCurrentUser: PFUser? = PFUser.currentUser()
         if PFUser.currentUser() == nil {
             var login: PFLogInViewController = PFLogInViewController()
             login.delegate = self
@@ -33,8 +34,17 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
             self.presentViewController(login, animated: true, completion: nil)
         }
     }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
+        /*
+        if PFUser.currentUser() == nil {
+            self.BusinessData = ParseDataProvider.GetUserSubscriptionsFromParse()
+        } else {
+            //else we should have a user AND have the data that the user is subcribed to
+            //we still need to check the array though...
+            
+        }
+        */
         var simpleTableIdentifier : String = "SimpleTableCell"
         var cell = tableView.dequeueReusableCellWithIdentifier("SimpleTableCell") as? UITableViewCell
         

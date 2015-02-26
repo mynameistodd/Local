@@ -7,12 +7,20 @@
 //
 
 import UIKit
-
+import Parse
 class DetailViewSubscribedViewController: UIViewController {
+
+    @IBAction func LogOut(sender: UIButton) {
+        var currentUser: PFUser = PFUser.currentUser()
+        if currentUser.isAuthenticated() {
+            PFUser.logOut()
+            println("logged out")
+        }
+    }
     var dataString: String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
 
@@ -20,7 +28,6 @@ class DetailViewSubscribedViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation

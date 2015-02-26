@@ -17,14 +17,13 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate, PFLogIn
         var tabViewController = self  //not sure if this is needed, should just be set to self
         
         var SubscriptionList : UITabBarItem = self.tabBar.items![0] as UITabBarItem
-        /*
         var PlacesList       : UITabBarItem = self.tabBar.items![1] as UITabBarItem
         var OptionsLogOut    : UITabBarItem = self.tabBar.items![2] as UITabBarItem
         
-        SubscriptionList.title = "A"
-        PlacesList.title = "B"
-        OptionsLogOut.title = "C"
-        */
+        SubscriptionList.title = "Yours"
+        PlacesList.title = "Search"
+        OptionsLogOut.title = "Options"
+
         
     }
     override func didReceiveMemoryWarning() {

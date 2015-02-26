@@ -42,11 +42,11 @@
 		4143F64A1A8FD54100987CC7 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4143F6491A8FD54100987CC7 /* libstdc++.6.dylib */; };
 		4143F64D1A8FDAB700987CC7 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4143F64C1A8FDAB700987CC7 /* GoogleMaps.framework */; };
 		4143F64F1A8FDACE00987CC7 /* GoogleMaps.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 4143F64E1A8FDACE00987CC7 /* GoogleMaps.bundle */; };
-		4143F6531A8FE59600987CC7 /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143F6521A8FE59600987CC7 /* GoogleDataProvider.swift */; };
 		4143F6551A90FDE200987CC7 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4143F6541A90FDE200987CC7 /* ParseUI.framework */; };
 		414D53051A91021600E27ED9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414D53041A91021600E27ED9 /* Social.framework */; };
 		414D53071A91023B00E27ED9 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414D53061A91023B00E27ED9 /* Accounts.framework */; };
 		418330781A957E220056566A /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330771A957E220056566A /* PlacesViewController.swift */; };
+		4183307A1A9B941A0056566A /* ParseDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330791A9B941A0056566A /* ParseDataProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,11 +100,11 @@
 		4143F64C1A8FDAB700987CC7 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "../../Downloads/GoogleMaps-iOS-1.9.2/GoogleMaps.framework"; sourceTree = "<group>"; };
 		4143F64E1A8FDACE00987CC7 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "../../Downloads/GoogleMaps-iOS-1.9.2/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		4143F6501A8FDB7600987CC7 /* SwiftyLocal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftyLocal-Bridging-Header.h"; sourceTree = "<group>"; };
-		4143F6521A8FE59600987CC7 /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
 		4143F6541A90FDE200987CC7 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		414D53041A91021600E27ED9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		414D53061A91023B00E27ED9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		418330771A957E220056566A /* PlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesViewController.swift; sourceTree = "<group>"; };
+		418330791A9B941A0056566A /* ParseDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,7 +259,7 @@
 		4143F6511A8FE57C00987CC7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4143F6521A8FE59600987CC7 /* GoogleDataProvider.swift */,
+				418330791A9B941A0056566A /* ParseDataProvider.swift */,
 				4111762A1A93B74300B87748 /* User.swift */,
 				4111762C1A93B74E00B87748 /* Business.swift */,
 			);
@@ -368,9 +368,9 @@
 			files = (
 				411176321A93D44000B87748 /* SubscriptionListController.swift in Sources */,
 				4143F5FC1A8FCFED00987CC7 /* LogInViewController.swift in Sources */,
+				4183307A1A9B941A0056566A /* ParseDataProvider.swift in Sources */,
 				418330781A957E220056566A /* PlacesViewController.swift in Sources */,
 				4111763A1A93DC9A00B87748 /* DetailViewSubscribedViewController.swift in Sources */,
-				4143F6531A8FE59600987CC7 /* GoogleDataProvider.swift in Sources */,
 				4143F5F71A8FCFED00987CC7 /* AppDelegate.swift in Sources */,
 				4111762D1A93B74E00B87748 /* Business.swift in Sources */,
 				4111762B1A93B74300B87748 /* User.swift in Sources */,

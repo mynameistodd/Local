@@ -14,12 +14,12 @@ class PlacesViewController: UITableViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Contact"
         //style:UIBarButtonItemStylePlain target:self action:@selector(contact:)];
-        var button = UIBarButtonItem(title: "Map", style: UIBarButtonItemStyle.Plain, target: self, action: "ShowGoogleMap:")
+        var button = UIBarButtonItem(title: "Map", style: UIBarButtonItemStyle.Bordered, target: self, action: "ShowGoogleMap:")
         
         self.navigationItem.rightBarButtonItem = button
 
         // Do any additional setup after loading the view.
-    }
+    } 
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -39,15 +39,13 @@ class PlacesViewController: UITableViewController, UITableViewDelegate, UITableV
         }
         cell?.textLabel?.text = "Places Cell Text"
         //makes the little arrow on the right
-        //cell?.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell?.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell!
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        /*
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        performSegueWithIdentifier("DetailViewSegue", sender: cell)
-        */
+        performSegueWithIdentifier("PlacesDetailViewSegue", sender: cell)
         
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

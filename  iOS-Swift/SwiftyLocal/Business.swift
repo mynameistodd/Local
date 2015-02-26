@@ -27,3 +27,4 @@ class Business {
         self.snippet = snippet
     }
 }
+
