@@ -20,7 +20,7 @@ import se.walkercrou.places.Place;
  */
 public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<SubscriptionRecyclerAdapter.ViewHolder> {
 
-    private List<Place> mBusinesses;
+    private List<Place> mPlaces;
     private Context mContext;
     private IAdapterClicks mListener;
 
@@ -45,9 +45,9 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         }
     }
 
-    public SubscriptionRecyclerAdapter(Context context, List<Place> businesses, IAdapterClicks listener) {
+    public SubscriptionRecyclerAdapter(Context context, List<Place> places, IAdapterClicks listener) {
         this.mContext = context;
-        this.mBusinesses = businesses;
+        this.mPlaces = places;
         this.mListener = listener;
     }
 
@@ -65,22 +65,18 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Place business = mBusinesses.get(i);
+        Place place = mPlaces.get(i);
 
-        //ParseFile file = business.getLogo();
-        //if (file != null) {
-        String logoUrl = business.getIconUrl(); // file.getUrl();
+        String logoUrl = place.getIconUrl();
             Picasso.with(mContext).load(logoUrl).into(viewHolder.mLogo);
-        //}
 
-        viewHolder.mName.setText(business.getName());
-        //viewHolder.mSnippet.setText(business.getSnippet());
-        viewHolder.mSnippet.setText(business.getVicinity());
+        viewHolder.mName.setText(place.getName());
+        viewHolder.mSnippet.setText(place.getVicinity());
     }
 
     @Override
     public int getItemCount() {
-        return mBusinesses.size();
+        return mPlaces.size();
     }
 
     public static interface IViewHolderClicks {

@@ -25,20 +25,15 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mynameistodd.local.R;
-import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.Util;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -46,9 +41,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Param;
 import se.walkercrou.places.Place;
-
-//import android.support.v4.app.FragmentActivity;
+import se.walkercrou.places.exception.GooglePlacesException;
 
 public class MapsFragment extends MapFragment implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -183,58 +178,32 @@ public class MapsFragment extends MapFragment implements
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                updateMap(cameraPosition.target);
+                mMap.clear();
+                mMarkers.clear();
+
+                new PlacesAsyncTask().execute(cameraPosition.target);
+
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(cameraPosition.target)
+                        .fillColor(Color.parseColor("#55FFFF00")) //TODO Needs to be in an XML file.
+                        .radius(100) //TODO Should come from Place object.
+                        .strokeColor(Color.TRANSPARENT);
+                mMap.addCircle(circleOptions);
             }
         });
-    }
-
-    private void updateMap(LatLng latLng) {
-        ParseGeoPoint parseGeoPoint = new ParseGeoPoint(latLng.latitude, latLng.longitude);
-
-        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-        //query.whereNear("location", parseGeoPoint);
-        query.whereWithinMiles("location", parseGeoPoint, 3.0); //TODO Distance needs to be a preference
-        query.findInBackground(new FindCallback<Business>() {
-            @Override
-            public void done(List<Business> businesses, ParseException e) {
-                if (businesses != null) {
-                    mMarkers.clear();
-                    mMap.clear();
-                    for (Business business : businesses) {
-                        MarkerOptions markerOptions = new MarkerOptions()
-                                .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
-                                .title(business.getName())
-                                .snippet(business.getSnippet());
-
-                        if (mSubscribedChannels.contains(business.getChannelId())) {
-                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-                            CircleOptions circleOptions = new CircleOptions()
-                                    .center(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
-                                    .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
-                                    .radius(50) //TODO Should come from Business object.
-                                    .strokeColor(Color.TRANSPARENT);
-                            Circle circle = mMap.addCircle(circleOptions);
-                        }
-
-                        Marker marker = mMap.addMarker(markerOptions);
-                        mMarkers.put(marker, business.getChannelId());
-                    }
-                } else if (e != null) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        new PlacesAsyncTask().execute(latLng);
     }
 
     private class PlacesAsyncTask extends AsyncTask<LatLng, Void, List<Place>> {
         @Override
         protected List<Place> doInBackground(LatLng... params) {
+            List<Place> results = new ArrayList<>();
             client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
-            List<Place> places = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 20.0);
-            return places;
+            try {
+                results = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 100.0, Param.name("types").value("aquarium|bakery|bar|beauty_salon|bicycle_store|book_store|bowling_alley|cafe|car_dealer|car_repair|casino|clothing_store|dentist|department_store|electronics_store|establishment|florist|food|furniture_store|gym|hair_care|home_goods_store|jewelry_store|lodging|meal_delivery|meal_takeaway|movie_theater|night_club|pet_store|restaurant|shoe_store|spa|store|zoo"));
+            } catch (GooglePlacesException e) {
+                e.printStackTrace();
+            }
+            return results;
         }
 
         @Override
@@ -245,6 +214,18 @@ public class MapsFragment extends MapFragment implements
                         .position(new LatLng(place.getLatitude(), place.getLongitude()))
                         .title(place.getName())
                         .snippet(place.getVicinity());
+
+                if (mSubscribedChannels.contains(place.getPlaceId())) {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(new LatLng(place.getLatitude(), place.getLongitude()))
+                            .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
+                            .radius(50) //TODO Should come from Place object.
+                            .strokeColor(Color.TRANSPARENT);
+                    mMap.addCircle(circleOptions);
+                }
+
                 Marker marker = mMap.addMarker(markerOptions);
                 mMarkers.put(marker, place.getPlaceId());
             }
