@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mynameistodd.local.R;
+import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -231,6 +232,7 @@ public class MapsFragment extends MapFragment implements
             }
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -372,7 +374,7 @@ public class MapsFragment extends MapFragment implements
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

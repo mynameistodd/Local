@@ -1,4 +1,4 @@
-package com.mynameistodd.local.fragments;
+package com.mynameistodd.local.utils;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.HttpPost;
@@ -18,7 +18,7 @@ import se.walkercrou.places.RequestHandler;
 /**
  * Created by tdeland on 2/23/15.
  */
-class MyRequestHandler implements RequestHandler {
+public class MyRequestHandler implements RequestHandler {
     public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
     private HttpURLConnection client;
     private String characterEncoding;

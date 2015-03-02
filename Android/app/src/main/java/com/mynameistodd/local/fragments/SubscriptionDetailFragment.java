@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
 import com.parse.GetCallback;
 import com.parse.ParseException;

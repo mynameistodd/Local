@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.adapters.SubscriptionRecyclerAdapter;
+import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
 import com.parse.ParseInstallation;
 
