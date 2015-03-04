@@ -15,13 +15,13 @@ import ParseUI
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let GoogleMapKey = "AIzaSyBHMTiSraTxwrYX7X2auIFLV4Yzm81Iagk"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Parse.enableLocalDatastore()
         
         Parse.setApplicationId("m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN", clientKey: "tdKfe6bJDPpstLEigKmnhyRyBhSV7vy94IA1SVHM")
-
+        GMSServices.provideAPIKey(GoogleMapKey)
         //let defaultACL = PFACL();
         
         // If you would like all objects to be private by default, remove this line.

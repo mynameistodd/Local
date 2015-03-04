@@ -46,6 +46,7 @@
 		416CB3121AA78B6200BFEDD9 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 416CB3111AA78B6200BFEDD9 /* GoogleMaps.bundle */; };
 		418330781A957E220056566A /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330771A957E220056566A /* PlacesViewController.swift */; };
 		4183307A1A9B941A0056566A /* ParseDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330791A9B941A0056566A /* ParseDataProvider.swift */; };
+		41AC045E1AA79198004666AB /* SwiftyLocal-Bridging-Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AC045D1AA79198004666AB /* SwiftyLocal-Bridging-Header.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,7 +96,6 @@
 		4143F6451A8FD51C00987CC7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		4143F6471A8FD52B00987CC7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4143F6491A8FD54100987CC7 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
-		4143F6501A8FDB7600987CC7 /* SwiftyLocal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftyLocal-Bridging-Header.h"; sourceTree = "<group>"; };
 		4143F6541A90FDE200987CC7 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		414D53041A91021600E27ED9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		414D53061A91023B00E27ED9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -103,6 +103,8 @@
 		416CB3111AA78B6200BFEDD9 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		418330771A957E220056566A /* PlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesViewController.swift; sourceTree = "<group>"; };
 		418330791A9B941A0056566A /* ParseDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataProvider.swift; sourceTree = "<group>"; };
+		41AC045C1AA79198004666AB /* SwiftyLocal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftyLocal-Bridging-Header.h"; sourceTree = "<group>"; };
+		41AC045D1AA79198004666AB /* SwiftyLocal-Bridging-Header.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SwiftyLocal-Bridging-Header.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,7 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				4143F5F51A8FCFED00987CC7 /* Info.plist */,
-				4143F6501A8FDB7600987CC7 /* SwiftyLocal-Bridging-Header.h */,
+				41AC045D1AA79198004666AB /* SwiftyLocal-Bridging-Header.m */,
+				41AC045C1AA79198004666AB /* SwiftyLocal-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				4143F5FC1A8FCFED00987CC7 /* LogInViewController.swift in Sources */,
 				4183307A1A9B941A0056566A /* ParseDataProvider.swift in Sources */,
 				418330781A957E220056566A /* PlacesViewController.swift in Sources */,
+				41AC045E1AA79198004666AB /* SwiftyLocal-Bridging-Header.m in Sources */,
 				4111763A1A93DC9A00B87748 /* DetailViewSubscribedViewController.swift in Sources */,
 				4143F5F71A8FCFED00987CC7 /* AppDelegate.swift in Sources */,
 				4111762D1A93B74E00B87748 /* Business.swift in Sources */,
@@ -496,6 +500,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -506,6 +511,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftyLocal/SwiftyLocal-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -513,6 +520,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -523,6 +531,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftyLocal/SwiftyLocal-Bridging-Header.h";
 			};
 			name = Release;
 		};
