@@ -1,21 +1,25 @@
 //
-//  DetailViewSubscribedViewController.swift
+//  OptionsViewController.swift
 //  SwiftyLocal
 //
-//  Created by Max Nesler on 2/17/15.
+//  Created by Max Nesler on 3/12/15.
 //  Copyright (c) 2015 Max Nesler. All rights reserved.
 //
 
 import UIKit
 import Parse
-class DetailViewSubscribedViewController: UIViewController {
+class OptionsViewController: UIViewController {
 
-    @IBAction func UnSubScribeFromGooglePlace(sender: UIButton) {
+    @IBAction func LogOut(sender: UIButton) {
+        var currentUser: PFUser = PFUser.currentUser()
+        if currentUser.isAuthenticated() {
+            PFUser.logOut()
+            println("logged out")
+        }
     }
-    var GooglePlaceId: String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
     }
 
@@ -23,6 +27,7 @@ class DetailViewSubscribedViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
     /*
     // MARK: - Navigation

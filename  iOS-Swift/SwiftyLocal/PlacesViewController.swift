@@ -30,12 +30,12 @@ class PlacesViewController: UITableViewController, UITableViewDelegate, UITableV
         performSegueWithIdentifier("GoogleMapSegue", sender: self)
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        var simpleTableIdentifier : String = "SimpleTableCell"
-        var cell = tableView.dequeueReusableCellWithIdentifier("SimpleTableCell") as? UITableViewCell
+        //this is the same name as the sub table, with a 1 on the end, make it better
+        var simpleTableIdentifier : String = "SimpleTableCell1"
+        var cell = tableView.dequeueReusableCellWithIdentifier("SimpleTableCell1") as? UITableViewCell
         
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "SimpleTableCell")
+            cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "SimpleTableCell1")
         }
         cell?.textLabel?.text = "Places Cell Text"
         //makes the little arrow on the right

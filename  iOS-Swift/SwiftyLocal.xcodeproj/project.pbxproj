@@ -12,6 +12,7 @@
 		411176301A93C0B800B87748 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111762F1A93C0B800B87748 /* TabViewController.swift */; };
 		411176321A93D44000B87748 /* SubscriptionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411176311A93D44000B87748 /* SubscriptionListController.swift */; };
 		4111763A1A93DC9A00B87748 /* DetailViewSubscribedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411176391A93DC9A00B87748 /* DetailViewSubscribedViewController.swift */; };
+		41309B031AB2123500A848A7 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41309B021AB2123500A848A7 /* OptionsViewController.swift */; };
 		413A265F1A9175E200143BE5 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413A265E1A9175E200143BE5 /* FacebookSDK.framework */; };
 		4143F5F71A8FCFED00987CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4143F5F61A8FCFED00987CC7 /* AppDelegate.swift */; };
 		4143F5FA1A8FCFED00987CC7 /* SwiftyLocal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4143F5F81A8FCFED00987CC7 /* SwiftyLocal.xcdatamodeld */; };
@@ -47,6 +48,11 @@
 		418330781A957E220056566A /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330771A957E220056566A /* PlacesViewController.swift */; };
 		4183307A1A9B941A0056566A /* ParseDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418330791A9B941A0056566A /* ParseDataProvider.swift */; };
 		41AC045E1AA79198004666AB /* SwiftyLocal-Bridging-Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AC045D1AA79198004666AB /* SwiftyLocal-Bridging-Header.m */; };
+		41AC04601AA793F6004666AB /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AC045F1AA793F6004666AB /* GoogleDataProvider.swift */; };
+		41AC04621AA8BB8D004666AB /* UserLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AC04611AA8BB8D004666AB /* UserLocationController.swift */; };
+		41AC04681AADE5D0004666AB /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AC04671AADE5D0004666AB /* MapViewController.swift */; };
+		41AC046A1AADF061004666AB /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AC04691AADF061004666AB /* GooglePlace.swift */; };
+		41AC046C1AAF59F7004666AB /* PlaceMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AC046B1AAF59F7004666AB /* PlaceMarker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +71,7 @@
 		4111762F1A93C0B800B87748 /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		411176311A93D44000B87748 /* SubscriptionListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionListController.swift; sourceTree = "<group>"; };
 		411176391A93DC9A00B87748 /* DetailViewSubscribedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewSubscribedViewController.swift; sourceTree = "<group>"; };
+		41309B021AB2123500A848A7 /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		413A265E1A9175E200143BE5 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		4143F5F11A8FCFED00987CC7 /* SwiftyLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4143F5F51A8FCFED00987CC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -105,6 +112,11 @@
 		418330791A9B941A0056566A /* ParseDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseDataProvider.swift; sourceTree = "<group>"; };
 		41AC045C1AA79198004666AB /* SwiftyLocal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftyLocal-Bridging-Header.h"; sourceTree = "<group>"; };
 		41AC045D1AA79198004666AB /* SwiftyLocal-Bridging-Header.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SwiftyLocal-Bridging-Header.m"; sourceTree = "<group>"; };
+		41AC045F1AA793F6004666AB /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
+		41AC04611AA8BB8D004666AB /* UserLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocationController.swift; sourceTree = "<group>"; };
+		41AC04671AADE5D0004666AB /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		41AC04691AADF061004666AB /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
+		41AC046B1AAF59F7004666AB /* PlaceMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceMarker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +168,10 @@
 				411176311A93D44000B87748 /* SubscriptionListController.swift */,
 				411176391A93DC9A00B87748 /* DetailViewSubscribedViewController.swift */,
 				418330771A957E220056566A /* PlacesViewController.swift */,
+				41AC04611AA8BB8D004666AB /* UserLocationController.swift */,
+				4143F5FB1A8FCFED00987CC7 /* LogInViewController.swift */,
+				41AC04671AADE5D0004666AB /* MapViewController.swift */,
+				41309B021AB2123500A848A7 /* OptionsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -182,10 +198,9 @@
 		4143F5F31A8FCFED00987CC7 /* SwiftyLocal */ = {
 			isa = PBXGroup;
 			children = (
+				4143F5F61A8FCFED00987CC7 /* AppDelegate.swift */,
 				4111762E1A93C08A00B87748 /* Controllers */,
 				4143F6511A8FE57C00987CC7 /* Model */,
-				4143F5F61A8FCFED00987CC7 /* AppDelegate.swift */,
-				4143F5FB1A8FCFED00987CC7 /* LogInViewController.swift */,
 				4143F5FD1A8FCFED00987CC7 /* Main.storyboard */,
 				4143F6001A8FCFED00987CC7 /* Images.xcassets */,
 				4143F6021A8FCFED00987CC7 /* LaunchScreen.xib */,
@@ -260,6 +275,9 @@
 				418330791A9B941A0056566A /* ParseDataProvider.swift */,
 				4111762A1A93B74300B87748 /* User.swift */,
 				4111762C1A93B74E00B87748 /* Business.swift */,
+				41AC045F1AA793F6004666AB /* GoogleDataProvider.swift */,
+				41AC04691AADF061004666AB /* GooglePlace.swift */,
+				41AC046B1AAF59F7004666AB /* PlaceMarker.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -313,9 +331,11 @@
 				TargetAttributes = {
 					4143F5F01A8FCFED00987CC7 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 66AYW5C998;
 					};
 					4143F6081A8FCFED00987CC7 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 66AYW5C998;
 						TestTargetID = 4143F5F01A8FCFED00987CC7;
 					};
 				};
@@ -366,7 +386,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				411176321A93D44000B87748 /* SubscriptionListController.swift in Sources */,
+				41AC04601AA793F6004666AB /* GoogleDataProvider.swift in Sources */,
+				41AC046A1AADF061004666AB /* GooglePlace.swift in Sources */,
+				41AC046C1AAF59F7004666AB /* PlaceMarker.swift in Sources */,
 				4143F5FC1A8FCFED00987CC7 /* LogInViewController.swift in Sources */,
+				41AC04621AA8BB8D004666AB /* UserLocationController.swift in Sources */,
+				41309B031AB2123500A848A7 /* OptionsViewController.swift in Sources */,
 				4183307A1A9B941A0056566A /* ParseDataProvider.swift in Sources */,
 				418330781A957E220056566A /* PlacesViewController.swift in Sources */,
 				41AC045E1AA79198004666AB /* SwiftyLocal-Bridging-Header.m in Sources */,
@@ -376,6 +401,7 @@
 				4111762B1A93B74300B87748 /* User.swift in Sources */,
 				411176301A93C0B800B87748 /* TabViewController.swift in Sources */,
 				4143F5FA1A8FCFED00987CC7 /* SwiftyLocal.xcdatamodeld in Sources */,
+				41AC04681AADE5D0004666AB /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,7 +460,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.maxwell.SwiftyLocal";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.maxwell.SwiftyLocal";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -454,6 +481,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "d54c10ab-d647-4754-8dbf-db50e8313788";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -477,7 +505,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.maxwell.SwiftyLocal";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.maxwell.SwiftyLocal";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -490,6 +519,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "d54c10ab-d647-4754-8dbf-db50e8313788";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -501,6 +531,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -511,6 +543,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d54c10ab-d647-4754-8dbf-db50e8313788";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftyLocal/SwiftyLocal-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -521,6 +554,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -531,6 +566,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d54c10ab-d647-4754-8dbf-db50e8313788";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftyLocal/SwiftyLocal-Bridging-Header.h";
 			};
 			name = Release;
@@ -539,6 +575,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -550,6 +588,7 @@
 				INFOPLIST_FILE = SwiftyLocalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftyLocal.app/SwiftyLocal";
 			};
 			name = Debug;
@@ -558,6 +597,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -565,6 +606,7 @@
 				INFOPLIST_FILE = SwiftyLocalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftyLocal.app/SwiftyLocal";
 			};
 			name = Release;

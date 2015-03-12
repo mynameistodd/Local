@@ -15,14 +15,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="HW8-cN-pSY" kind="relationship" relationship="viewControllers" id="Ag8-cq-R4C"/>
-                        <segue destination="myF-SZ-43h" kind="relationship" relationship="viewControllers" id="JK0-7d-hle"/>
-                        <segue destination="y3i-Lf-zSb" kind="relationship" relationship="viewControllers" id="K2y-MH-jhb"/>
+                        <segue destination="WCG-kM-8N0" kind="relationship" relationship="viewControllers" id="ZLZ-A6-dkj"/>
+                        <segue destination="HW8-cN-pSY" kind="relationship" relationship="viewControllers" id="xPj-bB-Zw2"/>
+                        <segue destination="y3i-Lf-zSb" kind="relationship" relationship="viewControllers" id="VKb-4b-k1n"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qM2-uC-tW5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1220" y="873"/>
+            <point key="canvasLocation" x="1202" y="941"/>
         </scene>
         <!--Subscribed Places-->
         <scene sceneID="jL8-qx-4wv">
@@ -54,94 +54,10 @@
             </objects>
             <point key="canvasLocation" x="2676" y="344"/>
         </scene>
-        <!--Places-->
-        <scene sceneID="iBC-rg-2MD">
-            <objects>
-                <tableViewController title="Places" id="b2a-JR-r7e" customClass="PlacesViewController" customModule="SwiftyLocal" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="g5i-I6-VF4">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="IoL-E8-Z8p">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IoL-E8-Z8p" id="76p-G8-KL8">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="b2a-JR-r7e" id="pdQ-of-Bvi"/>
-                            <outlet property="delegate" destination="b2a-JR-r7e" id="sjY-Gi-IQU"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="6rF-K1-m2Y"/>
-                    <connections>
-                        <segue destination="BKW-VE-wMG" kind="show" identifier="GoogleMapSegue" id="lB9-l1-ctv"/>
-                        <segue destination="TQr-G1-Vpr" kind="show" identifier="PlacesDetailViewSegue" id="PSK-bW-RUz"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="b5o-jz-Tl7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2696" y="1056"/>
-        </scene>
-        <!--Map View-->
-        <scene sceneID="dDt-O4-0s7">
-            <objects>
-                <viewController title="Map View" id="BKW-VE-wMG" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SGp-hz-ZQY"/>
-                        <viewControllerLayoutGuide type="bottom" id="4aF-eA-S7Q"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="FSG-gk-oFY">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wmV-Xg-dCL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3416" y="1056"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="NQA-aF-pWa">
-            <objects>
-                <viewController id="TQr-G1-Vpr" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ZTL-il-bmu"/>
-                        <viewControllerLayoutGuide type="bottom" id="ch4-cc-gRI"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="uzw-yF-peu">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x7O-Cz-ze0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3416" y="1802"/>
-        </scene>
-        <!--Item-->
-        <scene sceneID="ruE-uX-5DG">
-            <objects>
-                <navigationController id="myF-SZ-43h" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="nO0-uQ-PrI"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pPd-wO-b9C">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="b2a-JR-r7e" kind="relationship" relationship="rootViewController" id="6z5-f7-hSl"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="byw-dY-eHu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1952" y="1056"/>
-        </scene>
         <!--Options-->
         <scene sceneID="BYm-nR-caz">
             <objects>
-                <viewController title="Options" id="y3i-Lf-zSb" customClass="DetailViewSubscribedViewController" customModule="SwiftyLocal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Options" id="y3i-Lf-zSb" customClass="OptionsViewController" customModule="SwiftyLocal" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Bjc-gZ-bxY"/>
                         <viewControllerLayoutGuide type="bottom" id="5ma-9W-yfY"/>
@@ -156,7 +72,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="LogOut:" destination="y3i-Lf-zSb" eventType="touchUpInside" id="WN0-5B-UmY"/>
+                                    <action selector="LogOut:" destination="y3i-Lf-zSb" eventType="touchUpInside" id="VVu-PQ-46g"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -166,7 +82,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dGR-b7-TJP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1952" y="1956"/>
+            <point key="canvasLocation" x="1202" y="1760"/>
         </scene>
         <!--Detail Subscribed Places-->
         <scene sceneID="TXW-q1-9ui">
@@ -179,8 +95,23 @@
                     <view key="view" contentMode="scaleToFill" id="HQF-oR-BFO">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3C-LI-dm0">
+                                <rect key="frame" x="16" y="218" width="568" height="62"/>
+                                <accessibility key="accessibilityConfiguration" label=""/>
+                                <state key="normal" title="Unsubscribe">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="UnSubScribeFromGooglePlace:" destination="9Yr-Km-rIg" eventType="touchUpInside" id="l7v-Wv-2CD"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="UnsubFromGooglePlace" destination="R3C-LI-dm0" id="QSF-VZ-qZi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PWc-Xx-CAO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -202,6 +133,29 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geb-g8-IQC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1946" y="344"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="DGj-nI-9A0">
+            <objects>
+                <viewController title="Map" id="WCG-kM-8N0" customClass="MapViewController" customModule="SwiftyLocal" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mee-FW-YJe"/>
+                        <viewControllerLayoutGuide type="bottom" id="2eO-zy-Q9d"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SHb-Lp-Vx8" customClass="GMSMapView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="BuZ-HC-aA3"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="mapView" destination="SHb-Lp-Vx8" id="xTP-id-19g"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0cD-0m-3e0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1946" y="1062"/>
         </scene>
     </scenes>
 </document>

@@ -20,8 +20,8 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate, PFLogIn
         var PlacesList       : UITabBarItem = self.tabBar.items![1] as UITabBarItem
         var OptionsLogOut    : UITabBarItem = self.tabBar.items![2] as UITabBarItem
         
-        SubscriptionList.title = "Yours"
-        PlacesList.title = "Search"
+        SubscriptionList.title = "Subs"
+        PlacesList.title = "Map"
         OptionsLogOut.title = "Options"
 
         
