@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.mynameistodd.local.R;
 import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.models.Message;
-import com.mynameistodd.local.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParsePush;
@@ -143,7 +144,7 @@ public class MessageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.send_message);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.send_message);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,6 +1,5 @@
 package com.mynameistodd.local;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -11,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +47,7 @@ import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
 
 
-public class MainActivity extends Activity
+public class MainActivity extends ActionBarActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         SubscriptionFragment.OnFragmentInteractionListener,

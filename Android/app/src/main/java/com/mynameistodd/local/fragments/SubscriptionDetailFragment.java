@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,12 +23,16 @@ import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
 import com.parse.GetCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
@@ -82,6 +87,10 @@ public class SubscriptionDetailFragment extends Fragment {
         if (getArguments() != null) {
             mPlaceId = getArguments().getString(ARG_OBJECTID);
             new PlaceAsyncTask().execute(mPlaceId);
+
+            Map<String, String> details = new HashMap<>();
+            details.put("detail", mPlaceId);
+            ParseAnalytics.trackEventInBackground("view", details);
         }
 
 //        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
@@ -140,7 +149,7 @@ public class SubscriptionDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mEditable) {
             inflater.inflate(R.menu.subscription_detail, menu);
-            getActivity().getActionBar().setTitle(R.string.my_business);
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_business);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -101,7 +102,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.subscribed);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscribed);
         mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
         mBusinesses = new ArrayList<Place>();
 

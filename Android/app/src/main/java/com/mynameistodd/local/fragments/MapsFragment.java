@@ -10,6 +10,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +96,7 @@ public class MapsFragment extends MapFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.map);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.map);
         setUpMapIfNeeded();
     }
 
@@ -305,7 +306,9 @@ public class MapsFragment extends MapFragment implements
     public void onConnected(Bundle bundle) {
         Location location = mLocationClient.getLastLocation();
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        if (location != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        }
     }
 
     @Override
