@@ -71,6 +71,15 @@ class MapViewController:UIViewController, CLLocationManagerDelegate, GMSMapViewD
             let currentInstallation = PFInstallation.currentInstallation()
             currentInstallation.addUniqueObject(marker.snippet, forKey: "channels")
             currentInstallation.save()
+            currentInstallation.saveInBackgroundWithBlock { (succeed:Bool, error: NSError!) -> Void in
+                if succeed {
+                    println("Subbed to " + marker.snippet)
+                    NSNotificationCenter.defaultCenter().postNotificationName("Reload", object: nil)
+                }
+                else {
+                    println("error subbing to " + marker.snippet)
+                }
+            }
         }
         
         actionSheetController.addAction(cancelAction)

@@ -10,10 +10,22 @@ import UIKit
 import Parse
 class DetailViewSubscribedViewController: UIViewController {
     
-  
+
     @IBOutlet weak var GooglePlaceIDLabel: UILabel!
 
     @IBAction func UnSubscribeButton(sender: UIButton) {
+        let currentInstallation = PFInstallation.currentInstallation()
+        currentInstallation.removeObject(self.GooglePlaceId, forKey: "channels")
+        currentInstallation.saveInBackgroundWithBlock { (succeed:Bool, error: NSError!) -> Void in
+            if succeed {
+                println("removed channelid: " + self.GooglePlaceId!)
+                NSNotificationCenter.defaultCenter().postNotificationName("Reload", object: nil)
+            }
+            else {
+                println("error removing channelid: " + self.GooglePlaceId!)
+            }
+            
+        }
     }
     var GooglePlaceId: String? = ""
     override func viewDidLoad() {
@@ -23,7 +35,7 @@ class DetailViewSubscribedViewController: UIViewController {
             println(self.GooglePlaceId)
             self.GooglePlaceIDLabel.text = GooglePlaceId
         } else {
-            self.GooglePlaceIDLabel.text = "nil"
+            self.GooglePlaceIDLabel.text = "nil"  //test code, there is a bug with parse setting an empty channelID string on app start
         }
         
         // Do any additional setup after loading the view.

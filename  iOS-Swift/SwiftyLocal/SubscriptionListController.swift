@@ -16,9 +16,29 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ReloadListView:",name:"Reload", object: nil)
         if PFUser.currentUser() != nil {
             GooglePlaces = appDelegate.GooglePlaceChannels
         }
+    }
+    func ReloadListView(notification: NSNotification){
+        //load data here
+        GooglePlaces.removeAll(keepCapacity: false)
+        let channels = PFInstallation.currentInstallation().channels
+        if channels.count > 0 {
+            for c in channels {
+                if let channelID = c as? String {
+                    GooglePlaces.append(channelID)
+                    println("app delegate: " + channelID)
+                }
+            }
+        }
+        else {
+            println("no subs")
+        }
+        self.tableView.reloadData()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -38,7 +58,13 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
             self.presentViewController(login, animated: true, completion: nil)
         }
     }
-    
+    /*
+    override func viewWillAppear(animated: Bool) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
+    }
+    */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //set each cell with the GooglePlace ID
         var simpleTableIdentifier : String = "SimpleTableCell"
@@ -63,21 +89,28 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
         if GooglePlaces.count > 0 {
             return GooglePlaces.count
         } else {
-            // Display a message when the table is empty
-            var CGRectFrame: CGRect = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height)
-            var messageLabel = UILabel(frame: CGRectFrame)
-            messageLabel.text = "There are no subscriptions, go to the map and find some; temp message!"
-            messageLabel.textColor = UIColor.blackColor()
-            messageLabel.numberOfLines = 0
-            messageLabel.textAlignment = NSTextAlignment.Center
-            messageLabel.font = UIFont (name: "Palatino-Italic", size: 20)
-            messageLabel.sizeToFit()
-            
-            tableView.backgroundView = messageLabel
-            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-            
             return 0
         }
+    }
+    
+    //add this to numberOfRowsInSection when ready
+    func SetNoSubsMessageLabel(isEnabled: Bool) {
+        // Display a message when the table is empty
+        var CGRectFrame: CGRect = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height)
+        var messageLabel = UILabel(frame: CGRectFrame)
+        if isEnabled {
+        messageLabel.text = "There are no subscriptions, go to the map and find some; temp message!"
+        messageLabel.textColor = UIColor.blackColor()
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = NSTextAlignment.Center
+        messageLabel.font = UIFont (name: "Palatino-Italic", size: 20)
+        messageLabel.sizeToFit()
+        tableView.backgroundView = messageLabel
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        } else {
+            messageLabel.removeFromSuperview()
+        }
+
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "DetailViewSegue") {
