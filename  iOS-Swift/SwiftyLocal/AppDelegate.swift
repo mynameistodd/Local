@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
             else {
-                println("no subs")
+                println("app delegate - no subs")
             }
 
         }

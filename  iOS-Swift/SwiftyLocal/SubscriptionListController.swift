@@ -80,17 +80,13 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath)
+        //research why this fucked our world up when going to segue
         //tableView.deselectRowAtIndexPath(indexPath, animated: true)
         performSegueWithIdentifier("DetailViewSegue", sender: cell)
         
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if GooglePlaces.count > 0 {
-            return GooglePlaces.count
-        } else {
-            return 0
-        }
+        return GooglePlaces.count
     }
     
     //add this to numberOfRowsInSection when ready

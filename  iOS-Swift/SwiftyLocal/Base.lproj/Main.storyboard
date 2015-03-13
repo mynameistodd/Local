@@ -48,7 +48,7 @@
                             <outlet property="delegate" destination="xUN-wE-wi9" id="Q4h-Xq-srf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="EM2-oY-sSk"/>
+                    <navigationItem key="navigationItem" title="Lowcal Places" id="EM2-oY-sSk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PNa-4L-f5S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

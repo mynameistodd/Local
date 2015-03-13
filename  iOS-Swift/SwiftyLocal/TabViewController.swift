@@ -23,45 +23,11 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate, PFLogIn
         SubscriptionList.title = "Subs"
         PlacesList.title = "Map"
         OptionsLogOut.title = "Options"
-
-        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     override func viewDidAppear(animated: Bool) {
-/*
-        if PFUser.currentUser() == nil {
-            var login: PFLogInViewController = PFLogInViewController()
-            login.delegate = self
-            
-            var signin: PFSignUpViewController = PFSignUpViewController()
-            signin.delegate = self
-            
-            login.signUpController = signin
-            
-            self.presentViewController(login, animated: true, completion: nil)
-
-        }
-*/
     }
-/*
-    func logInViewController(logInController: PFLogInViewController!, didFailToLogInWithError error: NSError!) {
-        
-    }
-    func logInViewController(logInController: PFLogInViewController!, didLogInUser user: PFUser!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    func logInViewControllerDidCancelLogIn(logInController: PFLogInViewController!) {
-        self.navigationController?.popViewControllerAnimated(true)
-    }
-    func signUpViewController(signUpController: PFSignUpViewController!, didSignUpUser user: PFUser!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    func signUpViewController(signUpController: PFSignUpViewController!, didFailToSignUpWithError error: NSError!) {
-        
-    }
-*/
-  
 }
