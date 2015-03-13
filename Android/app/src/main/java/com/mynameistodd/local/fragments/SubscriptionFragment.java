@@ -2,22 +2,26 @@ package com.mynameistodd.local.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.adapters.SubscriptionRecyclerAdapter;
-import com.parse.FindCallback;
-import com.parse.ParseException;
+import com.mynameistodd.local.utils.MyRequestHandler;
+import com.mynameistodd.local.utils.Util;
 import com.parse.ParseInstallation;
-import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Place;
 
 /**
  * A fragment representing a list of Items.
@@ -43,7 +47,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     private SubscriptionRecyclerAdapter.IAdapterClicks mAdapterClicks;
 
     private List<String> mSubscribedChannels;
-    private List<Business> mBusinesses;
+    private List<Place> mBusinesses;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -98,21 +102,49 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.subscribed);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscribed);
         mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
+        mBusinesses = new ArrayList<Place>();
 
         if (mSubscribedChannels != null) {
-            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-            query.whereContainedIn("channelId", mSubscribedChannels);
-            query.findInBackground(new FindCallback<Business>() {
-                @Override
-                public void done(List<Business> businesses, ParseException e) {
-                    mBusinesses = businesses;
-                    mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
 
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-            });
+            for (String placeId : mSubscribedChannels) {
+                new PlaceAsyncTask().execute(placeId);
+            }
+
+
+//            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+//            query.whereContainedIn("channelId", mSubscribedChannels);
+//            query.findInBackground(new FindCallback<Business>() {
+//                @Override
+//                public void done(List<Business> businesses, ParseException e) {
+//                    mBusinesses = businesses;
+//                    mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
+//
+//                    mRecyclerView.setAdapter(mAdapter);
+//                }
+//            });
+        }
+    }
+
+    private class PlaceAsyncTask extends AsyncTask<String, Void, Place> {
+        @Override
+        protected Place doInBackground(String... params) {
+            GooglePlaces client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
+            Place place = client.getPlaceById(params[0]);
+            return place;
+        }
+
+        @Override
+        protected void onPostExecute(Place place) {
+            super.onPostExecute(place);
+            if (mBusinesses != null) {
+                mBusinesses.add(place);
+                //This feels soooo wrong, there must be a way to update the mBusinesses without the entire adapter.
+                mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
         }
     }
 
@@ -163,7 +195,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onSubscriptionItemClick(Business business);
+        public void onSubscriptionItemClick(Place business);
     }
 
 }

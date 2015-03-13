@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId "com.mynameistodd.local"
-        minSdkVersion 10
+        minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -39,13 +39,12 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.google.android.gms:play-services:6.1.71'
     compile 'com.android.support:appcompat-v7:21.0.0'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.facebook.android:facebook-android-sdk:3.21.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
         transitive = true;
     }
-    compile files('libs/google-places-api-java.jar')
     compile project(':ParseLoginUI')
 }

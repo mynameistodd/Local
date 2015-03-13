@@ -1,9 +1,10 @@
 package com.mynameistodd.local.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import com.mynameistodd.local.R;
  * to handle interaction events.
  * Use the {@link AboutFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class AboutFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -49,6 +49,7 @@ public class AboutFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public AboutFragment() {
         // Required empty public constructor
     }
@@ -72,7 +73,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.about);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.about);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,7 +105,7 @@ public class AboutFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,16 +20,22 @@ import android.widget.TextView;
 
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
 import com.parse.GetCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Place;
 
 
 /**
@@ -42,12 +50,12 @@ import com.squareup.picasso.Picasso;
 public class SubscriptionDetailFragment extends Fragment {
     private static final String ARG_OBJECTID = "ARG_OBJECTID";
 
-    private String mObjectId;
+    private String mPlaceId;
     private Boolean mEditable = false;
 
     private OnFragmentInteractionListener mListener;
 
-    private Business mBusiness;
+    private Place mPlace;
     private ImageView mDetailBusinessStaticMap;
     private ImageView mDetailBusinessLogo;
     private TextView mDetailBusinessName;
@@ -77,22 +85,44 @@ public class SubscriptionDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mObjectId = getArguments().getString(ARG_OBJECTID);
+            mPlaceId = getArguments().getString(ARG_OBJECTID);
+            new PlaceAsyncTask().execute(mPlaceId);
+
+            Map<String, String> details = new HashMap<>();
+            details.put("detail", mPlaceId);
+            ParseAnalytics.trackEventInBackground("view", details);
         }
 
-        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-        query.getInBackground(mObjectId, new GetCallback<Business>() {
-            @Override
-            public void done(Business business, ParseException e) {
-                if (e == null) {
-                    mBusiness = business;
-                    setData();
-                    setEditable();
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+//        query.getInBackground(mPlaceId, new GetCallback<Business>() {
+//            @Override
+//            public void done(Business business, ParseException e) {
+//                if (e == null) {
+//                    mPlace = business;
+//                    setData();
+//                    setEditable();
+//                } else {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+    }
+
+    private class PlaceAsyncTask extends AsyncTask<String, Void, Place> {
+        @Override
+        protected Place doInBackground(String... params) {
+            GooglePlaces client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
+            Place place = client.getPlaceById(params[0]);
+            return place;
+        }
+
+        @Override
+        protected void onPostExecute(Place place) {
+            super.onPostExecute(place);
+            mPlace = place;
+            setData();
+            setEditable();
+        }
     }
 
     @Override
@@ -119,7 +149,7 @@ public class SubscriptionDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mEditable) {
             inflater.inflate(R.menu.subscription_detail, menu);
-            getActivity().getActionBar().setTitle(R.string.my_business);
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_business);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -129,7 +159,7 @@ public class SubscriptionDetailFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_edit) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, EditBusinessFragment.newInstance(mBusiness.getObjectId()))
+                    .replace(R.id.container, EditBusinessFragment.newInstance(mPlace.getPlaceId()))
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack("editBusinessFragment")
                     .commit();
@@ -139,27 +169,27 @@ public class SubscriptionDetailFragment extends Fragment {
     }
 
     private void setData() {
-        if (mBusiness != null) {
+        if (mPlace != null) {
             int w = mDetailBusinessStaticMap.getWidth() / 2;
             int h = mDetailBusinessStaticMap.getHeight() / 2;
             String uri = Util.MAP_BASE_URI;
-            uri = uri.concat("&center=" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude() + "");
-            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:green%7Clabel:P%7C" + mBusiness.getLocation().getLatitude() + "," + mBusiness.getLocation().getLongitude()+"");
+            uri = uri.concat("&center=" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
+            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:green%7Clabel:P%7C" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
 
             Log.d(Util.TAG, "Static Map: " + uri);
 
-            ParseFile file = mBusiness.getLogo();
-            if (file != null) {
-                String logoUrl = file.getUrl();
+//            ParseFile file = mPlace.getLogo();
+//            if (file != null) {
+            String logoUrl = mPlace.getIconUrl();
                 Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
-            }
+//            }
 
 
             Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
-            mDetailBusinessName.setText(mBusiness.getName());
-            mDetailBusinessSnippet.setText(mBusiness.getSnippet());
+            mDetailBusinessName.setText(mPlace.getName());
+            mDetailBusinessSnippet.setText(mPlace.getVicinity());
 
-            final String channelId = mBusiness.getChannelId();
+            final String channelId = mPlace.getPlaceId();
             mDetailBusinessUnsubscribe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -188,7 +218,7 @@ public class SubscriptionDetailFragment extends Fragment {
             @Override
             public void done(Business business, ParseException e) {
                 if (business != null) {
-                    if (mBusiness.getObjectId().equals(business.getObjectId())) {
+                    if (mPlace.getPlaceId().equals(business.getObjectId())) {
                         mEditable = true;
                         getActivity().invalidateOptionsMenu();
                     }

@@ -12,10 +12,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.Geofence;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.fragments.ErrorDialogFragment;
-import com.mynameistodd.local.models.Business;
-import com.parse.ParseException;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
+
+import se.walkercrou.places.Place;
 
 /**
  * Created by todd on 10/14/14.
@@ -26,7 +24,6 @@ public class Util {
     public static final String MAP_STATIC_API_KEY = "AIzaSyAxuSUZ7-cXhCDi--yo-XLxy3WtpBHb4bU"; //TODO all this map stuff should be in a static method to use the resource value.
     public static final String MAP_BASE_URI = "https://maps.googleapis.com/maps/api/staticmap?key=" + MAP_STATIC_API_KEY + "&maptype=roadmap&zoom=16&scale=2";
     public static final String PLACES_API_KEY = "AIzaSyC-0QDSRvVHsX5T8ysLIN5Farm75xXheRM";
-    public static final String PLACES_BASE_URI = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=" + PLACES_API_KEY + "";
 
     public static boolean servicesConnected(Context context, Fragment fragment) {
         // Check that Google Play services is available
@@ -96,11 +93,11 @@ public class Util {
      *
      * @return A Geofence object
      */
-    public static Geofence getGeofence(Business business) {
+    public static Geofence getGeofence(Place place) {
         return new Geofence.Builder()
-                .setRequestId(business.getChannelId())
+                .setRequestId(place.getPlaceId())
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL) //TODO: Should come from parse entry
-                .setCircularRegion(business.getLocation().getLatitude(), business.getLocation().getLongitude(), 50) //TODO: Should come from parse entry
+                .setCircularRegion(place.getLatitude(), place.getLongitude(), 50) //TODO: Should come from parse entry
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setLoiteringDelay(60000)
                 .setNotificationResponsiveness(60000)
@@ -108,24 +105,24 @@ public class Util {
     }
 
     public static String[] getTabs(Context context) {
-        if (ParseUser.getCurrentUser() != null) {
-            ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
-            try {
-                int count = businesses.getQuery().count();
-                if (count > 0) {
-                    return new String[]{
-                            context.getString(R.string.subscribed),
-                            context.getString(R.string.map),
-                            context.getString(R.string.my_business),
-                            context.getString(R.string.send_message),
-                            context.getString(R.string.about),
-                            context.getString(R.string.logout)
-                    };
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (ParseUser.getCurrentUser() != null) {
+//            ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+//            try {
+//                int count = businesses.getQuery().count();
+//                if (count > 0) {
+//                    return new String[]{
+//                            context.getString(R.string.subscribed),
+//                            context.getString(R.string.map),
+//                            context.getString(R.string.my_business),
+//                            context.getString(R.string.send_message),
+//                            context.getString(R.string.about),
+//                            context.getString(R.string.logout)
+//                    };
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         return new String[]{
                 context.getString(R.string.subscribed),

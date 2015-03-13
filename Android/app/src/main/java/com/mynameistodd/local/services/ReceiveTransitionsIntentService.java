@@ -7,6 +7,7 @@ import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -14,15 +15,16 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 import com.mynameistodd.local.MainActivity;
 import com.mynameistodd.local.R;
-import com.mynameistodd.local.models.Business;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
+import com.mynameistodd.local.utils.MyRequestHandler;
+import com.mynameistodd.local.utils.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Place;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -74,60 +76,68 @@ public class ReceiveTransitionsIntentService extends IntentService {
                     triggerIds.add(geofence.getRequestId());
                 }
 
-                final NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
-                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
-                final TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-                stackBuilder.addParentStack(MainActivity.class);
-                stackBuilder.addNextIntent(resultIntent);
-
-                ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-                query.whereContainedIn("channelId", triggerIds);
-                query.findInBackground(new FindCallback<Business>() {
-                    @Override
-                    public void done(List<Business> businesses, ParseException e) {
-                        if (businesses != null) {
-                            for (Business business : businesses) {
-                                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                                final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                                        .setSmallIcon(R.drawable.ic_launcher)
-                                        .setContentTitle(business.getName())
-                                        .setContentText(business.getSnippet())
-                                        .setContentIntent(pendingIntent)
-                                        .setAutoCancel(true);
-
-
-                                String logoUrl = business.getLogo().getUrl();
-
-                                Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
-                                    @Override
-                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                        mBuilder.setLargeIcon(bitmap);
-                                    }
-
-                                    @Override
-                                    public void onBitmapFailed(Drawable errorDrawable) {
-
-                                    }
-
-                                    @Override
-                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                    }
-                                });
-
-                                mNotificationManager.notify(1, mBuilder.build());
-                            }
-                        } else if (e != null) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                new PlaceAsyncTask().execute(triggerIds);
             }
             // An invalid transition was reported
             else {
                 Log.e("ReceiveTransitionsIntentService", "Geofence transition error: " + Integer.toString(transitionType));
+            }
+        }
+    }
+
+    private class PlaceAsyncTask extends AsyncTask<List<String>, Void, List<Place>> {
+        @Override
+        protected List<Place> doInBackground(List<String>... params) {
+            List<Place> results = new ArrayList<>();
+            GooglePlaces client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
+            for (String channelId : params[0]) {
+                Place place = client.getPlaceById(channelId);
+                results.add(place);
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(List<Place> places) {
+            super.onPostExecute(places);
+            final NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+            final TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addParentStack(MainActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+
+            for (Place place : places) {
+                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(place.getName())
+                        .setContentText(place.getVicinity())
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                String logoUrl = place.getIconUrl();
+
+                Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        mBuilder.setLargeIcon(bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+
+                mNotificationManager.notify(1, mBuilder.build());
             }
         }
     }

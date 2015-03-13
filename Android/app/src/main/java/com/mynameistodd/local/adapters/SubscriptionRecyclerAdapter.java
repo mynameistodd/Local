@@ -8,19 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.R;
-import com.parse.ParseFile;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import se.walkercrou.places.Place;
 
 /**
  * Created by todd on 1/11/15.
  */
 public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<SubscriptionRecyclerAdapter.ViewHolder> {
 
-    private List<Business> mBusinesses;
+    private List<Place> mPlaces;
     private Context mContext;
     private IAdapterClicks mListener;
 
@@ -45,9 +45,9 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
         }
     }
 
-    public SubscriptionRecyclerAdapter(Context context, List<Business> businesses, IAdapterClicks listener) {
+    public SubscriptionRecyclerAdapter(Context context, List<Place> places, IAdapterClicks listener) {
         this.mContext = context;
-        this.mBusinesses = businesses;
+        this.mPlaces = places;
         this.mListener = listener;
     }
 
@@ -65,21 +65,18 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Business business = mBusinesses.get(i);
+        Place place = mPlaces.get(i);
 
-        ParseFile file = business.getLogo();
-        if (file != null) {
-            String logoUrl = file.getUrl();
+        String logoUrl = place.getIconUrl();
             Picasso.with(mContext).load(logoUrl).into(viewHolder.mLogo);
-        }
 
-        viewHolder.mName.setText(business.getName());
-        viewHolder.mSnippet.setText(business.getSnippet());
+        viewHolder.mName.setText(place.getName());
+        viewHolder.mSnippet.setText(place.getVicinity());
     }
 
     @Override
     public int getItemCount() {
-        return mBusinesses.size();
+        return mPlaces.size();
     }
 
     public static interface IViewHolderClicks {

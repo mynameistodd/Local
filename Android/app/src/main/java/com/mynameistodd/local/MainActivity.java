@@ -1,6 +1,5 @@
 package com.mynameistodd.local;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,8 +7,10 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,22 +33,21 @@ import com.mynameistodd.local.fragments.SubscriptionDetailFragment;
 import com.mynameistodd.local.fragments.SubscriptionFragment;
 import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.services.ReceiveTransitionsIntentService;
+import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Place;
 
-public class MainActivity extends Activity
+
+public class MainActivity extends ActionBarActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         SubscriptionFragment.OnFragmentInteractionListener,
@@ -68,9 +68,7 @@ public class MainActivity extends Activity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
+
     private CharSequence mTitle;
     // Holds the location client
     private LocationClient mLocationClient;
@@ -113,19 +111,19 @@ public class MainActivity extends Activity
         List<String> channelIds = ParseInstallation.getCurrentInstallation().getList("channels");
         addGeofence(channelIds);
 
-        if (ParseUser.getCurrentUser() != null) {
-            ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
-            businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
-                @Override
-                public void done(Business business, ParseException e) {
-                    if (business != null) {
-                        mMyBusiness = business;
-                    } else if (e != null) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
+//        if (ParseUser.getCurrentUser() != null) {
+//            ParseRelation<Business> businesses = ParseUser.getCurrentUser().getRelation("Business");
+//            businesses.getQuery().getFirstInBackground(new GetCallback<Business>() {
+//                @Override
+//                public void done(Business business, ParseException e) {
+//                    if (business != null) {
+//                        mMyBusiness = business;
+//                    } else if (e != null) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -232,9 +230,9 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onSubscriptionItemClick(Business business) {
+    public void onSubscriptionItemClick(Place business) {
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getObjectId()))
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getPlaceId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
@@ -436,25 +434,27 @@ public class MainActivity extends Activity
             // Indicate that a request is underway
             mInProgress = true;
 
-            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-            query.whereContainedIn("channelId", channelIds);
-            query.findInBackground(new FindCallback<Business>() {
-                @Override
-                public void done(List<Business> businesses, ParseException e) {
-                    if (businesses != null) {
-                        mGeofenceList.clear();
+            new PlaceAsyncTask().execute(channelIds);
 
-                        for (Business business : businesses) {
-                            mGeofenceList.add(Util.getGeofence(business));
-                        }
-
-                        // Request a connection from the client to Location Services
-                        mLocationClient.connect();
-                    } else if (e != null) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+//            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
+//            query.whereContainedIn("channelId", channelIds);
+//            query.findInBackground(new FindCallback<Business>() {
+//                @Override
+//                public void done(List<Business> businesses, ParseException e) {
+//                    if (businesses != null) {
+//                        mGeofenceList.clear();
+//
+//                        for (Business business : businesses) {
+//                            mGeofenceList.add(Util.getGeofence(business));
+//                        }
+//
+//                        // Request a connection from the client to Location Services
+//                        mLocationClient.connect();
+//                    } else if (e != null) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
         } else {
         /*
          * A request is already underway. You can handle
@@ -462,6 +462,30 @@ public class MainActivity extends Activity
          * re-setting the flag, and then re-trying the
          * request.
          */
+        }
+    }
+
+    private class PlaceAsyncTask extends AsyncTask<List<String>, Void, List<Place>> {
+        @Override
+        protected List<Place> doInBackground(List<String>... params) {
+            List<Place> results = new ArrayList<>();
+            GooglePlaces client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
+            for (String channelId : params[0]) {
+                Place place = client.getPlaceById(channelId);
+                results.add(place);
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(List<Place> places) {
+            super.onPostExecute(places);
+            for (Place place : places) {
+                mGeofenceList.add(Util.getGeofence(place));
+            }
+
+            mLocationClient.connect();
         }
     }
 

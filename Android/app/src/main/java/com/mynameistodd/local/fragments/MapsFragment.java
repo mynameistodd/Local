@@ -10,6 +10,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,41 +26,26 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mynameistodd.local.R;
-import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.client.methods.HttpPost;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import se.walkercrou.places.GooglePlaces;
+import se.walkercrou.places.Param;
 import se.walkercrou.places.Place;
-import se.walkercrou.places.RequestHandler;
-
-//import android.support.v4.app.FragmentActivity;
+import se.walkercrou.places.exception.GooglePlacesException;
 
 public class MapsFragment extends MapFragment implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -110,7 +96,7 @@ public class MapsFragment extends MapFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.map);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.map);
         setUpMapIfNeeded();
     }
 
@@ -194,111 +180,32 @@ public class MapsFragment extends MapFragment implements
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                updateMap(cameraPosition.target);
+                mMap.clear();
+                mMarkers.clear();
+
+                new PlacesAsyncTask().execute(cameraPosition.target);
+
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(cameraPosition.target)
+                        .fillColor(Color.parseColor("#55FFFF00")) //TODO Needs to be in an XML file.
+                        .radius(100) //TODO Should come from Place object.
+                        .strokeColor(Color.TRANSPARENT);
+                mMap.addCircle(circleOptions);
             }
         });
-    }
-
-    private void updateMap(LatLng latLng) {
-        ParseGeoPoint parseGeoPoint = new ParseGeoPoint(latLng.latitude, latLng.longitude);
-
-        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-        //query.whereNear("location", parseGeoPoint);
-        query.whereWithinMiles("location", parseGeoPoint, 3.0); //TODO Distance needs to be a preference
-        query.findInBackground(new FindCallback<Business>() {
-            @Override
-            public void done(List<Business> businesses, ParseException e) {
-                if (businesses != null) {
-                    mMarkers.clear();
-                    mMap.clear();
-                    for (Business business : businesses) {
-                        MarkerOptions markerOptions = new MarkerOptions()
-                                .position(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
-                                .title(business.getName())
-                                .snippet(business.getSnippet());
-
-                        if (mSubscribedChannels.contains(business.getChannelId())) {
-                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-                            CircleOptions circleOptions = new CircleOptions()
-                                    .center(new LatLng(business.getLocation().getLatitude(), business.getLocation().getLongitude()))
-                                    .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
-                                    .radius(50) //TODO Should come from Business object.
-                                    .strokeColor(Color.TRANSPARENT);
-                            Circle circle = mMap.addCircle(circleOptions);
-                        }
-
-                        Marker marker = mMap.addMarker(markerOptions);
-                        mMarkers.put(marker, business.getChannelId());
-                    }
-                } else if (e != null) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        new PlacesAsyncTask().execute(latLng);
     }
 
     private class PlacesAsyncTask extends AsyncTask<LatLng, Void, List<Place>> {
         @Override
         protected List<Place> doInBackground(LatLng... params) {
-            client = new GooglePlaces("AIzaSyC-0QDSRvVHsX5T8ysLIN5Farm75xXheRM", new RequestHandler() {
-                public static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
-                private HttpURLConnection client;
-                private String characterEncoding;
-
-                @Override
-                public String getCharacterEncoding() {
-                    return characterEncoding;
-                }
-
-                @Override
-                public void setCharacterEncoding(String s) {
-                    this.characterEncoding = s;
-                }
-
-                @Override
-                public InputStream getInputStream(String s) throws IOException {
-                    URL url = new URL(s);
-                    try {
-                        client = (HttpsURLConnection) url.openConnection();
-                        InputStream in = new BufferedInputStream(client.getInputStream());
-                        return in;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new IOException(e);
-                    }
-                }
-
-                @Override
-                public String get(String s) throws IOException {
-                    URL url = new URL(s);
-                    try {
-                        client = (HttpsURLConnection) url.openConnection();
-                        InputStream in = new BufferedInputStream(client.getInputStream());
-                        return IOUtils.toString(in);
-//                        InputStreamReader ins = new InputStreamReader(in);
-//                        BufferedReader br = new BufferedReader(ins);
-//                        StringBuilder sb = new StringBuilder();
-//                        String line;
-//                        while ((line = br.readLine()) != null) {
-//                            sb.append(line);
-//                        }
-//                        return sb.toString();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new IOException(e);
-                    }
-                }
-
-                @Override
-                public String post(HttpPost httpPost) throws IOException {
-                    return null;
-                }
-            });
-            List<Place> places = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 20.0);
-            return places;
+            List<Place> results = new ArrayList<>();
+            client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
+            try {
+                results = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 100.0, Param.name("types").value("aquarium|bakery|bar|beauty_salon|bicycle_store|book_store|bowling_alley|cafe|car_dealer|car_repair|casino|clothing_store|dentist|department_store|electronics_store|establishment|florist|food|furniture_store|gym|hair_care|home_goods_store|jewelry_store|lodging|meal_delivery|meal_takeaway|movie_theater|night_club|pet_store|restaurant|shoe_store|spa|store|zoo"));
+            } catch (GooglePlacesException e) {
+                e.printStackTrace();
+            }
+            return results;
         }
 
         @Override
@@ -309,11 +216,24 @@ public class MapsFragment extends MapFragment implements
                         .position(new LatLng(place.getLatitude(), place.getLongitude()))
                         .title(place.getName())
                         .snippet(place.getVicinity());
+
+                if (mSubscribedChannels.contains(place.getPlaceId())) {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(new LatLng(place.getLatitude(), place.getLongitude()))
+                            .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
+                            .radius(50) //TODO Should come from Place object.
+                            .strokeColor(Color.TRANSPARENT);
+                    mMap.addCircle(circleOptions);
+                }
+
                 Marker marker = mMap.addMarker(markerOptions);
-                //mMarkers.put(marker, business.getChannelId());
+                mMarkers.put(marker, place.getPlaceId());
             }
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -386,7 +306,9 @@ public class MapsFragment extends MapFragment implements
     public void onConnected(Bundle bundle) {
         Location location = mLocationClient.getLastLocation();
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        if (location != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        }
     }
 
     @Override
@@ -455,7 +377,7 @@ public class MapsFragment extends MapFragment implements
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
