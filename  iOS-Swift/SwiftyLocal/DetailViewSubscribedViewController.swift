@@ -9,12 +9,22 @@
 import UIKit
 import Parse
 class DetailViewSubscribedViewController: UIViewController {
+    
+  
+    @IBOutlet weak var GooglePlaceIDLabel: UILabel!
 
-    @IBAction func UnSubScribeFromGooglePlace(sender: UIButton) {
+    @IBAction func UnSubscribeButton(sender: UIButton) {
     }
-    var GooglePlaceId: String = ""
+    var GooglePlaceId: String? = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        if GooglePlaceId != "" {
+            println(GooglePlaceId)
+            println(self.GooglePlaceId)
+            self.GooglePlaceIDLabel.text = GooglePlaceId
+        } else {
+            self.GooglePlaceIDLabel.text = "nil"
+        }
         
         // Do any additional setup after loading the view.
     }

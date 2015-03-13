@@ -10,11 +10,15 @@ import Foundation
 import ParseUI
 import Parse
 class SubscriptionListController : UITableViewController, UITableViewDelegate, UITableViewDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     var BusinessData: [Business] = []
     var GooglePlaces: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        var userLocation = UserLocation()
+        if PFUser.currentUser() != nil {
+            GooglePlaces = appDelegate.GooglePlaceChannels
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -32,17 +36,6 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
             login.signUpController = signin
             
             self.presentViewController(login, animated: true, completion: nil)
-        } else {
-            if PFUser.currentUser() != nil {
-                //ParseInstallation.getCurrentInstallation().getList("channels");
-                let channels = PFInstallation.currentInstallation().channels
-                for c in channels {
-                    if let channelID = c as? String {
-                        GooglePlaces.append(channelID)
-                    }
-                    
-                }
-            }
         }
     }
     
@@ -61,7 +54,7 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        //tableView.deselectRowAtIndexPath(indexPath, animated: true)
         performSegueWithIdentifier("DetailViewSegue", sender: cell)
         
     }
@@ -86,27 +79,17 @@ class SubscriptionListController : UITableViewController, UITableViewDelegate, U
             return 0
         }
     }
-    /*
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        //DetailViewSegue
-        if (segue.identifier == "DetailViewSegue") {
-            let DetailViewController: DetailViewSubscribedViewController = segue.destinationViewController as DetailViewSubscribedViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
-            DetailViewController.dataString = "asdf"
-            //viewController.pinCode = self.exams[indexPath.row]
-        }
-    }
-    */
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "DetailViewSegue") {
             var svc = segue.destinationViewController as DetailViewSubscribedViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
-            svc.GooglePlaceId = "asdf"
-           //svc.toPass = textField.text
             
+            if tableView.indexPathForSelectedRow() != nil {
+                var indexPath: NSIndexPath = self.tableView.indexPathForSelectedRow()!
+                var row = indexPath.row
+                svc.GooglePlaceId = GooglePlaces[row]
+            }
         }
     }
-
     func logInViewController(logInController: PFLogInViewController!, didFailToLogInWithError error: NSError!) {
         
     }

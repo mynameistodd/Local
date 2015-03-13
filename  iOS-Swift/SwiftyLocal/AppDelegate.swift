@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     let GoogleMapKey = "AIzaSyBHMTiSraTxwrYX7X2auIFLV4Yzm81Iagk"
-
+    var GooglePlaceChannels: [String] = []
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Parse.enableLocalDatastore()
         
@@ -24,6 +24,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey(GoogleMapKey)
         //let defaultACL = PFACL();
         
+        //if there is a current user logged in the app, we need to get all the channels they are subbed
+        //to so we can change the map icon color, and load the list view
+        if PFUser.currentUser() != nil {
+            let channels = PFInstallation.currentInstallation().channels
+            if channels.count > 0 {
+                for c in channels {
+                    if let channelID = c as? String {
+                        GooglePlaceChannels.append(channelID)
+                        println("app delegate: " + channelID)
+                    }
+                
+                }
+            }
+            else {
+                println("no subs")
+            }
+
+        }
+        //i think we should assign this no matter what the deal is with the user
+        //an empty GooglePlaceChannel array will be a signal that there is no user logged?
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        appDelegate.GooglePlaceChannels = self.GooglePlaceChannels
         // If you would like all objects to be private by default, remove this line.
         //defaultACL.setPublicReadAccess(true)
         
