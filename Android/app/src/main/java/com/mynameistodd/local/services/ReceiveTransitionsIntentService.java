@@ -17,11 +17,15 @@ import com.mynameistodd.local.MainActivity;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
+import com.parse.ParseAnalytics;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
@@ -29,7 +33,7 @@ import se.walkercrou.places.Place;
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p>
+ * <p/>
  * helper methods.
  */
 public class ReceiveTransitionsIntentService extends IntentService {
@@ -39,12 +43,14 @@ public class ReceiveTransitionsIntentService extends IntentService {
     public ReceiveTransitionsIntentService() {
         super("ReceiveTransitionsIntentService");
     }
+
     /**
      * Handles incoming intents
-     *@param intent The Intent sent by Location Services. This
-     * Intent is provided
-     * to Location Services (inside a PendingIntent) when you call
-     * addGeofences()
+     *
+     * @param intent The Intent sent by Location Services. This
+     *               Intent is provided
+     *               to Location Services (inside a PendingIntent) when you call
+     *               addGeofences()
      */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -66,6 +72,12 @@ public class ReceiveTransitionsIntentService extends IntentService {
         } else {
             // Get the type of transition (entry or exit)
             int transitionType = LocationClient.getGeofenceTransition(intent);
+
+            Map<String, String> details = new HashMap<>();
+            details.put("transitionType", String.valueOf(transitionType));
+            details.put("transitionTime", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+            ParseAnalytics.trackEventInBackground("geofence", details);
+
             // Test that a valid transition was reported
             if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER) || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT) || (transitionType == Geofence.GEOFENCE_TRANSITION_DWELL)) {
                 List<Geofence> triggerList = LocationClient.getTriggeringGeofences(intent);

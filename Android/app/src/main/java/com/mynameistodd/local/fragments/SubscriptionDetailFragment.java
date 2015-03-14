@@ -45,7 +45,6 @@ import se.walkercrou.places.Place;
  * to handle interaction events.
  * Use the {@link SubscriptionDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class SubscriptionDetailFragment extends Fragment {
     private static final String ARG_OBJECTID = "ARG_OBJECTID";
@@ -92,20 +91,6 @@ public class SubscriptionDetailFragment extends Fragment {
             details.put("detail", mPlaceId);
             ParseAnalytics.trackEventInBackground("view", details);
         }
-
-//        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-//        query.getInBackground(mPlaceId, new GetCallback<Business>() {
-//            @Override
-//            public void done(Business business, ParseException e) {
-//                if (e == null) {
-//                    mPlace = business;
-//                    setData();
-//                    setEditable();
-//                } else {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
     }
 
     private class PlaceAsyncTask extends AsyncTask<String, Void, Place> {
@@ -181,7 +166,7 @@ public class SubscriptionDetailFragment extends Fragment {
 //            ParseFile file = mPlace.getLogo();
 //            if (file != null) {
             String logoUrl = mPlace.getIconUrl();
-                Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
+            Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
 //            }
 
 
@@ -251,7 +236,7 @@ public class SubscriptionDetailFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

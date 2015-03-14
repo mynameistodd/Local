@@ -24,6 +24,8 @@ public class Util {
     public static final String MAP_STATIC_API_KEY = "AIzaSyAxuSUZ7-cXhCDi--yo-XLxy3WtpBHb4bU"; //TODO all this map stuff should be in a static method to use the resource value.
     public static final String MAP_BASE_URI = "https://maps.googleapis.com/maps/api/staticmap?key=" + MAP_STATIC_API_KEY + "&maptype=roadmap&zoom=16&scale=2";
     public static final String PLACES_API_KEY = "AIzaSyC-0QDSRvVHsX5T8ysLIN5Farm75xXheRM";
+    public static final float FENCE_RADIUS = 50;
+    public static final double PLACE_RADIUS = 100;
 
     public static boolean servicesConnected(Context context, Fragment fragment) {
         // Check that Google Play services is available
@@ -96,11 +98,11 @@ public class Util {
     public static Geofence getGeofence(Place place) {
         return new Geofence.Builder()
                 .setRequestId(place.getPlaceId())
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL) //TODO: Should come from parse entry
-                .setCircularRegion(place.getLatitude(), place.getLongitude(), 50) //TODO: Should come from parse entry
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setCircularRegion(place.getLatitude(), place.getLongitude(), Util.FENCE_RADIUS)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setLoiteringDelay(60000)
-                .setNotificationResponsiveness(60000)
+                .setNotificationResponsiveness(30000)
                 .build();
     }
 

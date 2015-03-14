@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.adapters.SubscriptionRecyclerAdapter;
@@ -54,6 +55,8 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.ItemDecoration mItemDecoration;
 
+    private ProgressBar mProgressBar;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -87,6 +90,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscription, container, false);
 
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -107,44 +111,30 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
         mBusinesses = new ArrayList<Place>();
 
         if (mSubscribedChannels != null) {
-
-            for (String placeId : mSubscribedChannels) {
-                new PlaceAsyncTask().execute(placeId);
-            }
-
-
-//            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-//            query.whereContainedIn("channelId", mSubscribedChannels);
-//            query.findInBackground(new FindCallback<Business>() {
-//                @Override
-//                public void done(List<Business> businesses, ParseException e) {
-//                    mBusinesses = businesses;
-//                    mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
-//
-//                    mRecyclerView.setAdapter(mAdapter);
-//                }
-//            });
+            new PlaceAsyncTask().execute(mSubscribedChannels);
         }
     }
 
-    private class PlaceAsyncTask extends AsyncTask<String, Void, Place> {
+    private class PlaceAsyncTask extends AsyncTask<List<String>, Void, List<Place>> {
         @Override
-        protected Place doInBackground(String... params) {
+        protected List<Place> doInBackground(List<String>... params) {
+            List<Place> results = new ArrayList<>();
             GooglePlaces client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
-            Place place = client.getPlaceById(params[0]);
-            return place;
+            for (String placeId : params[0]) {
+                Place place = client.getPlaceById(placeId);
+                results.add(place);
+            }
+            return results;
         }
 
         @Override
-        protected void onPostExecute(Place place) {
-            super.onPostExecute(place);
-            if (mBusinesses != null) {
-                mBusinesses.add(place);
-                //This feels soooo wrong, there must be a way to update the mBusinesses without the entire adapter.
-                mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
-                mRecyclerView.setAdapter(mAdapter);
-            }
+        protected void onPostExecute(List<Place> places) {
+            super.onPostExecute(places);
 
+            mBusinesses = places;
+            mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
+            mRecyclerView.setAdapter(mAdapter);
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 
