@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="ga_sessionTimeout">300</integer>
+
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <!--  The following value should be replaced with correct property id. -->
+    <string name="ga_trackingId">UA-58721422-1</string>
+
+    <integer name="ga_dispatchPeriod">10</integer>
+
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+
+    <!-- The screen names that will appear in reports -->
+    <screenName name="com.mynameistodd.local.fragments.SubscriptionFragment">
+        Lowecal SubscriptionFragment
+    </screenName>
+    <screenName name="com.mynameistodd.local.fragments.SubscriptionDetailFragment">
+        Lowecal SubscriptionDetailFragment
+    </screenName>
+    <screenName name="com.mynameistodd.local.fragments.MapsFragment">
+        Lowecal MapsFragment
+    </screenName>
+    <screenName name="com.mynameistodd.local.fragments.AboutFragment">
+        Lowecal AboutFragment
+    </screenName>
+
+</resources>

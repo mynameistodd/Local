@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 
 
@@ -61,6 +64,15 @@ public class AboutFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // Get tracker.
+        Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+        // Set screen name.
+        t.setScreenName(AboutFragment.class.getSimpleName());
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

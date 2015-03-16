@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.MyRequestHandler;
@@ -90,6 +93,15 @@ public class SubscriptionDetailFragment extends Fragment {
             Map<String, String> details = new HashMap<>();
             details.put("detail", mPlaceId);
             ParseAnalytics.trackEventInBackground("view", details);
+
+            // Get tracker.
+            Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+            // Set screen name.
+            t.setScreenName(SubscriptionDetailFragment.class.getSimpleName());
+
+            // Send a screen view.
+            t.send(new HitBuilders.ScreenViewBuilder().build());
         }
     }
 

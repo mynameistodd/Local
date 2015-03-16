@@ -31,5 +31,6 @@
     <string name="facebook_app_id">1547217908870615</string>
     <string name="twitter_consumer_key">4dyjb51KdjD1OsrAZeWOW1Rym</string>
     <string name="twitter_consumer_secret">S1CgGG6GoTW6ryduUKjkknQu4rpCKPE5P2S9L8Nsh2zuqgYMy1</string>
+    <string name="ga_trackingId">UA-58721422-1</string>
 
 </resources>

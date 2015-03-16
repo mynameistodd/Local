@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
@@ -77,6 +80,15 @@ public class MapsFragment extends MapFragment implements
             mSubscribedChannels = new ArrayList<String>();
         }
         mThisFragment = this;
+
+        // Get tracker.
+        Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+        // Set screen name.
+        t.setScreenName(MapsFragment.class.getSimpleName());
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.adapters.SubscriptionRecyclerAdapter;
 import com.mynameistodd.local.utils.MyRequestHandler;
@@ -83,6 +86,15 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mAdapterClicks = (SubscriptionRecyclerAdapter.IAdapterClicks) this;
+
+        // Get tracker.
+        Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+        // Set screen name.
+        t.setScreenName(SubscriptionFragment.class.getSimpleName());
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
