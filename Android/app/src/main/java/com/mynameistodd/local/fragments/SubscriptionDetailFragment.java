@@ -39,6 +39,7 @@ import java.util.Map;
 
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
+import se.walkercrou.places.Status;
 
 
 /**
@@ -63,6 +64,8 @@ public class SubscriptionDetailFragment extends Fragment {
     private TextView mDetailBusinessName;
     private TextView mDetailBusinessSnippet;
     private Button mDetailBusinessUnsubscribe;
+    private TextView mDetailBusinessOpen;
+    private TextView mDetailBusinessHours;
 
     public SubscriptionDetailFragment() {
         // Required empty public constructor
@@ -132,6 +135,8 @@ public class SubscriptionDetailFragment extends Fragment {
         mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
         mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
         mDetailBusinessUnsubscribe = (Button) view.findViewById(R.id.detail_business_unsubscribe);
+        mDetailBusinessOpen = (TextView) view.findViewById(R.id.detail_business_open);
+        mDetailBusinessHours = (TextView) view.findViewById(R.id.detail_business_hours);
 
         return view;
     }
@@ -178,10 +183,11 @@ public class SubscriptionDetailFragment extends Fragment {
             String logoUrl = mPlace.getIconUrl();
             Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
 
-
             Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
             mDetailBusinessName.setText(mPlace.getName());
             mDetailBusinessSnippet.setText(mPlace.getVicinity());
+            mDetailBusinessHours.setText(mPlace.getHours().toString().toLowerCase());
+            mDetailBusinessOpen.setVisibility((mPlace.getStatus() == Status.OPENED) ? View.VISIBLE : View.GONE);
 
             final String channelId = mPlace.getPlaceId();
             mDetailBusinessUnsubscribe.setOnClickListener(new View.OnClickListener() {
