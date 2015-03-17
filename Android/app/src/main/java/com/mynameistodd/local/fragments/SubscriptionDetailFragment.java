@@ -125,7 +125,7 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_subscription_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_subscription_detail_cardview, container, false);
 
         mDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.detail_business_map);
         mDetailBusinessLogo = (ImageView) view.findViewById(R.id.detail_business_logo);
@@ -171,15 +171,12 @@ public class SubscriptionDetailFragment extends Fragment {
             int h = mDetailBusinessStaticMap.getHeight() / 2;
             String uri = Util.MAP_BASE_URI;
             uri = uri.concat("&center=" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
-            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:green%7Clabel:P%7C" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
+            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:red%7Clabel:L%7C" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
 
             Log.d(Util.TAG, "Static Map: " + uri);
 
-//            ParseFile file = mPlace.getLogo();
-//            if (file != null) {
             String logoUrl = mPlace.getIconUrl();
             Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
-//            }
 
 
             Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
