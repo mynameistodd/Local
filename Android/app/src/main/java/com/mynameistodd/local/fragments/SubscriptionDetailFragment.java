@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +62,6 @@ public class SubscriptionDetailFragment extends Fragment {
     private ImageView mDetailBusinessLogo;
     private TextView mDetailBusinessName;
     private TextView mDetailBusinessSnippet;
-    private Button mDetailBusinessUnsubscribe;
     private TextView mDetailBusinessOpen;
     private TextView mDetailBusinessHours;
 
@@ -134,7 +132,6 @@ public class SubscriptionDetailFragment extends Fragment {
         mDetailBusinessLogo = (ImageView) view.findViewById(R.id.detail_business_logo);
         mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
         mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
-        mDetailBusinessUnsubscribe = (Button) view.findViewById(R.id.detail_business_unsubscribe);
         mDetailBusinessOpen = (TextView) view.findViewById(R.id.detail_business_open);
         mDetailBusinessHours = (TextView) view.findViewById(R.id.detail_business_hours);
 
@@ -150,8 +147,10 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mEditable) {
-            inflater.inflate(R.menu.subscription_detail, menu);
+            inflater.inflate(R.menu.subscription_detail_edit, menu);
             ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_business);
+        } else {
+            inflater.inflate(R.menu.subscription_detail, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -159,13 +158,31 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_edit) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, EditBusinessFragment.newInstance(mPlace.getPlaceId()))
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .addToBackStack("editBusinessFragment")
-                    .commit();
-            return true;
+        switch (id) {
+            case R.id.action_edit:
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, EditBusinessFragment.newInstance(mPlace.getPlaceId()))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack("editBusinessFragment")
+                        .commit();
+                return true;
+            case R.id.action_unsubscribe:
+                final String placeId = mPlace.getPlaceId();
+                ParsePush.unsubscribeInBackground(placeId, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.d(Util.TAG, "Successfully unsubscribed from " + placeId);
+                        } else {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                if (mListener != null) {
+                    mListener.onSubscribe(false, placeId);
+                }
+                getFragmentManager().popBackStack();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -188,27 +205,6 @@ public class SubscriptionDetailFragment extends Fragment {
             mDetailBusinessSnippet.setText(mPlace.getVicinity());
             mDetailBusinessHours.setText(mPlace.getHours().toString().toLowerCase());
             mDetailBusinessOpen.setVisibility((mPlace.getStatus() == Status.OPENED) ? View.VISIBLE : View.GONE);
-
-            final String channelId = mPlace.getPlaceId();
-            mDetailBusinessUnsubscribe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ParsePush.unsubscribeInBackground(channelId, new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d(Util.TAG, "Successfully unsubscribed from " + channelId);
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    if (mListener != null) {
-                        mListener.onSubscribe(false, channelId);
-                    }
-                    getFragmentManager().popBackStack();
-                }
-            });
         }
     }
 

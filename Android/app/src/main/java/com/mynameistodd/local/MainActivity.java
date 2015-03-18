@@ -229,9 +229,9 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onSubscriptionItemClick(Place business) {
+    public void onSubscriptionItemClick(Place place) {
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getPlaceId()))
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance(place.getPlaceId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -51,7 +52,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     private SubscriptionRecyclerAdapter.IAdapterClicks mAdapterClicks;
 
     private List<String> mSubscribedChannels;
-    private List<Place> mBusinesses;
+    private List<Place> mPlaces;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -59,6 +60,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     private RecyclerView.ItemDecoration mItemDecoration;
 
     private ProgressBar mProgressBar;
+    private TextView mEmptyText;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -104,6 +106,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        mEmptyText = (TextView) view.findViewById(R.id.empty);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -120,10 +123,13 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
         super.onResume();
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscribed);
         mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-        mBusinesses = new ArrayList<Place>();
+        mPlaces = new ArrayList<>();
 
-        if (mSubscribedChannels != null) {
+        if (mSubscribedChannels != null && !mSubscribedChannels.isEmpty()) {
             new PlaceAsyncTask().execute(mSubscribedChannels);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyText.setText(getString(R.string.empty));
         }
     }
 
@@ -143,8 +149,8 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
         protected void onPostExecute(List<Place> places) {
             super.onPostExecute(places);
 
-            mBusinesses = places;
-            mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
+            mPlaces = places;
+            mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mPlaces, mAdapterClicks);
             mRecyclerView.setAdapter(mAdapter);
             mProgressBar.setVisibility(View.GONE);
         }
@@ -169,35 +175,11 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
 
     @Override
     public void onItemClick(int position) {
-        mListener.onSubscriptionItemClick(mBusinesses.get(position));
+        mListener.onSubscriptionItemClick(mPlaces.get(position));
     }
 
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-//        View emptyView = mListView.getEmptyView();
-//
-//        if (emptyText instanceof TextView) {
-//            ((TextView) emptyView).setText(emptyText);
-//        }
-    }
-
-    /**
-    * This interface must be implemented by activities that contain this
-    * fragment to allow an interaction in this fragment to be communicated
-    * to the activity and potentially other fragments contained in that
-    * activity.
-    * <p>
-    * See the Android Training lesson <a href=
-    * "http://developer.android.com/training/basics/fragments/communicating.html"
-    * >Communicating with Other Fragments</a> for more information.
-    */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onSubscriptionItemClick(Place business);
+        public void onSubscriptionItemClick(Place place);
     }
 
 }
