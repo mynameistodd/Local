@@ -110,7 +110,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
         mItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(mItemDecoration);
+        //mRecyclerView.addItemDecoration(mItemDecoration);
 
         return view;
     }
