@@ -16,17 +16,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.facebook.AppEventsLogger;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationStatusCodes;
+import com.google.android.gms.location.GeofenceStatusCodes;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.mynameistodd.local.fragments.AboutFragment;
 import com.mynameistodd.local.fragments.EditBusinessFragment;
 import com.mynameistodd.local.fragments.ErrorDialogFragment;
-import com.mynameistodd.local.fragments.MapsFragment;
 import com.mynameistodd.local.fragments.MessageFragment;
 import com.mynameistodd.local.fragments.NavigationDrawerFragment;
 import com.mynameistodd.local.fragments.SubscriptionDetailFragment;
@@ -36,8 +43,11 @@ import com.mynameistodd.local.services.ReceiveTransitionsIntentService;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.ui.ParseLoginBuilder;
 
 import java.util.ArrayList;
@@ -53,13 +63,11 @@ public class MainActivity extends ActionBarActivity
         SubscriptionFragment.OnFragmentInteractionListener,
         SubscriptionDetailFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
-        MapsFragment.OnFragmentInteractionListener,
         MessageFragment.OnFragmentInteractionListener,
         EditBusinessFragment.OnFragmentInteractionListener,
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener,
-        LocationClient.OnAddGeofencesResultListener,
-        LocationClient.OnRemoveGeofencesResultListener {
+        ConnectionCallbacks,
+        OnConnectionFailedListener,
+        ResultCallback {
 
     List<Geofence> mGeofenceList;
     // Store the list of geofence Ids to remove
@@ -71,7 +79,8 @@ public class MainActivity extends ActionBarActivity
 
     private CharSequence mTitle;
     // Holds the location client
-    private LocationClient mLocationClient;
+
+    private GoogleApiClient mGoogleApiClient;
     // Stores the PendingIntent used to request geofence monitoring
     private PendingIntent mGeofenceRequestIntent;
     private REQUEST_TYPE mRequestType;
@@ -96,10 +105,24 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
         mInProgress = false;
+        mRequestType = REQUEST_TYPE.UNKNOWN;
         mGeofenceList = new ArrayList<Geofence>();
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
+        // Create a GoogleApiClient instance
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+//                .addApi(Places.GEO_DATA_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        mGoogleApiClient.connect();
     }
 
     @Override
@@ -134,6 +157,12 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -147,7 +176,27 @@ public class MainActivity extends ActionBarActivity
                         break;
                 }
                 break;
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    com.google.android.gms.location.places.Place place = PlacePicker.getPlace(data, this);
 
+                    final String channelId = place.getId();
+                    ParsePush.subscribeInBackground(channelId, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                onSubscribe(true, channelId);
+                                Log.d(Util.TAG, "Successfully subscribed to " + channelId);
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    String toastMsg = String.format("Place: %s", place.getName());
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
 
@@ -161,11 +210,14 @@ public class MainActivity extends ActionBarActivity
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         } else if (tab.equals(getString(R.string.map))) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, new MapsFragment())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .addToBackStack("mapsFragment")
-                    .commit();
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            try {
+                startActivityForResult(builder.build(getApplicationContext()), 1);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            }
         } else if (tab.equals(getString(R.string.my_business))) {
             if (mMyBusiness != null) {
                 fragmentManager.beginTransaction()
@@ -260,96 +312,134 @@ public class MainActivity extends ActionBarActivity
     public void onConnected(Bundle bundle) {
         switch (mRequestType) {
             case ADD:
-                // Get the PendingIntent for the request
-                mGeofenceRequestIntent = getTransitionPendingIntent();
                 // Send a request to add the current geofences
                 if (mGeofenceList.size() > 0) {
-                    mLocationClient.addGeofences(mGeofenceList, mGeofenceRequestIntent, this);
+                    //mLocationClient.addGeofences(mGeofenceList, mGeofenceRequestIntent, this);
+                    LocationServices.GeofencingApi.addGeofences(
+                            mGoogleApiClient,
+                            getGeofencingRequest(),
+                            getTransitionPendingIntent()
+                    ).setResultCallback(this);
                 }
                 break;
             case REMOVE_INTENT:
-                mLocationClient.removeGeofences(mGeofenceRequestIntent, this);
+                //mLocationClient.removeGeofences(mGeofenceRequestIntent, this);
+                LocationServices.GeofencingApi.removeGeofences(
+                        mGoogleApiClient,
+                        getTransitionPendingIntent()
+                ).setResultCallback(this);
                 break;
             case REMOVE_LIST:
-                mLocationClient.removeGeofences(mGeofencesToRemove, this);
+                //mLocationClient.removeGeofences(mGeofencesToRemove, this);
+                LocationServices.GeofencingApi.removeGeofences(
+                        mGoogleApiClient,
+                        mGeofencesToRemove
+                ).setResultCallback(this);
                 break;
         }
     }
 
     @Override
-    public void onDisconnected() {
+    public void onResult(Result result) {
+        Log.d(Util.TAG, "Geofence Result: " + GeofenceStatusCodes.getStatusCodeString(result.getStatus().getStatusCode()));
+        mInProgress = false;
+        mGoogleApiClient.disconnect();
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
         // Turn off the request flag
         mInProgress = false;
         // Destroy the current location client
-        mLocationClient = null;
+//        mLocationClient = null;
+        Log.d(Util.TAG, "GoogleApiClient Suspended");
     }
 
-    @Override
-    public void onAddGeofencesResult(int statusCode, String[] strings) {
-        // If adding the geofences was successful
-        if (LocationStatusCodes.SUCCESS == statusCode) {
-            for (String fence : strings) {
-                Log.d(Util.TAG, "Successfully added geofence: " + fence);
-            }
-        } else {
-            Log.e(Util.TAG, "Error adding geofence: " + statusCode);
-        }
-        // Turn off the in progress flag and disconnect the client
-        mInProgress = false;
-        mLocationClient.disconnect();
-    }
+//    @Override
+//    public void onDisconnected() {
+//        // Turn off the request flag
+//        mInProgress = false;
+//        // Destroy the current location client
+//        mLocationClient = null;
+//    }
 
-    /**
-     * When the request to remove geofences by PendingIntent returns,
-     * handle the result.
-     *
-     * @param statusCode    the code returned by Location Services
-     * @param requestIntent The Intent used to request the removal.
-     */
-    @Override
-    public void onRemoveGeofencesByPendingIntentResult(int statusCode, PendingIntent requestIntent) {
-        // If removing the geofences was successful
-        if (statusCode == LocationStatusCodes.SUCCESS) {
-            Log.d(Util.TAG, "Successfully removed geofences with request intent. ");
-        } else {
-            Log.e(Util.TAG, "Error removing geofence: " + statusCode);
-        }
-        /*
-         * Disconnect the location client regardless of the
-         * request status, and indicate that a request is no
-         * longer in progress
-         */
-        mInProgress = false;
-        mLocationClient.disconnect();
-    }
+//    @Override
+//    public void onAddGeofencesResult(int statusCode, String[] strings) {
+//        // If adding the geofences was successful
+//        if (LocationStatusCodes.SUCCESS == statusCode) {
+//            for (String fence : strings) {
+//                Log.d(Util.TAG, "Successfully added geofence: " + fence);
+//            }
+//        } else {
+//            Log.e(Util.TAG, "Error adding geofence: " + statusCode);
+//        }
+//        // Turn off the in progress flag and disconnect the client
+//        mInProgress = false;
+//        //mLocationClient.disconnect();
+//        mGoogleApiClient.disconnect();
+//    }
 
-    /**
-     * When the request to remove geofences by IDs returns, handle the
-     * result.
-     *
-     * @param statusCode         The code returned by Location Services
-     * @param geofenceRequestIds The IDs removed
-     */
-    @Override
-    public void onRemoveGeofencesByRequestIdsResult(int statusCode, String[] geofenceRequestIds) {
-        // If removing the geocodes was successful
-        if (LocationStatusCodes.SUCCESS == statusCode) {
-            for (String fence : geofenceRequestIds) {
-                Log.d(Util.TAG, "Successfully removed geofence: " + fence);
-            }
-        } else {
-            Log.e(Util.TAG, "Error removing geofence: " + statusCode);
-        }
-        // Indicate that a request is no longer in progress
-        mInProgress = false;
-        // Disconnect the location client
-        mLocationClient.disconnect();
-    }
+//    /**
+//     * When the request to remove geofences by PendingIntent returns,
+//     * handle the result.
+//     *
+//     * @param statusCode    the code returned by Location Services
+//     * @param requestIntent The Intent used to request the removal.
+//     */
+//    @Override
+//    public void onRemoveGeofencesByPendingIntentResult(int statusCode, PendingIntent requestIntent) {
+//        // If removing the geofences was successful
+//        if (statusCode == LocationStatusCodes.SUCCESS) {
+//            Log.d(Util.TAG, "Successfully removed geofences with request intent. ");
+//        } else {
+//            Log.e(Util.TAG, "Error removing geofence: " + statusCode);
+//        }
+//        /*
+//         * Disconnect the location client regardless of the
+//         * request status, and indicate that a request is no
+//         * longer in progress
+//         */
+//        mInProgress = false;
+//        //mLocationClient.disconnect();
+//        mGoogleApiClient.disconnect();
+//    }
+
+//    /**
+//     * When the request to remove geofences by IDs returns, handle the
+//     * result.
+//     *
+//     * @param statusCode         The code returned by Location Services
+//     * @param geofenceRequestIds The IDs removed
+//     */
+//    @Override
+//    public void onRemoveGeofencesByRequestIdsResult(int statusCode, String[] geofenceRequestIds) {
+//        // If removing the geocodes was successful
+//        if (LocationStatusCodes.SUCCESS == statusCode) {
+//            for (String fence : geofenceRequestIds) {
+//                Log.d(Util.TAG, "Successfully removed geofence: " + fence);
+//            }
+//        } else {
+//            Log.e(Util.TAG, "Error removing geofence: " + statusCode);
+//        }
+//        // Indicate that a request is no longer in progress
+//        mInProgress = false;
+//        // Disconnect the location client
+////        mLocationClient.disconnect();
+//        mGoogleApiClient.disconnect();
+//    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // Turn off the request flag
         mInProgress = false;
+        Log.d(Util.TAG, "GoogleApiClient Connection Failed");
         /*
          * If the error has a resolution, start a Google Play services
          * activity to resolve it.
@@ -390,12 +480,13 @@ public class MainActivity extends ActionBarActivity
      * app when a geofence transition occurs.
      */
     private PendingIntent getTransitionPendingIntent() {
+        if (mGeofenceRequestIntent != null) {
+            return mGeofenceRequestIntent;
+        }
+
         // Create an explicit Intent
-        Intent intent = new Intent(this,
-                ReceiveTransitionsIntentService.class);
-        /*
-         * Return the PendingIntent
-         */
+        Intent intent = new Intent(this, ReceiveTransitionsIntentService.class);
+
         mGeofenceRequestIntent = PendingIntent.getService(
                 this,
                 0,
@@ -427,7 +518,7 @@ public class MainActivity extends ActionBarActivity
          * OnConnectionFailedListener, pass the current activity object
          * as the listener for both parameters
          */
-        mLocationClient = new LocationClient(this, this, this);
+//        mLocationClient = new LocationClient(this, this, this);
 
         if (channelIds != null && !mInProgress) {
             // Indicate that a request is underway
@@ -465,45 +556,47 @@ public class MainActivity extends ActionBarActivity
                 mGeofenceList.add(Util.getGeofence(place));
             }
 
-            mLocationClient.connect();
+//            mLocationClient.connect();
+            mGoogleApiClient.connect();
         }
     }
 
-    public void removeGeofence(PendingIntent requestIntent) {
-        // Record the type of removal request
-        mRequestType = REQUEST_TYPE.REMOVE_INTENT;
-        /*
-         * Test for Google Play services after setting the request type.
-         * If Google Play services isn't present, the request can be
-         * restarted.
-         */
-        if (!Util.servicesConnected(this, getFragmentManager())) {
-            return;
-        }
-        // Store the PendingIntent
-        mGeofenceRequestIntent = requestIntent;
-        /*
-         * Create a new location client object. Since the current
-         * activity class implements ConnectionCallbacks and
-         * OnConnectionFailedListener, pass the current activity object
-         * as the listener for both parameters
-         */
-        mLocationClient = new LocationClient(this, this, this);
-        // If a request is not already underway
-        if (!mInProgress) {
-            // Indicate that a request is underway
-            mInProgress = true;
-            // Request a connection from the client to Location Services
-            mLocationClient.connect();
-        } else {
-            /*
-             * A request is already underway. You can handle
-             * this situation by disconnecting the client,
-             * re-setting the flag, and then re-trying the
-             * request.
-             */
-        }
-    }
+//    public void removeGeofence(PendingIntent requestIntent) {
+//        // Record the type of removal request
+//        mRequestType = REQUEST_TYPE.REMOVE_INTENT;
+//        /*
+//         * Test for Google Play services after setting the request type.
+//         * If Google Play services isn't present, the request can be
+//         * restarted.
+//         */
+//        if (!Util.servicesConnected(this, getFragmentManager())) {
+//            return;
+//        }
+//        // Store the PendingIntent
+//        mGeofenceRequestIntent = requestIntent;
+//        /*
+//         * Create a new location client object. Since the current
+//         * activity class implements ConnectionCallbacks and
+//         * OnConnectionFailedListener, pass the current activity object
+//         * as the listener for both parameters
+//         */
+////        mLocationClient = new LocationClient(this, this, this);
+//        // If a request is not already underway
+//        if (!mInProgress) {
+//            // Indicate that a request is underway
+//            mInProgress = true;
+//            // Request a connection from the client to Location Services
+////            mLocationClient.connect();
+//            mGoogleApiClient.connect();
+//        } else {
+//            /*
+//             * A request is already underway. You can handle
+//             * this situation by disconnecting the client,
+//             * re-setting the flag, and then re-trying the
+//             * request.
+//             */
+//        }
+//    }
 
     public void removeGeofence(String channelId) {
         List<String> channelIds = new ArrayList<String>();
@@ -531,13 +624,14 @@ public class MainActivity extends ActionBarActivity
          * OnConnectionFailedListener, pass the current activity object
          * as the listener for both parameters
          */
-        mLocationClient = new LocationClient(this, this, this);
+//        mLocationClient = new LocationClient(this, this, this);
         // If a request is not already underway
         if (!mInProgress) {
             // Indicate that a request is underway
             mInProgress = true;
             // Request a connection from the client to Location Services
-            mLocationClient.connect();
+//            mLocationClient.connect();
+            mGoogleApiClient.connect();
         } else {
             /*
              * A request is already underway. You can handle
@@ -550,6 +644,9 @@ public class MainActivity extends ActionBarActivity
 
     // Defines the allowable request types.
     public enum REQUEST_TYPE {
-        ADD, REMOVE_INTENT, REMOVE_LIST
+        ADD,
+        REMOVE_INTENT,
+        REMOVE_LIST,
+        UNKNOWN
     }
 }

@@ -12,7 +12,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.GeofenceStatusCodes;
+import com.google.android.gms.location.GeofencingEvent;
 import com.mynameistodd.local.MainActivity;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.utils.MyRequestHandler;
@@ -44,6 +45,11 @@ public class ReceiveTransitionsIntentService extends IntentService {
         super("ReceiveTransitionsIntentService");
     }
 
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+    }
+
     /**
      * Handles incoming intents
      *
@@ -54,47 +60,45 @@ public class ReceiveTransitionsIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        // First check for errors
-        if (LocationClient.hasError(intent)) {
-            // Get the error code with a static method
-            int errorCode = LocationClient.getErrorCode(intent);
-            // Log the error
-            Log.e("ReceiveTransitionsIntentService",
-                    "Location Services error: " + Integer.toString(errorCode));
-            /*
-             * You can also send the error code to an Activity or
-             * Fragment with a broadcast Intent
-             */
-            /*
-             * If there's no error, get the transition type and the IDs
-             * of the geofence or geofences that triggered the transition
-             */
-        } else {
-            // Get the type of transition (entry or exit)
-            int transitionType = LocationClient.getGeofenceTransition(intent);
-
-            Map<String, String> details = new HashMap<>();
-            details.put("transitionType", String.valueOf(transitionType));
-            details.put("transitionTime", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-            ParseAnalytics.trackEventInBackground("geofence", details);
-
-            // Test that a valid transition was reported
-            if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER) || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT) || (transitionType == Geofence.GEOFENCE_TRANSITION_DWELL)) {
-                List<Geofence> triggerList = LocationClient.getTriggeringGeofences(intent);
-
-                List<String> triggerIds = new ArrayList<String>();
-
-                for (Geofence geofence : triggerList) {
-                    triggerIds.add(geofence.getRequestId());
-                }
-
-                new PlaceAsyncTask().execute(triggerIds);
-            }
-            // An invalid transition was reported
-            else {
-                Log.e("ReceiveTransitionsIntentService", "Geofence transition error: " + Integer.toString(transitionType));
-            }
+        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        if (geofencingEvent.hasError()) {
+            String errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.getErrorCode());
+            Log.e(Util.TAG, errorMessage);
+            return;
         }
+
+        // Get the transition type.
+        int geofenceTransition = geofencingEvent.getGeofenceTransition();
+
+        Map<String, String> details = new HashMap<>();
+        details.put("transitionType", String.valueOf(geofenceTransition));
+        details.put("transitionTime", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        ParseAnalytics.trackEventInBackground("geofence", details);
+
+        // Test that the reported transition was of interest.
+        if ((geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) ||
+            (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) ||
+            (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL)) {
+
+            // Get the geofences that were triggered. A single event can trigger
+            // multiple geofences.
+            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+
+            List<String> triggerIds = new ArrayList<>();
+            for (Geofence geofence : triggeringGeofences) {
+                triggerIds.add(geofence.getRequestId());
+            }
+
+            new PlaceAsyncTask().execute(triggerIds);
+        } else {
+            // Log the error.
+            Log.e(Util.TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private class PlaceAsyncTask extends AsyncTask<List<String>, Void, List<Place>> {

@@ -19,9 +19,9 @@
     <screenName name="com.mynameistodd.local.fragments.SubscriptionDetailFragment">
         Lowecal SubscriptionDetailFragment
     </screenName>
-    <screenName name="com.mynameistodd.local.fragments.MapsFragment">
-        Lowecal MapsFragment
-    </screenName>
+    <!--<screenName name="com.mynameistodd.local.fragments.MapsFragment">-->
+        <!--Lowecal MapsFragment-->
+    <!--</screenName>-->
     <screenName name="com.mynameistodd.local.fragments.AboutFragment">
         Lowecal AboutFragment
     </screenName>
