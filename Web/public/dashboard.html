@@ -182,6 +182,7 @@
                 if (user != null) {
                     var channelId = user.get("placeId");
                     var pushText = $("#pushMessage").val();
+                    
                     Parse.Push.send({
                         channels: [channelId],
                         data: { 
@@ -191,6 +192,7 @@
                         success: function() {
                             console.log("Successfully sent push.");
                             $("#pushMessage").val("");
+                            saveMessage(user.id, channelId, pushText);
                         },
                         error: function(error) {
                             console.log(error);
@@ -199,6 +201,23 @@
                 }
             });
             
+            function saveMessage(userId, placeId, text) {
+                var MessageObject = Parse.Object.extend("Message");
+                var message = new MessageObject();
+                
+                message.set("userId", userId);
+                message.set("placeId", placeId);
+                message.set("text", text);
+                
+                message.save(null, {
+                    success: function(message) {
+                        console.log("Saved message in history.");
+                    },
+                    error: function(message, error) {
+                        console.log(error);
+                    }
+                });
+            }
         });
     </script>
 </html>
