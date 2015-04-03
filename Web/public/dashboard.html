@@ -107,9 +107,19 @@
         </div>
         <!-- /.container -->
     </nav>
-
+    <div class="intro-header-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-success" role="alert" style="display:none;">Saved!</div>
+                    <div class="alert alert-info" role="alert" style="display:none;">Info!</div>
+                    <div class="alert alert-warning" role="alert" style="display:none;">Warning!</div>
+                    <div class="alert alert-danger" role="alert" style="display:none;">Error!</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
-
         <div class="row">
             <div class="col-lg-6">
                 <div class="intro-message">
@@ -168,19 +178,26 @@
 </body>
     <script type="text/javascript">
         $(document).ready(function() {
+            var user = Parse.User.current();
+            var channelId = null;
+            if (user != null) {
+                channelId = user.get("placeId");
+            }
+
             $("#logout").click(function(event){
                 Parse.User.logOut();
                 window.location.href = "index.html";
             });
             
             $("#geofenceSave").click(function(event) {
-                var geofenceMessageText = $("#geofenceMessage").val();
+                if (user != null && channelId != null) {
+                    var geofenceMessageText = $("#geofenceMessage").val();
+                    saveGeofenceMessage(channelId, geofenceMessageText);
+                }
             });
             
             $("#pushSave").click(function(event) {
-                var user = Parse.User.current();
-                if (user != null) {
-                    var channelId = user.get("placeId");
+                if (user != null && channelId != null) {
                     var pushText = $("#pushMessage").val();
                     
                     Parse.Push.send({
@@ -191,7 +208,6 @@
                     }, {
                         success: function() {
                             console.log("Successfully sent push.");
-                            $("#pushMessage").val("");
                             saveMessage(user.id, channelId, pushText);
                         },
                         error: function(error) {
@@ -200,7 +216,39 @@
                     });    
                 }
             });
-            
+
+            function saveGeofenceMessage(placeId, text) {
+                var GeofenceObject = Parse.Object.extend("Geofence");
+                var query = new Parse.Query(GeofenceObject);
+                query.equalTo("placeId", placeId);
+                query.find({
+                    success: function(results) {
+                        var geofence = new GeofenceObject();
+
+                        if (results.length > 0) {
+                            geofence = results[0];
+                        } else {
+                            geofence.set("placeId", placeId);
+                        }
+
+                        geofence.set("text", text);
+                        geofence.save(null, {
+                            success: function(geofence) {
+                                $("#geofenceMessage").val("");
+                                $(".alert-success").show();
+                                console.log("Saved geofence message.");
+                            },
+                            error: function(geofence, error) {
+                                console.log(error);
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+
             function saveMessage(userId, placeId, text) {
                 var MessageObject = Parse.Object.extend("Message");
                 var message = new MessageObject();
@@ -211,6 +259,8 @@
                 
                 message.save(null, {
                     success: function(message) {
+                        $("#pushMessage").val("");
+                        $(".alert-success").show();
                         console.log("Saved message in history.");
                     },
                     error: function(message, error) {

@@ -35,6 +35,10 @@ h6 {
     background-size: cover;
 }
 
+.intro-header-padding {
+    padding-top: 50px;
+}
+
 .intro-message {
     position: relative;
     padding-top: 20%;
