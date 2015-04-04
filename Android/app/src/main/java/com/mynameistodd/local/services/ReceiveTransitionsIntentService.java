@@ -16,9 +16,16 @@ import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
 import com.mynameistodd.local.MainActivity;
 import com.mynameistodd.local.R;
+import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -123,37 +130,48 @@ public class ReceiveTransitionsIntentService extends IntentService {
             final TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addParentStack(MainActivity.class);
             stackBuilder.addNextIntent(resultIntent);
+            final PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            for (Place place : places) {
-                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(place.getName())
-                        .setContentText(place.getVicinity())
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-                String logoUrl = place.getIconUrl();
-
-                Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
+            for (final Place place : places) {
+                ParseQuery<com.mynameistodd.local.models.Geofence> query = ParseQuery.getQuery(com.mynameistodd.local.models.Geofence.class);
+                query.whereEqualTo("placeId", place.getPlaceId());
+                query.getFirstInBackground(new GetCallback<com.mynameistodd.local.models.Geofence>() {
                     @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mBuilder.setLargeIcon(bitmap);
-                    }
+                    public void done(com.mynameistodd.local.models.Geofence geofence, ParseException e) {
+                        if (geofence != null) {
 
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
+                            final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                    .setSmallIcon(R.drawable.ic_launcher)
+                                    .setContentTitle(place.getName())
+                                    .setContentText(geofence.getText())
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true);
 
-                    }
+                            String logoUrl = place.getIconUrl();
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    mBuilder.setLargeIcon(bitmap);
+                                }
 
+                                @Override
+                                public void onBitmapFailed(Drawable errorDrawable) {
+
+                                }
+
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                }
+                            });
+
+                            mNotificationManager.notify(1, mBuilder.build());
+                        } else {
+                            e.printStackTrace();
+                        }
                     }
                 });
-
-                mNotificationManager.notify(1, mBuilder.build());
             }
         }
     }

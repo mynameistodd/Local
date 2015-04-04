@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.mynameistodd.local.models.Business;
+import com.mynameistodd.local.models.Geofence;
 import com.mynameistodd.local.models.Message;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
@@ -48,6 +49,7 @@ public class LocalApplication extends Application {
         Fabric.with(this, new Crashlytics());
         ParseObject.registerSubclass(Business.class);
         ParseObject.registerSubclass(Message.class);
+        ParseObject.registerSubclass(Geofence.class);
 
         ParseCrashReporting.enable(this);
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
