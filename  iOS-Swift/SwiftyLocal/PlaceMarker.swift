@@ -11,7 +11,7 @@ class PlaceMarker: GMSMarker {
     // 2
     init(place: GooglePlace) {
         self.place = place
-        self.channelID = ""
+        self.channelID = place.channelID
         super.init()
         
         /*

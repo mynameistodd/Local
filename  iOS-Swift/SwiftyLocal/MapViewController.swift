@@ -17,6 +17,7 @@ class MapViewController:UIViewController, CLLocationManagerDelegate, GMSMapViewD
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     //var searchedTypes = ["bakery", "bar", "cafe", "grocery_or_supermarket", "restaurant"]
     var searchedTypes = ["cafe"]
+    var GooglePlaces: [String] = []
     
     var mapRadius: Double {
         get {
@@ -40,7 +41,9 @@ class MapViewController:UIViewController, CLLocationManagerDelegate, GMSMapViewD
             self.locationManager.startUpdatingLocation()
         }
         var searchButton: UIButton = UIButton()
-        
+        if PFUser.currentUser() != nil {
+            GooglePlaces = appDelegate.GooglePlaceChannels
+        }
         /*
         UIButton *myLocationButton = [self.mapView myLocationButton];
         
@@ -76,12 +79,22 @@ class MapViewController:UIViewController, CLLocationManagerDelegate, GMSMapViewD
     }
     func mapView(mapView: GMSMapView!, didTapInfoWindowOfMarker marker: GMSMarker!) {
         println("window tapped: " + marker.snippet)
+        var message: String = ""
+        var m = marker as PlaceMarker
 
-        let actionSheetController: UIAlertController = UIAlertController(title: "Lowcow says Moooo", message: "Subscribe to " + marker.title + "?", preferredStyle: .ActionSheet)
+        if isSubscribed(m.channelID) {
+            //marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+            message = "Unsubscribe"
+        }
+        else
+        {
+            message = "Subscribe"
+        }
+        
+        let actionSheetController: UIAlertController = UIAlertController(title: "Lowcow says Moooo", message: message + marker.title + "?", preferredStyle: .ActionSheet)
         let cancelAction: UIAlertAction = UIAlertAction(title: "Nah", style: .Cancel) { action -> Void in
             //Just dismiss the action sheet
         }
-        
         let subscribeAction: UIAlertAction = UIAlertAction(title: "Yeah", style: .Default) { action -> Void in
             //Code for sign up here!
             let currentInstallation = PFInstallation.currentInstallation()
@@ -99,15 +112,42 @@ class MapViewController:UIViewController, CLLocationManagerDelegate, GMSMapViewD
                 }
             }
         }
-        
+        let unSubscribeAction: UIAlertAction = UIAlertAction(title: "Yeah", style: .Default) { action -> Void in
+            //Code for sign up here!
+            let currentInstallation = PFInstallation.currentInstallation()
+            currentInstallation.removeObject(marker.snippet, forKey: "channels")
+            currentInstallation.save()
+            currentInstallation.saveInBackgroundWithBlock { (succeed:Bool, error: NSError!) -> Void in
+                if succeed {
+                    println("UNSubbed to " + marker.snippet)
+                    //this reloads the table, we need to change the color of the marker too
+                    marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+                    NSNotificationCenter.defaultCenter().postNotificationName("Reload", object: nil)
+                }
+                else {
+                    println("error UNsubbing to " + marker.snippet)
+                }
+            }
+        }
         actionSheetController.addAction(cancelAction)
-        actionSheetController.addAction(subscribeAction)
+        if isSubscribed(m.channelID) {
+            actionSheetController.addAction(unSubscribeAction)
+        }
+        else {
+            actionSheetController.addAction(subscribeAction)
+        }
+        
+        
         
         //We need to provide a popover sourceView when using it on iPad
         //actionSheetController.popoverPresentationController?.sourceView = sender as UIView;
         
         //Present the AlertController
         self.presentViewController(actionSheetController, animated: true, completion: nil)
+    }
+    func isSubscribed(channelID: String) -> Bool {
+        //channels needs to be updated when we sub to a place, right now its not and when we try alook for new places we just added, they are not there. 
+       return contains(self.appDelegate.GooglePlaceChannels, channelID)
     }
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
         println("didChangeCameraPosition")
