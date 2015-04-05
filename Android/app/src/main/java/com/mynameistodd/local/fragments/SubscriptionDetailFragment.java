@@ -14,10 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.MyRequestHandler;
@@ -36,6 +38,7 @@ import java.util.Map;
 
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
+import se.walkercrou.places.Status;
 
 
 /**
@@ -45,7 +48,6 @@ import se.walkercrou.places.Place;
  * to handle interaction events.
  * Use the {@link SubscriptionDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class SubscriptionDetailFragment extends Fragment {
     private static final String ARG_OBJECTID = "ARG_OBJECTID";
@@ -60,7 +62,8 @@ public class SubscriptionDetailFragment extends Fragment {
     private ImageView mDetailBusinessLogo;
     private TextView mDetailBusinessName;
     private TextView mDetailBusinessSnippet;
-    private Button mDetailBusinessUnsubscribe;
+    private TextView mDetailBusinessOpen;
+    private TextView mDetailBusinessHours;
 
     public SubscriptionDetailFragment() {
         // Required empty public constructor
@@ -91,21 +94,16 @@ public class SubscriptionDetailFragment extends Fragment {
             Map<String, String> details = new HashMap<>();
             details.put("detail", mPlaceId);
             ParseAnalytics.trackEventInBackground("view", details);
-        }
 
-//        ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-//        query.getInBackground(mPlaceId, new GetCallback<Business>() {
-//            @Override
-//            public void done(Business business, ParseException e) {
-//                if (e == null) {
-//                    mPlace = business;
-//                    setData();
-//                    setEditable();
-//                } else {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+            // Get tracker.
+            Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+            // Set screen name.
+            t.setScreenName(SubscriptionDetailFragment.class.getSimpleName());
+
+            // Send a screen view.
+            t.send(new HitBuilders.ScreenViewBuilder().build());
+        }
     }
 
     private class PlaceAsyncTask extends AsyncTask<String, Void, Place> {
@@ -128,13 +126,14 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_subscription_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_subscription_detail_cardview, container, false);
 
         mDetailBusinessStaticMap = (ImageView) view.findViewById(R.id.detail_business_map);
         mDetailBusinessLogo = (ImageView) view.findViewById(R.id.detail_business_logo);
         mDetailBusinessName = (TextView) view.findViewById(R.id.detail_business_name);
         mDetailBusinessSnippet = (TextView) view.findViewById(R.id.detail_business_snippet);
-        mDetailBusinessUnsubscribe = (Button) view.findViewById(R.id.detail_business_unsubscribe);
+        mDetailBusinessOpen = (TextView) view.findViewById(R.id.detail_business_open);
+        mDetailBusinessHours = (TextView) view.findViewById(R.id.detail_business_hours);
 
         return view;
     }
@@ -148,8 +147,10 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mEditable) {
-            inflater.inflate(R.menu.subscription_detail, menu);
+            inflater.inflate(R.menu.subscription_detail_edit, menu);
             ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_business);
+        } else {
+            inflater.inflate(R.menu.subscription_detail, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -157,13 +158,31 @@ public class SubscriptionDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_edit) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, EditBusinessFragment.newInstance(mPlace.getPlaceId()))
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .addToBackStack("editBusinessFragment")
-                    .commit();
-            return true;
+        switch (id) {
+            case R.id.action_edit:
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, EditBusinessFragment.newInstance(mPlace.getPlaceId()))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack("editBusinessFragment")
+                        .commit();
+                return true;
+            case R.id.action_unsubscribe:
+                final String placeId = mPlace.getPlaceId();
+                ParsePush.unsubscribeInBackground(placeId, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.d(Util.TAG, "Successfully unsubscribed from " + placeId);
+                        } else {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                if (mListener != null) {
+                    mListener.onSubscribe(false, placeId);
+                }
+                getFragmentManager().popBackStack();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -174,41 +193,18 @@ public class SubscriptionDetailFragment extends Fragment {
             int h = mDetailBusinessStaticMap.getHeight() / 2;
             String uri = Util.MAP_BASE_URI;
             uri = uri.concat("&center=" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
-            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:green%7Clabel:P%7C" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
+            uri = uri.concat("&size=" + w + "x" + h + "&markers=color:red%7Clabel:L%7C" + mPlace.getLatitude() + "," + mPlace.getLongitude() + "");
 
             Log.d(Util.TAG, "Static Map: " + uri);
 
-//            ParseFile file = mPlace.getLogo();
-//            if (file != null) {
             String logoUrl = mPlace.getIconUrl();
-                Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
-//            }
-
+            Picasso.with(getActivity()).load(logoUrl).into(mDetailBusinessLogo);
 
             Picasso.with(getActivity()).load(uri).into(mDetailBusinessStaticMap);
             mDetailBusinessName.setText(mPlace.getName());
             mDetailBusinessSnippet.setText(mPlace.getVicinity());
-
-            final String channelId = mPlace.getPlaceId();
-            mDetailBusinessUnsubscribe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ParsePush.unsubscribeInBackground(channelId, new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d(Util.TAG, "Successfully unsubscribed from " + channelId);
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    if (mListener != null) {
-                        mListener.onSubscribe(false, channelId);
-                    }
-                    getFragmentManager().popBackStack();
-                }
-            });
+            mDetailBusinessHours.setText(mPlace.getHours().toString().toLowerCase());
+            mDetailBusinessOpen.setVisibility((mPlace.getStatus() == Status.OPENED) ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -251,7 +247,7 @@ public class SubscriptionDetailFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

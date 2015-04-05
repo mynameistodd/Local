@@ -10,7 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.adapters.SubscriptionRecyclerAdapter;
 import com.mynameistodd.local.utils.MyRequestHandler;
@@ -47,12 +52,15 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
     private SubscriptionRecyclerAdapter.IAdapterClicks mAdapterClicks;
 
     private List<String> mSubscribedChannels;
-    private List<Place> mBusinesses;
+    private List<Place> mPlaces;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.ItemDecoration mItemDecoration;
+
+    private ProgressBar mProgressBar;
+    private TextView mEmptyText;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,6 +88,15 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mAdapterClicks = (SubscriptionRecyclerAdapter.IAdapterClicks) this;
+
+        // Get tracker.
+        Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+        // Set screen name.
+        t.setScreenName(SubscriptionFragment.class.getSimpleName());
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -87,14 +104,16 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscription, container, false);
 
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        mEmptyText = (TextView) view.findViewById(R.id.empty);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(mItemDecoration);
+        //mRecyclerView.addItemDecoration(mItemDecoration);
 
         return view;
     }
@@ -104,47 +123,36 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
         super.onResume();
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscribed);
         mSubscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-        mBusinesses = new ArrayList<Place>();
+        mPlaces = new ArrayList<>();
 
-        if (mSubscribedChannels != null) {
-
-            for (String placeId : mSubscribedChannels) {
-                new PlaceAsyncTask().execute(placeId);
-            }
-
-
-//            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-//            query.whereContainedIn("channelId", mSubscribedChannels);
-//            query.findInBackground(new FindCallback<Business>() {
-//                @Override
-//                public void done(List<Business> businesses, ParseException e) {
-//                    mBusinesses = businesses;
-//                    mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
-//
-//                    mRecyclerView.setAdapter(mAdapter);
-//                }
-//            });
+        if (mSubscribedChannels != null && !mSubscribedChannels.isEmpty()) {
+            new PlaceAsyncTask().execute(mSubscribedChannels);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyText.setText(getString(R.string.empty));
         }
     }
 
-    private class PlaceAsyncTask extends AsyncTask<String, Void, Place> {
+    private class PlaceAsyncTask extends AsyncTask<List<String>, Void, List<Place>> {
         @Override
-        protected Place doInBackground(String... params) {
+        protected List<Place> doInBackground(List<String>... params) {
+            List<Place> results = new ArrayList<>();
             GooglePlaces client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
-            Place place = client.getPlaceById(params[0]);
-            return place;
+            for (String placeId : params[0]) {
+                Place place = client.getPlaceById(placeId);
+                results.add(place);
+            }
+            return results;
         }
 
         @Override
-        protected void onPostExecute(Place place) {
-            super.onPostExecute(place);
-            if (mBusinesses != null) {
-                mBusinesses.add(place);
-                //This feels soooo wrong, there must be a way to update the mBusinesses without the entire adapter.
-                mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mBusinesses, mAdapterClicks);
-                mRecyclerView.setAdapter(mAdapter);
-            }
+        protected void onPostExecute(List<Place> places) {
+            super.onPostExecute(places);
 
+            mPlaces = places;
+            mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mPlaces, mAdapterClicks);
+            mRecyclerView.setAdapter(mAdapter);
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 
@@ -167,35 +175,11 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
 
     @Override
     public void onItemClick(int position) {
-        mListener.onSubscriptionItemClick(mBusinesses.get(position));
+        mListener.onSubscriptionItemClick(mPlaces.get(position));
     }
 
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-//        View emptyView = mListView.getEmptyView();
-//
-//        if (emptyText instanceof TextView) {
-//            ((TextView) emptyView).setText(emptyText);
-//        }
-    }
-
-    /**
-    * This interface must be implemented by activities that contain this
-    * fragment to allow an interaction in this fragment to be communicated
-    * to the activity and potentially other fragments contained in that
-    * activity.
-    * <p>
-    * See the Android Training lesson <a href=
-    * "http://developer.android.com/training/basics/fragments/communicating.html"
-    * >Communicating with Other Fragments</a> for more information.
-    */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onSubscriptionItemClick(Place business);
+        public void onSubscriptionItemClick(Place place);
     }
 
 }

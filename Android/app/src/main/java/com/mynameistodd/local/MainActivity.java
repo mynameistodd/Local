@@ -136,8 +136,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case 0:
                 switch (resultCode) {
                     case RESULT_OK:
@@ -230,9 +229,9 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onSubscriptionItemClick(Place business) {
+    public void onSubscriptionItemClick(Place place) {
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, SubscriptionDetailFragment.newInstance(business.getPlaceId()))
+                .replace(R.id.container, SubscriptionDetailFragment.newInstance(place.getPlaceId()))
                 .addToBackStack("subscriptionDetailFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
@@ -328,7 +327,7 @@ public class MainActivity extends ActionBarActivity
      * When the request to remove geofences by IDs returns, handle the
      * result.
      *
-     * @param statusCode The code returned by Location Services
+     * @param statusCode         The code returned by Location Services
      * @param geofenceRequestIds The IDs removed
      */
     @Override
@@ -436,25 +435,6 @@ public class MainActivity extends ActionBarActivity
 
             new PlaceAsyncTask().execute(channelIds);
 
-//            ParseQuery<Business> query = ParseQuery.getQuery(Business.class);
-//            query.whereContainedIn("channelId", channelIds);
-//            query.findInBackground(new FindCallback<Business>() {
-//                @Override
-//                public void done(List<Business> businesses, ParseException e) {
-//                    if (businesses != null) {
-//                        mGeofenceList.clear();
-//
-//                        for (Business business : businesses) {
-//                            mGeofenceList.add(Util.getGeofence(business));
-//                        }
-//
-//                        // Request a connection from the client to Location Services
-//                        mLocationClient.connect();
-//                    } else if (e != null) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
         } else {
         /*
          * A request is already underway. You can handle
@@ -570,5 +550,6 @@ public class MainActivity extends ActionBarActivity
 
     // Defines the allowable request types.
     public enum REQUEST_TYPE {
-        ADD, REMOVE_INTENT, REMOVE_LIST }
+        ADD, REMOVE_INTENT, REMOVE_LIST
+    }
 }

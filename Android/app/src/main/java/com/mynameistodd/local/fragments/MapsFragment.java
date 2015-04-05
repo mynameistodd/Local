@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mynameistodd.local.LocalApplication;
 import com.mynameistodd.local.R;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
@@ -77,6 +80,15 @@ public class MapsFragment extends MapFragment implements
             mSubscribedChannels = new ArrayList<String>();
         }
         mThisFragment = this;
+
+        // Get tracker.
+        Tracker t = ((LocalApplication) getActivity().getApplication()).getTracker(LocalApplication.TrackerName.APP_TRACKER);
+
+        // Set screen name.
+        t.setScreenName(MapsFragment.class.getSimpleName());
+
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -187,8 +199,8 @@ public class MapsFragment extends MapFragment implements
 
                 CircleOptions circleOptions = new CircleOptions()
                         .center(cameraPosition.target)
-                        .fillColor(Color.parseColor("#55FFFF00")) //TODO Needs to be in an XML file.
-                        .radius(100) //TODO Should come from Place object.
+                        .fillColor(Color.argb(128, 255, 255, 0))
+                        .radius(Util.PLACE_RADIUS)
                         .strokeColor(Color.TRANSPARENT);
                 mMap.addCircle(circleOptions);
             }
@@ -201,7 +213,7 @@ public class MapsFragment extends MapFragment implements
             List<Place> results = new ArrayList<>();
             client = new GooglePlaces(Util.PLACES_API_KEY, new MyRequestHandler());
             try {
-                results = client.getNearbyPlaces(params[0].latitude, params[0].longitude, 100.0, Param.name("types").value("aquarium|bakery|bar|beauty_salon|bicycle_store|book_store|bowling_alley|cafe|car_dealer|car_repair|casino|clothing_store|dentist|department_store|electronics_store|establishment|florist|food|furniture_store|gym|hair_care|home_goods_store|jewelry_store|lodging|meal_delivery|meal_takeaway|movie_theater|night_club|pet_store|restaurant|shoe_store|spa|store|zoo"));
+                results = client.getNearbyPlaces(params[0].latitude, params[0].longitude, Util.PLACE_RADIUS, Param.name("types").value("aquarium|bakery|bar|beauty_salon|bicycle_store|book_store|bowling_alley|cafe|car_dealer|car_repair|casino|clothing_store|dentist|department_store|electronics_store|establishment|florist|food|furniture_store|gym|hair_care|home_goods_store|jewelry_store|lodging|meal_delivery|meal_takeaway|movie_theater|night_club|pet_store|restaurant|shoe_store|spa|store|zoo"));
             } catch (GooglePlacesException e) {
                 e.printStackTrace();
             }
@@ -222,8 +234,8 @@ public class MapsFragment extends MapFragment implements
 
                     CircleOptions circleOptions = new CircleOptions()
                             .center(new LatLng(place.getLatitude(), place.getLongitude()))
-                            .fillColor(Color.parseColor("#5500FF00")) //TODO Needs to be in an XML file.
-                            .radius(50) //TODO Should come from Place object.
+                            .fillColor(Color.argb(128, 0, 255, 0))
+                            .radius(Util.FENCE_RADIUS)
                             .strokeColor(Color.TRANSPARENT);
                     mMap.addCircle(circleOptions);
                 }
@@ -307,7 +319,7 @@ public class MapsFragment extends MapFragment implements
         Location location = mLocationClient.getLastLocation();
 
         if (location != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
         }
     }
 
