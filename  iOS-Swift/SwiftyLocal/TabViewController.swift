@@ -9,7 +9,7 @@ import Parse
 import ParseUI
 import Foundation
 
-class TabViewController: UITabBarController, UITabBarControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
+class TabViewController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()

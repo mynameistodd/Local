@@ -11,16 +11,19 @@ import ParseUI
 import Parse
 class SubscriptionListController : UITableViewController, UITableViewDelegate, UITableViewDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-    var BusinessData: [Business] = []
+    //var BusinessData: [Business] = []
     var GooglePlaces: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ReloadListView:",name:"Reload", object: nil)
         if PFUser.currentUser() != nil {
             GooglePlaces = appDelegate.GooglePlaceChannels
+            if GooglePlaces.count > 0 {
+                for c in GooglePlaces {
+                    println("ListView: " + c)
+                }
+            }
         }
     }
     func ReloadListView(notification: NSNotification){

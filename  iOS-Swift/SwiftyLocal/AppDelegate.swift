@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
             else {
-                println("app delegate - no subs")
+                println("app delegate: no subs")
             }
 
         }
@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //an empty GooglePlaceChannel array will be a signal that there is no user logged?
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         appDelegate.GooglePlaceChannels = self.GooglePlaceChannels
+        
         // If you would like all objects to be private by default, remove this line.
         //defaultACL.setPublicReadAccess(true)
         

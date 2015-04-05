@@ -39,9 +39,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YES</string>
+	<string>Hello World</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YES</string>
+	<string>Hello World-2</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
