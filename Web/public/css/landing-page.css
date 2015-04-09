@@ -31,8 +31,12 @@ h6 {
     padding-bottom: 50px;
     text-align: center;
     color: #f8f8f8;
-    background: url(../img/DeathtoStock_Wired8.jpg) no-repeat center center;
+    background: url(../img/SplitShire-05072.jpg) no-repeat center center;
     background-size: cover;
+}
+
+.intro-header-padding {
+    padding-top: 50px;
 }
 
 .intro-message {
@@ -161,6 +165,11 @@ footer {
     background-color: #f8f8f8;
 }
 
+.sticky-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
 p.copyright {
     margin: 15px 0 0;
 }

@@ -12,12 +12,20 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.GeofenceStatusCodes;
+import com.google.android.gms.location.GeofencingEvent;
 import com.mynameistodd.local.MainActivity;
 import com.mynameistodd.local.R;
+import com.mynameistodd.local.models.Business;
 import com.mynameistodd.local.utils.MyRequestHandler;
 import com.mynameistodd.local.utils.Util;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -44,6 +52,11 @@ public class ReceiveTransitionsIntentService extends IntentService {
         super("ReceiveTransitionsIntentService");
     }
 
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+    }
+
     /**
      * Handles incoming intents
      *
@@ -54,47 +67,45 @@ public class ReceiveTransitionsIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        // First check for errors
-        if (LocationClient.hasError(intent)) {
-            // Get the error code with a static method
-            int errorCode = LocationClient.getErrorCode(intent);
-            // Log the error
-            Log.e("ReceiveTransitionsIntentService",
-                    "Location Services error: " + Integer.toString(errorCode));
-            /*
-             * You can also send the error code to an Activity or
-             * Fragment with a broadcast Intent
-             */
-            /*
-             * If there's no error, get the transition type and the IDs
-             * of the geofence or geofences that triggered the transition
-             */
-        } else {
-            // Get the type of transition (entry or exit)
-            int transitionType = LocationClient.getGeofenceTransition(intent);
-
-            Map<String, String> details = new HashMap<>();
-            details.put("transitionType", String.valueOf(transitionType));
-            details.put("transitionTime", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-            ParseAnalytics.trackEventInBackground("geofence", details);
-
-            // Test that a valid transition was reported
-            if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER) || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT) || (transitionType == Geofence.GEOFENCE_TRANSITION_DWELL)) {
-                List<Geofence> triggerList = LocationClient.getTriggeringGeofences(intent);
-
-                List<String> triggerIds = new ArrayList<String>();
-
-                for (Geofence geofence : triggerList) {
-                    triggerIds.add(geofence.getRequestId());
-                }
-
-                new PlaceAsyncTask().execute(triggerIds);
-            }
-            // An invalid transition was reported
-            else {
-                Log.e("ReceiveTransitionsIntentService", "Geofence transition error: " + Integer.toString(transitionType));
-            }
+        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        if (geofencingEvent.hasError()) {
+            String errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.getErrorCode());
+            Log.e(Util.TAG, errorMessage);
+            return;
         }
+
+        // Get the transition type.
+        int geofenceTransition = geofencingEvent.getGeofenceTransition();
+
+        Map<String, String> details = new HashMap<>();
+        details.put("transitionType", String.valueOf(geofenceTransition));
+        details.put("transitionTime", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        ParseAnalytics.trackEventInBackground("geofence", details);
+
+        // Test that the reported transition was of interest.
+        if ((geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) ||
+            (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) ||
+            (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL)) {
+
+            // Get the geofences that were triggered. A single event can trigger
+            // multiple geofences.
+            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+
+            List<String> triggerIds = new ArrayList<>();
+            for (Geofence geofence : triggeringGeofences) {
+                triggerIds.add(geofence.getRequestId());
+            }
+
+            new PlaceAsyncTask().execute(triggerIds);
+        } else {
+            // Log the error.
+            Log.e(Util.TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private class PlaceAsyncTask extends AsyncTask<List<String>, Void, List<Place>> {
@@ -119,37 +130,48 @@ public class ReceiveTransitionsIntentService extends IntentService {
             final TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
             stackBuilder.addParentStack(MainActivity.class);
             stackBuilder.addNextIntent(resultIntent);
+            final PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            for (Place place : places) {
-                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(place.getName())
-                        .setContentText(place.getVicinity())
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-                String logoUrl = place.getIconUrl();
-
-                Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
+            for (final Place place : places) {
+                ParseQuery<com.mynameistodd.local.models.Geofence> query = ParseQuery.getQuery(com.mynameistodd.local.models.Geofence.class);
+                query.whereEqualTo("placeId", place.getPlaceId());
+                query.getFirstInBackground(new GetCallback<com.mynameistodd.local.models.Geofence>() {
                     @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mBuilder.setLargeIcon(bitmap);
-                    }
+                    public void done(com.mynameistodd.local.models.Geofence geofence, ParseException e) {
+                        if (geofence != null) {
 
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
+                            final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                    .setSmallIcon(R.drawable.ic_launcher)
+                                    .setContentTitle(place.getName())
+                                    .setContentText(geofence.getText())
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true);
 
-                    }
+                            String logoUrl = place.getIconUrl();
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            Picasso.with(getApplicationContext()).load(logoUrl).into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    mBuilder.setLargeIcon(bitmap);
+                                }
 
+                                @Override
+                                public void onBitmapFailed(Drawable errorDrawable) {
+
+                                }
+
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                }
+                            });
+
+                            mNotificationManager.notify(1, mBuilder.build());
+                        } else {
+                            e.printStackTrace();
+                        }
                     }
                 });
-
-                mNotificationManager.notify(1, mBuilder.build());
             }
         }
     }
