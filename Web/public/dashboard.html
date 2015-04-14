@@ -97,6 +97,7 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <p class="navbar-text navbar-right" id="signedInAs">Signed in as Frank Underwood</p>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <button type="button" class="btn btn-default navbar-btn" id="logout">Logout</button>
@@ -123,13 +124,16 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="intro-message">
-                    <label for="geofenceMessage">Geofence Message:</label>
+                    <label for="geofenceMessage">New Geofence Message:</label>
                     <div class="input-group input-group-lg">
                         <input id="geofenceMessage" type="text" class="form-control" placeholder="Something to draw in customers nearby.">
                         <span class="input-group-btn">
                             <button id="geofenceSave" class="btn btn-default" type="button">Save</button>
                         </span>
+
                     </div>
+                    <small>Currently: </small>
+                    <small id="geofenceMessageCurrent">"A catchy phrase to bring in customers."</small>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -182,6 +186,11 @@
             var channelId = null;
             if (user != null) {
                 channelId = user.get("placeId");
+
+                var name = user.get("name");
+                $("#signedInAs").text("Signed in as " + name);
+
+                getGeofenceMessage(channelId);
             }
 
             $("#logout").click(function(event){
@@ -235,6 +244,7 @@
                         geofence.save(null, {
                             success: function(geofence) {
                                 $("#geofenceMessage").val("");
+                                $("#geofenceMessageCurrent").text("\"" + text + "\"");
                                 $(".alert-success").show();
                                 console.log("Saved geofence message.");
                             },
@@ -242,6 +252,28 @@
                                 console.log(error);
                             }
                         });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            function getGeofenceMessage(placeId) {
+                var message = "";
+
+                var GeofenceObject = Parse.Object.extend("Geofence");
+                var query = new Parse.Query(GeofenceObject);
+                query.equalTo("placeId", placeId);
+                query.find({
+                    success: function(results) {
+                        var geofence = new GeofenceObject();
+
+                        if (results.length > 0) {
+                            geofence = results[0];
+                            message = geofence.get("text");
+                            $("#geofenceMessageCurrent").text("\"" + message + "\"");
+                        }
                     },
                     error: function(error) {
                         console.log(error);
