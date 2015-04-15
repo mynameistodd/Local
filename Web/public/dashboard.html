@@ -38,7 +38,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     
     <script src="//www.parsecdn.com/js/parse-1.4.0.min.js"></script>
-    
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxuSUZ7-cXhCDi--yo-XLxy3WtpBHb4bU&v=3.exp&signed_in=true&libraries=places"></script>
+    <style>
+        #map-canvas {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+    </style>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -123,15 +131,16 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Your Successful Company, Inc.</h3>
-                <address>
+                <h3 id="placeName">Your Successful Company, Inc.</h3>
+                <address id="address">
                     555 Main St.<br>
                     Ann Arbor, MI 48103<br>
                     <abbr title="Phone">P:</abbr> (123) 456-7890
                 </address>
             </div>
-            <div class="col-lg-6">
-                <h6>Static map on this side, with pin showing geofence radius.</h6>
+            <div class="col-lg-6" style="height: 200px;">
+                <h3>Map</h3>
+                <div id="map-canvas"></div>
             </div>
         </div>
     </div>
@@ -206,6 +215,8 @@
                 $("#signedInAs").text("Signed in as " + name);
 
                 getGeofenceMessage(channelId);
+
+                google.maps.event.addDomListener(window, 'load', initialize(channelId));
             }
 
             $("#logout").click(function(event){
@@ -240,6 +251,38 @@
                     });    
                 }
             });
+
+            function initialize(channelId) {
+                var request = {
+                    placeId: channelId
+                };
+
+                var map = new google.maps.Map(document.getElementById('map-canvas'), {
+                    center: new google.maps.LatLng(-33.8665433, 151.1956316),
+                    zoom: 15
+                });
+
+                var infowindow = new google.maps.InfoWindow();
+                var service = new google.maps.places.PlacesService(map);
+
+                service.getDetails(request, function(place, status) {
+
+                    if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: place.geometry.location
+                        });
+                        google.maps.event.addListener(marker, 'click', function() {
+                            infowindow.setContent(place.name);
+                            infowindow.open(map, this);
+                        });
+                        map.setCenter(place.geometry.location);
+                        $("#placeName").text(place.name);
+                        $("#address").text(place.formatted_address);
+                    }
+                });
+            }
 
             function saveGeofenceMessage(placeId, text) {
                 var GeofenceObject = Parse.Object.extend("Geofence");
