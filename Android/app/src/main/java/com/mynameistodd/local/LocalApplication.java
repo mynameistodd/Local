@@ -10,6 +10,7 @@ import com.mynameistodd.local.models.Geofence;
 import com.mynameistodd.local.models.Message;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseTwitterUtils;
@@ -47,12 +48,15 @@ public class LocalApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+
         ParseObject.registerSubclass(Business.class);
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(Geofence.class);
 
         ParseCrashReporting.enable(this);
+
         Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
+        ParseFacebookUtils.initialize(getApplicationContext());
         ParseTwitterUtils.initialize(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret));
 
         ParseInstallation.getCurrentInstallation().saveInBackground();

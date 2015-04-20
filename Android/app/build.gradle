@@ -35,6 +35,11 @@ android {
 }
 
 dependencies {
+    // Module dependency on ParseLoginUI library sources
+    compile project(':ParseLoginUI')
+
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
     compile 'com.google.android.gms:play-services:7.0.0'
 
     compile 'com.android.support:appcompat-v7:21.0.3'
@@ -42,12 +47,10 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
 
-//    compile 'com.parse.bolts:bolts-android:1.2.0'
+    compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
+    compile 'com.facebook.android:facebook-android-sdk:4.0.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar') {
         transitive = true;
     }
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':ParseLoginUI')
 }
