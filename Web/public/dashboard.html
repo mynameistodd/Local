@@ -229,11 +229,13 @@
             
             $("#pushSave").click(function(event) {
                 if (user != null && channelId != null) {
+                    var placeName = $("#placeName").text();
                     var pushText = $("#pushMessage").val();
-                    
+
                     Parse.Push.send({
                         channels: [channelId],
-                        data: { 
+                        data: {
+                            title: placeName + " - via Lowecal",
                             alert: pushText
                         }
                     }, {
