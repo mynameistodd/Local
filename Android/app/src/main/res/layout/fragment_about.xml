@@ -1,7 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.mynameistodd.local.fragments.AboutFragment">
 
     <TextView
@@ -9,7 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about_text"
-        android:layout_gravity="center"
-        android:autoLink="web" />
+        android:autoLink="web"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="version"
+        android:id="@+id/about_version"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
