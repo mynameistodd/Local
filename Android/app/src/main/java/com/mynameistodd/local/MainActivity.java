@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
@@ -87,6 +88,8 @@ public class MainActivity extends ActionBarActivity
     // Flag that indicates if a request is underway.
     private boolean mInProgress;
     private Business mMyBusiness;
+
+    int PLACE_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,8 +214,9 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         } else if (tab.equals(getString(R.string.map))) {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Context context = getApplicationContext();
             try {
-                startActivityForResult(builder.build(getApplicationContext()), 1);
+                startActivityForResult(builder.build(context), PLACE_PICKER_REQUEST);
             } catch (GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             } catch (GooglePlayServicesNotAvailableException e) {

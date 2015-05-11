@@ -27,6 +27,7 @@
     <string name="logout">Logout</string>
     <string name="empty">Nothing here!\n Subscribe to local businesses in "Find and Follow".</string>
 
+    <string name="google_maps_key">AIzaSyDXjrp8pwkdJ1-ZZojoYiyf7uwz7k_wYbM</string>
     <string name="parse_app_id">m5dzHOXkMFC9BHPEbmprX02KM2GoVv2NBBPC5eUN</string>
     <string name="parse_client_key">tdKfe6bJDPpstLEigKmnhyRyBhSV7vy94IA1SVHM</string>
     <string name="facebook_app_id">1547217908870615</string>

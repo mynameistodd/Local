@@ -153,6 +153,7 @@ public class SubscriptionFragment extends Fragment implements SubscriptionRecycl
             mAdapter = new SubscriptionRecyclerAdapter(getActivity(), mPlaces, mAdapterClicks);
             mRecyclerView.setAdapter(mAdapter);
             mProgressBar.setVisibility(View.GONE);
+            mEmptyText.setVisibility(View.GONE);
         }
     }
 
